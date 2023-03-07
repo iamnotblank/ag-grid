@@ -109,6 +109,11 @@ body {
     }
 }
 
+.automatedRowGrouping {
+    display: flex;
+    height: 400px;
+}
+
 .frameworksInner {
     display: flex;
     flex-direction: column;

@@ -11,7 +11,7 @@ import Seo from './components/SEO';
 
 const IS_SSR = typeof window === 'undefined';
 
-const LiveStreamingDemo = React.lazy(() => import('./components/home-page-demos/LiveStreaming'));
+const AutomatedRowGrouping = React.lazy(() => import('./components/home-page-demos/AutomatedRowGrouping'));
 const ChartingDashboardDemo = React.lazy(() => import('./components/home-page-demos/ChartingDashboard'));
 const HeroGrid = React.lazy(() => import('./components/home-page-demos/HeroGrid'));
 
@@ -85,10 +85,10 @@ const Default = () => {
                     <section className="page-margin">
                         <h2>Live Streaming Updates</h2>
 
-                        <div className={styles.demo}>
+                        <div className={styles.automatedRowGrouping}>
                             {!IS_SSR && (
-                                <React.Suspense fallback={<div>Loading...</div>}>
-                                    <LiveStreamingDemo />
+                                <React.Suspense fallback={<></>}>
+                                    <AutomatedRowGrouping />
                                 </React.Suspense>
                             )}
                         </div>
