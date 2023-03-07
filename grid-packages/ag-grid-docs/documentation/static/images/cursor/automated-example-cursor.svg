@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="30" viewBox="0 0 28 30">
+  <circle class="highlight" cx="14" cy="14" r="13" style="fill: #fff; opacity: 0.15;"/>
+  <circle class="animate-click" cx="14" cy="14" r="1" style="fill: #fff;"/>
+  <path class="pointer-outer" d="M16.225 24.476 13 27.608V11.593l11.591 11.619h-4.607l2.1 5.07-3.605 1.535-2.254-5.341Z" style="fill: #fff"/>
+  <path class="pointer-inner" d="M16.537 22.739 14 25.188V14l8.165 8.183h-3.694l2.28 5.418-1.844.774-2.37-5.636Z" style="fill: #000"/>
+</svg>
