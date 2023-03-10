@@ -6,9 +6,9 @@
 // to prevent AG Grid from loading the code twice
 
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { createDrawer } from '../lib/createDrawer';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
+import { initScriptDebugger } from '../lib/scriptDebugger';
 import { createDataUpdateWorker } from './createDataUpdateWorker';
 import { createRowGroupingScriptRunner } from './createRowGroupingScriptRunner';
 import { fixtureData } from './rowDataFixture';
@@ -32,8 +32,10 @@ interface InitAutomatedRowGroupingParams {
     mouseMaskSelector: string;
     suppressUpdates?: boolean;
     useStaticData?: boolean;
-    debugCanvasSelector?: string;
     runOnce: boolean;
+    debug?: boolean;
+    debugCanvasClassname?: string;
+    debugPanelClassname?: string;
 }
 
 interface InitMouseParams {
@@ -152,28 +154,14 @@ function initMouse({ containerEl, mouseMaskSelector }: InitMouseParams): InitMou
     };
 }
 
-/**
- * Debug canvas for position debugging
- */
-function initDebugDrawer({ containerEl, selector }: { containerEl: HTMLElement; selector: string }) {
-    const debugCanvas = document.createElement('canvas');
-    debugCanvas.classList.add(selector);
-
-    containerEl.appendChild(debugCanvas);
-
-    return createDrawer({
-        canvas: debugCanvas,
-        width: containerEl.clientWidth,
-        height: containerEl.clientHeight,
-    });
-}
-
 export function initAutomatedRowGrouping({
     selector,
     mouseMaskSelector,
     suppressUpdates,
     useStaticData,
-    debugCanvasSelector,
+    debug,
+    debugCanvasClassname,
+    debugPanelClassname,
     runOnce,
 }: InitAutomatedRowGroupingParams) {
     const init = () => {
@@ -196,8 +184,12 @@ export function initAutomatedRowGrouping({
             initWorker();
             startWorkerMessages();
 
-            const debugDrawer = debugCanvasSelector
-                ? initDebugDrawer({ containerEl: gridDiv, selector: debugCanvasSelector })
+            const scriptDebugger = debug
+                ? initScriptDebugger({
+                      containerEl: gridDiv,
+                      canvasClassname: debugCanvasClassname!,
+                      panelClassname: debugPanelClassname!,
+                  })
                 : undefined;
 
             const { mouseMask, mouse } = initMouse({ containerEl: gridDiv, mouseMaskSelector });
@@ -218,7 +210,7 @@ export function initAutomatedRowGrouping({
                 },
                 gridOptions,
                 loop: !runOnce,
-                debugDrawer,
+                scriptDebugger,
             });
 
             scriptRunner.play();

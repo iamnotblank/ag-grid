@@ -1,9 +1,9 @@
-import { Drawer } from '../lib/createDrawer';
 import { getOffset } from '../lib/dom';
 import { addPoints, Point } from '../lib/geometry';
 import { clearAllRowHighlights } from '../lib/scriptActions/clearAllRowHighlights';
 import { createGroupColumnScriptActions } from '../lib/scriptActions/createGroupColumnScriptActions';
 import { moveTarget } from '../lib/scriptActions/moveTarget';
+import { ScriptDebugger } from '../lib/scriptDebugger';
 import { ScriptAction } from '../lib/scriptRunner';
 
 interface CreateRowGroupingScriptParams {
@@ -12,7 +12,7 @@ interface CreateRowGroupingScriptParams {
     offScreenPos: Point;
     showMouse: () => void;
     hideMouse: () => void;
-    debugDrawer?: Drawer;
+    scriptDebugger?: ScriptDebugger;
 }
 
 export const createSimpleRowGroupingScript = ({
@@ -21,7 +21,7 @@ export const createSimpleRowGroupingScript = ({
     offScreenPos,
     showMouse,
     hideMouse,
-    debugDrawer,
+    scriptDebugger,
 }: CreateRowGroupingScriptParams): ScriptAction[] => {
     const WOOL_ROW_INDEX = 2;
     const WOOL_KEY = 'Wool';
@@ -31,7 +31,7 @@ export const createSimpleRowGroupingScript = ({
             type: 'custom',
             action: () => {
                 // Move mouse to starting position
-                moveTarget({ target: mouse, coords: offScreenPos, debugDrawer });
+                moveTarget({ target: mouse, coords: offScreenPos, scriptDebugger });
 
                 showMouse();
                 clearAllRowHighlights();
@@ -70,7 +70,7 @@ export const createSimpleRowGroupingScript = ({
         {
             type: 'custom',
             action: () => {
-                debugDrawer?.clear();
+                scriptDebugger?.clear();
             },
         },
     ];

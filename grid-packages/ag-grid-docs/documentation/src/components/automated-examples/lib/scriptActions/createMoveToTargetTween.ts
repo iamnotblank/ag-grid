@@ -1,9 +1,9 @@
 import { AG_ROW_HOVER_CLASSNAME, AG_ROW_SELECTOR } from '../constants';
-import { Drawer } from '../createDrawer';
 import { getOffset } from '../dom';
 import { Point } from '../geometry';
 import { clearAllRowHighlights } from '../scriptActions/clearAllRowHighlights';
 import { moveTarget } from '../scriptActions/moveTarget';
+import { ScriptDebugger } from '../scriptDebugger';
 import { getTweenDuration } from '../tween';
 
 interface CreateMoveToTargetTweenParams {
@@ -14,7 +14,7 @@ interface CreateMoveToTargetTweenParams {
     tweenOnChange?: (params: { onChangeArgs: any; coords: Point }) => void;
     speed?: number;
     duration?: number;
-    debugDrawer?: Drawer;
+    scriptDebugger?: ScriptDebugger;
 }
 
 function getTargetPos(target: HTMLElement): Point | undefined {
@@ -47,7 +47,7 @@ export const createMoveToTargetTween = ({
     tweenOnChange,
     speed,
     duration,
-    debugDrawer,
+    scriptDebugger,
 }: CreateMoveToTargetTweenParams): Promise<void> => {
     const fromPos = startingFromPos ? startingFromPos : getTargetPos(target);
     const coords = { ...fromPos } as Point;
@@ -68,7 +68,7 @@ export const createMoveToTargetTween = ({
     return new Promise((resolve) => {
         const tweenParams = {
             onChange: (onChangeArgs) => {
-                moveTarget({ target, coords, offset, debugDrawer });
+                moveTarget({ target, coords, offset, scriptDebugger });
 
                 const hoverOverEl = document.elementFromPoint(coords.x, coords.y);
                 if (hoverOverEl) {

@@ -1,6 +1,6 @@
 import { GridOptions } from 'ag-grid-community';
-import { Drawer } from '../lib/createDrawer';
 import { Point } from '../lib/geometry';
+import { ScriptDebugger } from '../lib/scriptDebugger';
 import { createScriptRunner } from '../lib/scriptRunner';
 import { createRowGroupingScript } from '../scripts/createRowGroupingScript';
 
@@ -12,7 +12,7 @@ interface CreateRowGroupingScriptRunnerParams {
     hideMouse: () => void;
     gridOptions: GridOptions;
     loop?: boolean;
-    debugDrawer?: Drawer;
+    scriptDebugger?: ScriptDebugger;
 }
 
 export function createRowGroupingScriptRunner({
@@ -23,7 +23,7 @@ export function createRowGroupingScriptRunner({
     hideMouse,
     gridOptions,
     loop,
-    debugDrawer,
+    scriptDebugger,
 }: CreateRowGroupingScriptRunnerParams) {
     const rowGroupingScript = createRowGroupingScript({
         containerEl,
@@ -31,7 +31,7 @@ export function createRowGroupingScriptRunner({
         offScreenPos,
         showMouse,
         hideMouse,
-        debugDrawer,
+        scriptDebugger,
     });
 
     return createScriptRunner({
@@ -45,6 +45,6 @@ export function createRowGroupingScriptRunner({
                 hideMouse();
             }
         },
-        debugDrawer,
+        scriptDebugger,
     });
 }

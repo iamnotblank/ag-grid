@@ -1,5 +1,4 @@
 import { GridOptions } from 'ag-grid-community';
-import { Drawer } from './createDrawer';
 import { Point } from './geometry';
 import { PathItem } from './pathRecorder';
 import { animateClick, animateMouseDown, animateMouseUp } from './scriptActions/animateMouse';
@@ -8,6 +7,7 @@ import { createMoveToTargetTween } from './scriptActions/createMoveToTargetTween
 import { playPath } from './scriptActions/playPath';
 import { removeFocus } from './scriptActions/removeFocus';
 import { waitFor } from './scriptActions/waitFor';
+import { ScriptDebugger } from './scriptDebugger';
 
 export interface PathAction {
     type: 'path';
@@ -75,7 +75,7 @@ export interface CreateScriptActionParams {
     containerEl?: HTMLElement;
     action: ScriptAction;
     gridOptions: GridOptions;
-    debugDrawer?: Drawer;
+    scriptDebugger?: ScriptDebugger;
 }
 
 export interface PlayScriptParams {
@@ -85,12 +85,12 @@ export interface PlayScriptParams {
     gridOptions: GridOptions;
     loop?: boolean;
     onStateChange?: (state: RunScriptState) => void;
-    debugDrawer?: Drawer;
+    scriptDebugger?: ScriptDebugger;
 }
 
 export type RunScriptState = 'stopped' | 'stopping' | 'pausing' | 'paused' | 'playing';
 
-function createScriptAction({ containerEl, target, action, gridOptions, debugDrawer }: CreateScriptActionParams) {
+function createScriptAction({ containerEl, target, action, gridOptions, scriptDebugger }: CreateScriptActionParams) {
     const { type } = action;
     const agActionCreator = createAGActionCreator({ containerEl, gridOptions });
 
@@ -126,7 +126,7 @@ function createScriptAction({ containerEl, target, action, gridOptions, debugDra
             toPos,
             speed: scriptAction.speed,
             duration: scriptAction.duration,
-            debugDrawer,
+            scriptDebugger,
         });
     } else if (type === 'agAction') {
         const scriptAction = action as AGAction;
@@ -149,9 +149,8 @@ export function createScriptRunner({
     gridOptions,
     loop,
     onStateChange,
-    debugDrawer,
+    scriptDebugger,
 }: PlayScriptParams): ScriptRunner {
-    const isDebugging = Boolean(debugDrawer);
     let runScriptState: RunScriptState;
     let loopScript = loop;
     let pauseIndex: number | undefined;
@@ -163,7 +162,7 @@ export function createScriptRunner({
                     target,
                     action: scriptAction,
                     gridOptions,
-                    debugDrawer,
+                    scriptDebugger,
                 });
 
                 return result;
@@ -260,12 +259,10 @@ export function createScriptRunner({
     };
 
     const updateState = (state: RunScriptState) => {
-        if (isDebugging) {
-            console.log('Script runner state:', {
-                state,
-                pauseIndex,
-            });
-        }
+        scriptDebugger?.updateState({
+            state,
+            pauseIndex,
+        });
         runScriptState = state;
         onStateChange && onStateChange(state);
     };
