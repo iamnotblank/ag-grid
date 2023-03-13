@@ -84,7 +84,6 @@ const columnDefs: ColDef[] = [
 const gridOptions: GridOptions = {
     columnDefs,
     defaultColDef: {
-        editable: true,
         sortable: true,
         flex: 1,
         minWidth: 150,
