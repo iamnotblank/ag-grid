@@ -1,4 +1,4 @@
-import { GridOptions } from 'ag-grid-community';
+import { ColumnState, GridOptions } from 'ag-grid-community';
 import { Point } from './geometry';
 import { PathItem } from './pathRecorder';
 import { animateClick, animateMouseDown, animateMouseUp } from './scriptActions/animateMouse';
@@ -72,6 +72,10 @@ export type ScriptAction =
     | CustomAction
     | AGAction;
 
+interface PausedState {
+    scriptIndex: number;
+    columnState: ColumnState[];
+}
 export interface CreateScriptActionParams {
     target: HTMLElement;
     containerEl?: HTMLElement;
@@ -171,7 +175,33 @@ export function createScriptRunner({
 }: PlayScriptParams): ScriptRunner {
     let runScriptState: RunScriptState;
     let loopScript = loop;
-    let pauseIndex: number | undefined;
+    let pausedState: PausedState | undefined;
+
+    const setPausedState = (scriptIndex: number) => {
+        pausedState = {
+            scriptIndex,
+            columnState: gridOptions.columnApi?.getColumnState()!,
+        };
+    };
+
+    const playAgain = () => {
+        let pausedScriptIndex;
+        if (pausedState) {
+            gridOptions.columnApi?.applyColumnState({
+                state: pausedState.columnState,
+                applyOrder: true,
+            });
+            pausedScriptIndex = pausedState.scriptIndex;
+            resetPausedState();
+        }
+
+        startActionSequence(pausedScriptIndex);
+    };
+
+    const resetPausedState = () => {
+        pausedState = undefined;
+    };
+
     const actionSequence = script.map((scriptAction) => {
         return () => {
             try {
@@ -214,7 +244,7 @@ export function createScriptRunner({
                             } else if (runScriptState === 'stopped') {
                                 return;
                             } else if (runScriptState === 'pausing') {
-                                pauseIndex = index;
+                                setPausedState(index);
                                 updateState('paused');
                                 return;
                             } else if (runScriptState === 'paused') {
@@ -259,14 +289,13 @@ export function createScriptRunner({
     const stop: ScriptRunner['stop'] = () => {
         // Initiate stop
         updateState('stopping');
-        pauseIndex = undefined;
+        resetPausedState();
         createjs.Tween.removeAllTweens();
     };
     const play: ScriptRunner['play'] = ({ loop } = {}) => {
         loopScript = loop === undefined ? loopScript : Boolean(loop);
-        startActionSequence(pauseIndex);
 
-        pauseIndex = undefined;
+        playAgain();
     };
     const pause: ScriptRunner['pause'] = () => {
         if (runScriptState === 'playing') {
@@ -280,7 +309,7 @@ export function createScriptRunner({
     const updateState = (state: RunScriptState) => {
         scriptDebugger?.updateState({
             state,
-            pauseIndex,
+            pauseIndex: pausedState?.scriptIndex,
         });
         runScriptState = state;
         onStateChange && onStateChange(state);
