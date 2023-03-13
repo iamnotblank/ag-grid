@@ -41,7 +41,14 @@ export const createSimpleRowGroupingScript = ({
             type: 'agAction',
             actionType: 'reset',
         },
-        ...createGroupColumnScriptActions({ containerEl, mouse, headerCellName: 'Product' }),
+        ...createGroupColumnScriptActions({
+            containerEl,
+            mouse,
+            headerCellName: 'Product',
+            fallbackApplyColumnState: {
+                state: [{ colId: 'product', rowGroupIndex: 0 }],
+            },
+        }),
         { type: 'wait', duration: 500 },
 
         // Move off screen

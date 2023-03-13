@@ -48,7 +48,14 @@ export const createRowGroupingScript = ({
             type: 'agAction',
             actionType: 'reset',
         },
-        ...createGroupColumnScriptActions({ containerEl, mouse, headerCellName: 'Product' }),
+        ...createGroupColumnScriptActions({
+            containerEl,
+            mouse,
+            headerCellName: 'Product',
+            fallbackApplyColumnState: {
+                state: [{ colId: 'product', rowGroupIndex: 0 }],
+            },
+        }),
         { type: 'wait', duration: 500 },
         {
             type: 'moveTo',
@@ -74,7 +81,18 @@ export const createRowGroupingScript = ({
         },
         { type: 'wait', duration: 500 },
 
-        ...createGroupColumnScriptActions({ containerEl, mouse, headerCellName: 'Book', moveToDuration: 300 }),
+        ...createGroupColumnScriptActions({
+            containerEl,
+            mouse,
+            headerCellName: 'Book',
+            moveToDuration: 300,
+            fallbackApplyColumnState: {
+                state: [
+                    { colId: 'product', rowGroupIndex: 0 },
+                    { colId: 'book', rowGroupIndex: 1 },
+                ],
+            },
+        }),
         { type: 'wait', duration: 500 },
 
         // Open wool
