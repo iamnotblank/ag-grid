@@ -1,5 +1,7 @@
 import { GridOptions } from 'ag-grid-community';
 import { Point } from '../lib/geometry';
+import { clearAllSingleCellSelections } from '../lib/scriptActions/clearAllSingleCellSelections';
+import { removeFocus } from '../lib/scriptActions/removeFocus';
 import { ScriptDebugger } from '../lib/scriptDebugger';
 import { createScriptRunner } from '../lib/scriptRunner';
 import { EasingFunction } from '../lib/tween';
@@ -47,6 +49,14 @@ export function createRowGroupingScriptRunner({
             if (state === 'stopping') {
                 hideMouse();
             }
+        },
+        onPaused: () => {
+            clearAllSingleCellSelections();
+            hideMouse();
+        },
+        onUnpaused: () => {
+            removeFocus();
+            showMouse();
         },
         scriptDebugger,
         defaultEasing,

@@ -92,6 +92,8 @@ export interface PlayScriptParams {
     gridOptions: GridOptions;
     loop?: boolean;
     onStateChange?: (state: RunScriptState) => void;
+    onPaused?: () => void;
+    onUnpaused?: () => void;
     scriptDebugger?: ScriptDebugger;
     /**
      * Default easing function used for move actions
@@ -170,6 +172,8 @@ export function createScriptRunner({
     gridOptions,
     loop,
     onStateChange,
+    onPaused,
+    onUnpaused,
     scriptDebugger,
     defaultEasing,
 }: PlayScriptParams): ScriptRunner {
@@ -178,6 +182,7 @@ export function createScriptRunner({
     let pausedState: PausedState | undefined;
 
     const setPausedState = (scriptIndex: number) => {
+        onPaused && onPaused();
         pausedState = {
             scriptIndex,
             columnState: gridOptions.columnApi?.getColumnState()!,
@@ -187,6 +192,7 @@ export function createScriptRunner({
     const playAgain = () => {
         let pausedScriptIndex;
         if (pausedState) {
+            onUnpaused && onUnpaused();
             gridOptions.columnApi?.applyColumnState({
                 state: pausedState.columnState,
                 applyOrder: true,
