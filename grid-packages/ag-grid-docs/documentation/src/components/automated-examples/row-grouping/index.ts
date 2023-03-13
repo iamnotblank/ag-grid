@@ -89,6 +89,7 @@ const gridOptions: GridOptions = {
         minWidth: 150,
         filter: true,
         resizable: true,
+        menuTabs: [],
     },
     autoGroupColumnDef: {
         minWidth: 200,
