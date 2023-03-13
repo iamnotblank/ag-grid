@@ -211,6 +211,7 @@ export function initAutomatedRowGrouping({
                 gridOptions,
                 loop: !runOnce,
                 scriptDebugger,
+                defaultEasing: createjs.Ease.quadInOut,
             });
 
             scriptRunner.play();

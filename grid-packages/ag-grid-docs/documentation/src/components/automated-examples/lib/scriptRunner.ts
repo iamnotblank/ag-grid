@@ -8,6 +8,7 @@ import { playPath } from './scriptActions/playPath';
 import { removeFocus } from './scriptActions/removeFocus';
 import { waitFor } from './scriptActions/waitFor';
 import { ScriptDebugger } from './scriptDebugger';
+import { EasingFunction } from './tween';
 
 export interface PathAction {
     type: 'path';
@@ -19,6 +20,7 @@ export interface MoveToAction {
     toPos: Point | (() => Point | undefined);
     speed?: number;
     duration?: number;
+    easing?: EasingFunction;
 }
 
 export interface WaitAction {
@@ -76,6 +78,7 @@ export interface CreateScriptActionParams {
     action: ScriptAction;
     gridOptions: GridOptions;
     scriptDebugger?: ScriptDebugger;
+    defaultEasing?: EasingFunction;
 }
 
 export interface PlayScriptParams {
@@ -86,11 +89,24 @@ export interface PlayScriptParams {
     loop?: boolean;
     onStateChange?: (state: RunScriptState) => void;
     scriptDebugger?: ScriptDebugger;
+    /**
+     * Default easing function used for move actions
+     *
+     * @see https://createjs.com/docs/tweenjs/classes/Ease.html
+     */
+    defaultEasing?: EasingFunction;
 }
 
 export type RunScriptState = 'stopped' | 'stopping' | 'pausing' | 'paused' | 'playing';
 
-function createScriptAction({ containerEl, target, action, gridOptions, scriptDebugger }: CreateScriptActionParams) {
+function createScriptAction({
+    containerEl,
+    target,
+    action,
+    gridOptions,
+    scriptDebugger,
+    defaultEasing,
+}: CreateScriptActionParams) {
     const { type } = action;
     const agActionCreator = createAGActionCreator({ containerEl, gridOptions });
 
@@ -127,6 +143,7 @@ function createScriptAction({ containerEl, target, action, gridOptions, scriptDe
             speed: scriptAction.speed,
             duration: scriptAction.duration,
             scriptDebugger,
+            easing: scriptAction.easing || defaultEasing,
         });
     } else if (type === 'agAction') {
         const scriptAction = action as AGAction;
@@ -150,6 +167,7 @@ export function createScriptRunner({
     loop,
     onStateChange,
     scriptDebugger,
+    defaultEasing,
 }: PlayScriptParams): ScriptRunner {
     let runScriptState: RunScriptState;
     let loopScript = loop;
@@ -163,6 +181,7 @@ export function createScriptRunner({
                     action: scriptAction,
                     gridOptions,
                     scriptDebugger,
+                    defaultEasing,
                 });
 
                 return result;

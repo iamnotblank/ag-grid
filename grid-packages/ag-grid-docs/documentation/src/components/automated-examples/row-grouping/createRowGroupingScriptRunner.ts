@@ -2,6 +2,7 @@ import { GridOptions } from 'ag-grid-community';
 import { Point } from '../lib/geometry';
 import { ScriptDebugger } from '../lib/scriptDebugger';
 import { createScriptRunner } from '../lib/scriptRunner';
+import { EasingFunction } from '../lib/tween';
 import { createRowGroupingScript } from '../scripts/createRowGroupingScript';
 
 interface CreateRowGroupingScriptRunnerParams {
@@ -13,6 +14,7 @@ interface CreateRowGroupingScriptRunnerParams {
     gridOptions: GridOptions;
     loop?: boolean;
     scriptDebugger?: ScriptDebugger;
+    defaultEasing?: EasingFunction;
 }
 
 export function createRowGroupingScriptRunner({
@@ -24,6 +26,7 @@ export function createRowGroupingScriptRunner({
     gridOptions,
     loop,
     scriptDebugger,
+    defaultEasing,
 }: CreateRowGroupingScriptRunnerParams) {
     const rowGroupingScript = createRowGroupingScript({
         containerEl,
@@ -46,5 +49,6 @@ export function createRowGroupingScriptRunner({
             }
         },
         scriptDebugger,
+        defaultEasing,
     });
 }

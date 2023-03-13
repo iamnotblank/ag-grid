@@ -1,5 +1,5 @@
 import { Point } from '../geometry';
-import { getTweenDuration } from '../tween';
+import { EasingFunction, getTweenDuration } from '../tween';
 
 interface CreateTweenParams {
     fromPos: Point;
@@ -7,9 +7,15 @@ interface CreateTweenParams {
     onChange: (params: { params: any; coords: Point }) => void;
     speed?: number;
     duration?: number;
+    /**
+     * Easing function
+     *
+     * @see https://createjs.com/docs/tweenjs/classes/Ease.html
+     */
+    easing?: EasingFunction;
 }
 
-export const createTween = ({ fromPos, toPos, onChange, speed, duration }: CreateTweenParams) => {
+export const createTween = ({ fromPos, toPos, onChange, speed, duration, easing }: CreateTweenParams) => {
     const coords = { ...fromPos };
 
     return new Promise((resolve) => {
@@ -29,6 +35,6 @@ export const createTween = ({ fromPos, toPos, onChange, speed, duration }: Creat
             duration,
         });
 
-        new createjs.Tween(coords, tweenParams).to(toPos, tweenDuration);
+        new createjs.Tween(coords, tweenParams).to(toPos, tweenDuration, easing);
     });
 };

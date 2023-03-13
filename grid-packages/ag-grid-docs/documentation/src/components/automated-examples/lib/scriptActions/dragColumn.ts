@@ -4,12 +4,14 @@ import { getOffset } from '../dom';
 import { addPoints } from '../geometry';
 import { createTween } from '../scriptActions/createTween';
 import { moveTarget } from '../scriptActions/moveTarget';
+import { EasingFunction } from '../tween';
 
 interface DragColumnToRowGroupPanelParams {
     containerEl?: HTMLElement;
     mouse: HTMLElement;
     headerCellName: string;
     duration: number;
+    easing?: EasingFunction;
 }
 
 export async function dragColumnToRowGroupPanel({
@@ -17,6 +19,7 @@ export async function dragColumnToRowGroupPanel({
     mouse,
     headerCellName,
     duration,
+    easing,
 }: DragColumnToRowGroupPanelParams) {
     const fromPos = getHeaderCellPos({ containerEl, headerCellText: headerCellName });
     const rowGroupPanelOffset = {
@@ -48,6 +51,7 @@ export async function dragColumnToRowGroupPanel({
             moveTarget({ target: mouse, coords, offset });
         },
         duration,
+        easing,
     });
 
     const draggedHeaderItem = document.querySelector(AG_DND_GHOST_SELECTOR);

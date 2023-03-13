@@ -1,5 +1,6 @@
 import { getHeaderCellPos } from '../agQuery';
 import { ScriptAction } from '../scriptRunner';
+import { EasingFunction } from '../tween';
 
 interface GroupColumn {
     containerEl?: HTMLElement;
@@ -7,6 +8,7 @@ interface GroupColumn {
     headerCellName: string;
     moveToDuration?: number;
     dragDuration?: number;
+    easing?: EasingFunction;
 }
 
 export function createGroupColumnScriptActions({
@@ -15,12 +17,14 @@ export function createGroupColumnScriptActions({
     headerCellName,
     moveToDuration,
     dragDuration = 500,
+    easing,
 }: GroupColumn): ScriptAction[] {
     return [
         {
             type: 'moveTo',
             toPos: () => getHeaderCellPos({ containerEl, headerCellText: headerCellName }),
             duration: moveToDuration,
+            easing,
         },
         { type: 'wait', duration: 200 },
         {
@@ -38,6 +42,7 @@ export function createGroupColumnScriptActions({
                 mouse,
                 headerCellName,
                 duration: dragDuration,
+                easing,
             },
         },
         {

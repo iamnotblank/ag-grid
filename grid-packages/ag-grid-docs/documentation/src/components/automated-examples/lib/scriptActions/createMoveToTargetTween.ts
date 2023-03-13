@@ -4,7 +4,7 @@ import { Point } from '../geometry';
 import { clearAllRowHighlights } from '../scriptActions/clearAllRowHighlights';
 import { moveTarget } from '../scriptActions/moveTarget';
 import { ScriptDebugger } from '../scriptDebugger';
-import { getTweenDuration } from '../tween';
+import { EasingFunction, getTweenDuration } from '../tween';
 
 interface CreateMoveToTargetTweenParams {
     target: HTMLElement;
@@ -14,6 +14,12 @@ interface CreateMoveToTargetTweenParams {
     tweenOnChange?: (params: { onChangeArgs: any; coords: Point }) => void;
     speed?: number;
     duration?: number;
+    /**
+     * Easing function
+     *
+     * @see https://createjs.com/docs/tweenjs/classes/Ease.html
+     */
+    easing?: EasingFunction;
     scriptDebugger?: ScriptDebugger;
 }
 
@@ -47,6 +53,7 @@ export const createMoveToTargetTween = ({
     tweenOnChange,
     speed,
     duration,
+    easing,
     scriptDebugger,
 }: CreateMoveToTargetTweenParams): Promise<void> => {
     const fromPos = startingFromPos ? startingFromPos : getTargetPos(target);
@@ -94,6 +101,6 @@ export const createMoveToTargetTween = ({
             duration,
         });
 
-        new createjs.Tween(coords, tweenParams).to(toPos, tweenDuration);
+        new createjs.Tween(coords, tweenParams).to(toPos, tweenDuration, easing);
     });
 };

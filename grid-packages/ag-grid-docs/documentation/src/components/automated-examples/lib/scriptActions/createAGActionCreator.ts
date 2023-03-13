@@ -2,6 +2,7 @@ import { ApplyColumnStateParams, GridOptions } from 'ag-grid-community';
 import { getCell } from '../agQuery';
 import { AG_CELL_RANGE_SINGLE_CELL_CLASSNAME, AG_DND_GHOST_SELECTOR } from '../constants';
 import { dragColumnToRowGroupPanel } from '../scriptActions/dragColumn';
+import { EasingFunction } from '../tween';
 import { clearAllSingleCellSelections } from './clearAllSingleCellSelections';
 
 interface ResetAction {
@@ -18,6 +19,7 @@ interface DragColumnToRowGroupPanelAction {
         mouse: HTMLElement;
         headerCellName: string;
         duration: number;
+        easing?: EasingFunction;
     };
 }
 
