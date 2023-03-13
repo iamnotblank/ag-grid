@@ -2,9 +2,9 @@ import { getHeaderCell, getHeaderCellPos } from '../agQuery';
 import { AG_DND_GHOST_SELECTOR } from '../constants';
 import { getOffset } from '../dom';
 import { addPoints } from '../geometry';
-import { createTween } from '../scriptActions/createTween';
-import { moveTarget } from '../scriptActions/moveTarget';
 import { EasingFunction } from '../tween';
+import { createTween } from './createTween';
+import { moveTarget } from './moveTarget';
 
 interface DragColumnToRowGroupPanelParams {
     containerEl?: HTMLElement;
