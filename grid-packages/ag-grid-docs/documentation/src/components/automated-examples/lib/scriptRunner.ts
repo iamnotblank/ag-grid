@@ -284,6 +284,10 @@ export function createScriptRunner({
                     // Do nothing
                 } else {
                     updateState('stopped');
+                    if (loopScript) {
+                        // Error occured, but repeat
+                        startActionSequence();
+                    }
                 }
             })
             .catch((error) => {
