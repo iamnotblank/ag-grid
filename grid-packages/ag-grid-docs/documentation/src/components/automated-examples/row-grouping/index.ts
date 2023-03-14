@@ -15,6 +15,7 @@ import { createRowGroupingScriptRunner } from './createRowGroupingScriptRunner';
 import { fixtureData } from './rowDataFixture';
 
 const WAIT_TILL_MOUSE_ANIMATION_STARTS = 2000;
+const VISIBLE_GRID_THRESHOLD_BEFORE_PLAYING_SCRIPT = 0.2;
 
 let dataWorker;
 let scriptRunner;
@@ -221,8 +222,6 @@ export function initAutomatedRowGrouping({
                 defaultEasing: createjs.Ease.quadInOut,
             });
 
-            scriptRunner.play();
-
             let restartScriptTimeout;
             const pauseScriptRunner = () => {
                 if (scriptRunner.currentState() === 'playing') {
@@ -246,6 +245,25 @@ export function initAutomatedRowGrouping({
 
                 pauseScriptRunner();
             });
+
+            // Only play script if the grid is visible
+            const gridObserver = new window.IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        if (scriptRunner.currentState() !== 'playing') {
+                            scriptRunner.play();
+                        }
+                        return;
+                    }
+                    clearTimeout(restartScriptTimeout);
+                    scriptRunner.inactive();
+                },
+                {
+                    root: null,
+                    threshold: VISIBLE_GRID_THRESHOLD_BEFORE_PLAYING_SCRIPT,
+                }
+            );
+            gridObserver.observe(gridDiv);
         };
         new globalThis.agGrid.Grid(gridDiv, gridOptions);
     };

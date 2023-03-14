@@ -59,6 +59,7 @@ export interface ScriptRunner {
     play: (params?: { loop?: boolean }) => void;
     pause: () => void;
     stop: () => void;
+    inactive: () => void;
 }
 
 export type ScriptAction =
@@ -103,7 +104,7 @@ export interface PlayScriptParams {
     defaultEasing?: EasingFunction;
 }
 
-export type RunScriptState = 'stopped' | 'stopping' | 'pausing' | 'paused' | 'playing';
+export type RunScriptState = 'inactive' | 'stopped' | 'stopping' | 'pausing' | 'paused' | 'playing';
 
 function createScriptAction({
     containerEl,
@@ -247,13 +248,15 @@ export function createScriptRunner({
                             if (runScriptState === 'stopping') {
                                 updateState('stopped');
                                 return;
-                            } else if (runScriptState === 'stopped') {
-                                return;
                             } else if (runScriptState === 'pausing') {
                                 setPausedState(index);
                                 updateState('paused');
                                 return;
-                            } else if (runScriptState === 'paused') {
+                            } else if (
+                                runScriptState === 'stopped' ||
+                                runScriptState === 'paused' ||
+                                runScriptState === 'inactive'
+                            ) {
                                 return;
                             }
 
@@ -280,7 +283,7 @@ export function createScriptRunner({
                     startActionSequence();
                 } else if (runScriptState === 'pausing') {
                     updateState('paused');
-                } else if (runScriptState === 'paused') {
+                } else if (runScriptState === 'paused' || runScriptState === 'inactive') {
                     // Do nothing
                 } else {
                     updateState('stopped');
@@ -296,12 +299,22 @@ export function createScriptRunner({
             });
     };
 
-    const stop: ScriptRunner['stop'] = () => {
-        // Initiate stop
-        updateState('stopping');
+    const cleanUp = () => {
         resetPausedState();
         createjs.Tween.removeAllTweens();
     };
+
+    const stop: ScriptRunner['stop'] = () => {
+        // Initiate stop
+        updateState('stopping');
+        cleanUp();
+    };
+
+    const inactive: ScriptRunner['inactive'] = () => {
+        updateState('inactive');
+        cleanUp();
+    };
+
     const play: ScriptRunner['play'] = ({ loop } = {}) => {
         loopScript = loop === undefined ? loopScript : Boolean(loop);
 
@@ -326,12 +339,13 @@ export function createScriptRunner({
     };
 
     // Initial playState
-    updateState('stopped');
+    updateState('inactive');
 
     return {
         currentState,
         play,
         pause,
         stop,
+        inactive,
     };
 }
