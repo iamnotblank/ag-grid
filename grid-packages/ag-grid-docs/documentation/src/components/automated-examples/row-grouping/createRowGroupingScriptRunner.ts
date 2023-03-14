@@ -1,4 +1,5 @@
 import { GridOptions } from 'ag-grid-community';
+import { MouseCapture } from '../lib/createMouseCapture';
 import { Point } from '../lib/geometry';
 import { clearAllSingleCellSelections } from '../lib/scriptActions/clearAllSingleCellSelections';
 import { removeFocus } from '../lib/scriptActions/removeFocus';
@@ -13,6 +14,7 @@ interface CreateRowGroupingScriptRunnerParams {
     offScreenPos: Point;
     showMouse: () => void;
     hideMouse: () => void;
+    mouseCapture: MouseCapture;
     gridOptions: GridOptions;
     loop?: boolean;
     scriptDebugger?: ScriptDebugger;
@@ -25,6 +27,7 @@ export function createRowGroupingScriptRunner({
     offScreenPos,
     showMouse,
     hideMouse,
+    mouseCapture,
     gridOptions,
     loop,
     scriptDebugger,
@@ -36,6 +39,7 @@ export function createRowGroupingScriptRunner({
         offScreenPos,
         showMouse,
         hideMouse,
+        mouseCapture,
         scriptDebugger,
     });
 

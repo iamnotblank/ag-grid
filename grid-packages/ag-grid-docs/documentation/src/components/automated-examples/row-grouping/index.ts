@@ -6,6 +6,7 @@
 // to prevent AG Grid from loading the code twice
 
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { createMouseCapture } from '../lib/createMouseCapture';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
 import { initScriptDebugger } from '../lib/scriptDebugger';
@@ -30,6 +31,7 @@ const MOUSE_SVG_TEMPLATE = `
 interface InitAutomatedRowGroupingParams {
     selector: string;
     mouseMaskSelector: string;
+    mouseCaptureMaskSelector: string;
     suppressUpdates?: boolean;
     useStaticData?: boolean;
     runOnce: boolean;
@@ -157,6 +159,7 @@ function initMouse({ containerEl, mouseMaskSelector }: InitMouseParams): InitMou
 export function initAutomatedRowGrouping({
     selector,
     mouseMaskSelector,
+    mouseCaptureMaskSelector,
     suppressUpdates,
     useStaticData,
     debug,
@@ -193,6 +196,9 @@ export function initAutomatedRowGrouping({
                 : undefined;
 
             const { mouseMask, mouse } = initMouse({ containerEl: gridDiv, mouseMaskSelector });
+            const mouseCapture = createMouseCapture({
+                mouseCaptureMaskSelector,
+            });
 
             if (scriptRunner) {
                 scriptRunner.stop();
@@ -208,6 +214,7 @@ export function initAutomatedRowGrouping({
                 hideMouse: () => {
                     mouseMask.style.setProperty('opacity', '0');
                 },
+                mouseCapture,
                 gridOptions,
                 loop: !runOnce,
                 scriptDebugger,
@@ -217,13 +224,7 @@ export function initAutomatedRowGrouping({
             scriptRunner.play();
 
             let restartScriptTimeout;
-            gridDiv.addEventListener('mousemove', (event: MouseEvent) => {
-                const isUserEvent = event.isTrusted;
-
-                if (!isUserEvent) {
-                    return;
-                }
-
+            const pauseScriptRunner = () => {
                 if (scriptRunner.currentState() === 'playing') {
                     scriptRunner.pause();
                 }
@@ -234,6 +235,16 @@ export function initAutomatedRowGrouping({
                         scriptRunner.play();
                     }
                 }, WAIT_TILL_MOUSE_ANIMATION_STARTS);
+            };
+
+            gridDiv.addEventListener('mousemove', (event: MouseEvent) => {
+                const isUserEvent = event.isTrusted;
+
+                if (!isUserEvent) {
+                    return;
+                }
+
+                pauseScriptRunner();
             });
         };
         new globalThis.agGrid.Grid(gridDiv, gridOptions);

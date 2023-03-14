@@ -53,6 +53,7 @@ function AutomatedRowGrouping() {
         let params = {
             selector: '.automated-row-grouping-grid',
             mouseMaskSelector: styles.mouseMask,
+            mouseCaptureMaskSelector: styles.mouseCaptureMask,
             debug: isDebug,
             debugCanvasClassname: styles.debugCanvas,
             debugPanelClassname: styles.debugPanel,

@@ -1,5 +1,6 @@
 import { getHeaderCell, getHeaderCellPos } from '../agQuery';
 import { AG_DND_GHOST_SELECTOR } from '../constants';
+import { MouseCapture } from '../createMouseCapture';
 import { getOffset } from '../dom';
 import { addPoints } from '../geometry';
 import { EasingFunction } from '../tween';
@@ -12,6 +13,7 @@ interface DragColumnToRowGroupPanelParams {
     headerCellName: string;
     duration: number;
     easing?: EasingFunction;
+    mouseCapture: MouseCapture;
 }
 
 export async function dragColumnToRowGroupPanel({
@@ -20,6 +22,7 @@ export async function dragColumnToRowGroupPanel({
     headerCellName,
     duration,
     easing,
+    mouseCapture,
 }: DragColumnToRowGroupPanelParams) {
     const fromPos = getHeaderCellPos({ containerEl, headerCellText: headerCellName });
     const rowGroupPanelOffset = {
@@ -28,11 +31,14 @@ export async function dragColumnToRowGroupPanel({
     };
     const toPos = addPoints(fromPos, rowGroupPanelOffset);
 
+    mouseCapture.show();
+
     const headerElem = getHeaderCell({ containerEl, headerCellText: headerCellName });
     const mouseDownEvent: MouseEvent = new MouseEvent('mousedown', {
         clientX: fromPos.x,
         clientY: fromPos.y,
     });
+
     headerElem.dispatchEvent(mouseDownEvent);
 
     const offset = getOffset(mouse);
@@ -64,6 +70,9 @@ export async function dragColumnToRowGroupPanel({
         clientY: toPos.y,
         bubbles: true,
     });
+
     // NOTE: Need to send the mouse up event on the dragged header item
     draggedHeaderItem.dispatchEvent(mouseUpEvent);
+
+    mouseCapture.hide();
 }

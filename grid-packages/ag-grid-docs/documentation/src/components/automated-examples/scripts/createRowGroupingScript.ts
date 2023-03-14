@@ -1,4 +1,5 @@
 import { getCellPos, getGroupCellTogglePos } from '../lib/agQuery';
+import { MouseCapture } from '../lib/createMouseCapture';
 import { getOffset } from '../lib/dom';
 import { addPoints, Point } from '../lib/geometry';
 import { clearAllRowHighlights } from '../lib/scriptActions/clearAllRowHighlights';
@@ -13,6 +14,7 @@ interface CreateRowGroupingScriptParams {
     offScreenPos: Point;
     showMouse: () => void;
     hideMouse: () => void;
+    mouseCapture: MouseCapture;
     scriptDebugger?: ScriptDebugger;
 }
 
@@ -22,6 +24,7 @@ export const createRowGroupingScript = ({
     offScreenPos,
     showMouse,
     hideMouse,
+    mouseCapture,
     scriptDebugger,
 }: CreateRowGroupingScriptParams): ScriptAction[] => {
     const WOOL_ROW_INDEX = 2;
@@ -52,6 +55,7 @@ export const createRowGroupingScript = ({
             containerEl,
             mouse,
             headerCellName: 'Product',
+            mouseCapture,
             fallbackApplyColumnState: {
                 state: [{ colId: 'product', rowGroupIndex: 0 }],
             },
@@ -86,6 +90,7 @@ export const createRowGroupingScript = ({
             mouse,
             headerCellName: 'Book',
             moveToDuration: 300,
+            mouseCapture,
             fallbackApplyColumnState: {
                 state: [
                     { colId: 'product', rowGroupIndex: 0 },
