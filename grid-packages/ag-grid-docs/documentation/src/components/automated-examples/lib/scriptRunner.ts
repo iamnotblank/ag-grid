@@ -1,4 +1,5 @@
 import { ColumnState, GridOptions } from 'ag-grid-community';
+import { createRowExpandedState, RowExpandedState } from './createRowExpandedState';
 import { Point } from './geometry';
 import { PathItem } from './pathRecorder';
 import { animateClick, animateMouseDown, animateMouseUp } from './scriptActions/animateMouse';
@@ -76,6 +77,7 @@ export type ScriptAction =
 interface PausedState {
     scriptIndex: number;
     columnState: ColumnState[];
+    rowExpandedState: RowExpandedState;
 }
 export interface CreateScriptActionParams {
     target: HTMLElement;
@@ -181,12 +183,14 @@ export function createScriptRunner({
     let runScriptState: RunScriptState;
     let loopScript = loop;
     let pausedState: PausedState | undefined;
+    const rowExpandedState = createRowExpandedState(gridOptions);
 
     const setPausedState = (scriptIndex: number) => {
         onPaused && onPaused();
         pausedState = {
             scriptIndex,
             columnState: gridOptions.columnApi?.getColumnState()!,
+            rowExpandedState: rowExpandedState.get(),
         };
     };
 
@@ -198,6 +202,7 @@ export function createScriptRunner({
                 state: pausedState.columnState,
                 applyOrder: true,
             });
+            rowExpandedState.restore(pausedState.rowExpandedState);
             pausedScriptIndex = pausedState.scriptIndex;
             resetPausedState();
         }
