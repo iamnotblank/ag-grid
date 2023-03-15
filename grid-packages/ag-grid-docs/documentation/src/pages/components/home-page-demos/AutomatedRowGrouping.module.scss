@@ -104,21 +104,21 @@
         top: 0;
         left: 0;
         z-index: 1000;
+    }
 
-        :global(.highlight) {
-            opacity: 0.15;
-        }
+    :global(.highlight) {
+        opacity: 0.15;
+    }
 
-        :global(.animate-click) {
-            transform-origin: 50% calc(50% - 1px);
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-        }
+    :global(.animate-click) {
+        transform-origin: 50% calc(50% - 1px);
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    }
 
-        &:global(.animate .animate-click) {
-            opacity: 0.3;
-            transform: scale(12);
-        }
+    &:global(.animate .animate-click) {
+        opacity: 0.3;
+        transform: scale(12);
     }
 }
 
