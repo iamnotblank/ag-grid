@@ -5,8 +5,8 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { initAutomatedRowGrouping } from '../../../components/automated-examples/row-grouping';
 import LogoMark from '../../../components/LogoMark';
-import { isProductionBuild, localPrefix } from '../../../utils/consts';
-import './AutomatedRowGrouping.module.scss';
+import { hostPrefix, isProductionBuild, localPrefix } from '../../../utils/consts';
+import styles from './AutomatedRowGrouping.module.scss';
 
 const helmet = [];
 if (!isProductionBuild()) {
@@ -36,10 +36,27 @@ if (!isProductionBuild()) {
     );
 }
 
+const mouseStyles = `
+    .automated-row-grouping-grid .ag-root-wrapper,
+    .automated-row-grouping-grid .ag-root-wrapper * {
+        cursor: url(${hostPrefix}/images/cursor/automated-example-cursor.svg) 14 14, pointer !important;
+    }
+`;
+
 function AutomatedRowGrouping() {
     useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const isDebug = searchParams.get('debug') === 'true';
+        const isCI = searchParams.get('isCI') === 'true';
+        const runOnce = searchParams.get('runOnce') === 'true';
+
         let params = {
             selector: '.automated-row-grouping-grid',
+            mouseMaskSelector: styles.mouseMask,
+            debugCanvasSelector: isDebug ? styles.debugCanvas : undefined,
+            suppressUpdates: isCI,
+            useStaticData: isCI,
+            runOnce,
         };
 
         initAutomatedRowGrouping(params);
@@ -47,7 +64,12 @@ function AutomatedRowGrouping() {
 
     return (
         <>
-            <Helmet>{helmet.map((entry) => entry)}</Helmet>
+            <Helmet>
+                <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
+                {helmet.map((entry) => entry)}
+
+                <style>{mouseStyles}</style>
+            </Helmet>
             <div style={{ height: '100%', width: '100%' }} className="automated-row-grouping-grid ag-theme-alpine-dark">
                 <LogoMark isSpinning />
             </div>
