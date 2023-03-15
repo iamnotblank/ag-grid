@@ -19,6 +19,7 @@ const VISIBLE_GRID_THRESHOLD_BEFORE_PLAYING_SCRIPT = 0.2;
 
 let dataWorker;
 let scriptRunner;
+let restartScriptTimeout;
 
 const MOUSE_SVG_TEMPLATE = `
     <svg class="mouse" width="74" height="84" viewBox="0 0 74 84">
@@ -222,7 +223,6 @@ export function initAutomatedRowGrouping({
                 defaultEasing: createjs.Ease.quadInOut,
             });
 
-            let restartScriptTimeout;
             const pauseScriptRunner = () => {
                 if (scriptRunner.currentState() === 'playing') {
                     scriptRunner.pause();
@@ -286,6 +286,7 @@ export function initAutomatedRowGrouping({
 if (import.meta.webpackHot) {
     // @ts-ignore
     import.meta.webpackHot.dispose(() => {
+        clearTimeout(restartScriptTimeout);
         if (scriptRunner) {
             scriptRunner.stop();
         }
