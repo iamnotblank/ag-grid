@@ -1,4 +1,5 @@
 import { ColumnState, GridOptions } from 'ag-grid-community';
+import { MouseCapture } from './createMouseCapture';
 import { createRowExpandedState, RowExpandedState } from './createRowExpandedState';
 import { Point } from './geometry';
 import { PathItem } from './pathRecorder';
@@ -7,6 +8,7 @@ import { AGCreatorAction, createAGActionCreator } from './scriptActions/createAG
 import { createMoveToTargetTween } from './scriptActions/createMoveToTargetTween';
 import { playPath } from './scriptActions/playPath';
 import { removeFocus } from './scriptActions/removeFocus';
+import { clearAllSingleCellSelections } from './scriptActions/singleCell';
 import { waitFor } from './scriptActions/waitFor';
 import { ScriptDebugger } from './scriptDebugger';
 import { EasingFunction } from './tween';
@@ -88,12 +90,14 @@ export interface CreateScriptActionParams {
     defaultEasing?: EasingFunction;
 }
 
-export interface PlayScriptParams {
+export interface CreateScriptRunnerParams {
     target: HTMLElement;
     containerEl?: HTMLElement;
     script: ScriptAction[];
     gridOptions: GridOptions;
     loop?: boolean;
+    loopOnError?: boolean;
+    mouseCapture: MouseCapture;
     onStateChange?: (state: RunScriptState) => void;
     onPaused?: () => void;
     onUnpaused?: () => void;
@@ -174,12 +178,14 @@ export function createScriptRunner({
     script,
     gridOptions,
     loop,
+    loopOnError,
+    mouseCapture,
     onStateChange,
     onPaused,
     onUnpaused,
     scriptDebugger,
     defaultEasing,
-}: PlayScriptParams): ScriptRunner {
+}: CreateScriptRunnerParams): ScriptRunner {
     let runScriptState: RunScriptState;
     let loopScript = loop;
     let pausedState: PausedState | undefined;
@@ -292,8 +298,7 @@ export function createScriptRunner({
                     // Do nothing
                 } else {
                     updateState('stopped');
-                    if (loopScript) {
-                        // Error occured, but repeat
+                    if (loopScript && loopOnError) {
                         startActionSequence();
                     }
                 }
@@ -307,6 +312,8 @@ export function createScriptRunner({
     const cleanUp = () => {
         resetPausedState();
         createjs.Tween.removeAllTweens();
+        mouseCapture.hide();
+        clearAllSingleCellSelections();
     };
 
     const stop: ScriptRunner['stop'] = () => {

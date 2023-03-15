@@ -10,6 +10,7 @@ import { createMouseCapture } from '../lib/createMouseCapture';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
 import { initScriptDebugger } from '../lib/scriptDebugger';
+import { ScriptRunner } from '../lib/scriptRunner';
 import { createDataUpdateWorker } from './createDataUpdateWorker';
 import { createRowGroupingScriptRunner } from './createRowGroupingScriptRunner';
 import { fixtureData } from './rowDataFixture';
@@ -18,7 +19,7 @@ const WAIT_TILL_MOUSE_ANIMATION_STARTS = 2000;
 const VISIBLE_GRID_THRESHOLD_BEFORE_PLAYING_SCRIPT = 0.2;
 
 let dataWorker;
-let scriptRunner;
+let scriptRunner: ScriptRunner;
 let restartScriptTimeout;
 
 const MOUSE_SVG_TEMPLATE = `
@@ -40,6 +41,7 @@ interface InitAutomatedRowGroupingParams {
     debug?: boolean;
     debugCanvasClassname?: string;
     debugPanelClassname?: string;
+    pauseOnMouseMove?: boolean;
 }
 
 interface InitMouseParams {
@@ -168,6 +170,7 @@ export function initAutomatedRowGrouping({
     debugCanvasClassname,
     debugPanelClassname,
     runOnce,
+    pauseOnMouseMove,
 }: InitAutomatedRowGroupingParams) {
     const init = () => {
         const gridDiv = document.querySelector(selector) as HTMLElement;
@@ -236,15 +239,17 @@ export function initAutomatedRowGrouping({
                 }, WAIT_TILL_MOUSE_ANIMATION_STARTS);
             };
 
-            gridDiv.addEventListener('mousemove', (event: MouseEvent) => {
-                const isUserEvent = event.isTrusted;
+            if (pauseOnMouseMove) {
+                gridDiv.addEventListener('mousemove', (event: MouseEvent) => {
+                    const isUserEvent = event.isTrusted;
 
-                if (!isUserEvent) {
-                    return;
-                }
+                    if (!isUserEvent) {
+                        return;
+                    }
 
-                pauseScriptRunner();
-            });
+                    pauseScriptRunner();
+                });
+            }
 
             // Only play script if the grid is visible
             const gridObserver = new window.IntersectionObserver(
@@ -268,6 +273,14 @@ export function initAutomatedRowGrouping({
         new globalThis.agGrid.Grid(gridDiv, gridOptions);
     };
 
+    const start = () => {
+        scriptRunner?.play();
+    };
+
+    const stop = () => {
+        scriptRunner?.stop();
+    };
+
     const loadGrid = function () {
         if (document.querySelector(selector) && globalThis.agGrid) {
             init();
@@ -277,6 +290,11 @@ export function initAutomatedRowGrouping({
     };
 
     loadGrid();
+
+    return {
+        start,
+        stop,
+    };
 }
 
 /**

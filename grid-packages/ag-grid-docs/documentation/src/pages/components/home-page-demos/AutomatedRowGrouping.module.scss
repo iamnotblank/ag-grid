@@ -1,4 +1,14 @@
-@use '../../../design-system' as *;
+@use "sass:map";
+@use '../../../design-system' as ds;
+
+$z-index-mouse-mask: 10000; // NOTE: Above .ag-dnd-ghost z-index of 9999
+$z-index-debug-canvas: $z-index-mouse-mask + 10;
+$z-index-splash: $z-index-debug-canvas + 10;
+$z-index-debug-panel: $z-index-splash + 10;
+$z-index-mouse-capture-mask: $z-index-splash + 10;
+$z-index-splash-contents: 10;
+
+$splash-hidden-amount: 82%;
 
 :global(.automated-row-grouping-grid.ag-theme-alpine-dark) {
     position: relative;
@@ -44,6 +54,94 @@
     }
 }
 
+.splash {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: $z-index-splash;
+
+    &:hover {
+        transform: translateX(ds.$size-3);
+        transition: ds.$default-transition-timing;
+    }
+
+    &.hide {
+        transform: translateX($splash-hidden-amount);
+        transition: ds.$default-transition-timing;
+
+        &:hover {
+            cursor: pointer;
+            transform: translateX(calc(#{$splash-hidden-amount} - #{ds.$size-3}));
+            transition: ds.$default-transition-timing;
+        }
+    }
+
+    .contents {
+        position: absolute;
+        width: 565px;
+        margin-right: ds.$size-6;
+        margin-top: ds.$size-9;
+        top: 0;
+        right: 0;
+        color: map.get(ds.$abstract-colors, 'white');
+        z-index: $z-index-splash-contents;
+
+        h2 {
+            text-align: left;
+            font-size: ds.$font-size-gigantic;
+            font-weight: ds.$font-weight-bold;
+        }
+
+        p {
+            font-size: ds.$font-size-extra-large;
+            line-height: ds.$line-height-tight;
+        }
+
+        button {
+            --button-color: #{map.get(ds.$abstract-colors, 'white')};
+            --button-hover-color: #{map.get(ds.$abstract-colors, 'sky-blue')};
+            --button-text-color: #{map.get(ds.$abstract-colors, 'dark-cerulean-blue')};
+
+            margin-top: ds.$size-4;
+            font-size: ds.$font-size-extra-large;
+
+            &:hover {
+                --button-text-color: #{map.get(ds.$abstract-colors, 'dark-cerulean-blue')};
+            }
+        }
+
+        a {
+            --link-color: #{map.get(ds.$abstract-colors, 'white')};
+            --link-hover-color: #{map.get(ds.$abstract-colors, 'sky-blue')};
+            --text-color: #{map.get(ds.$abstract-colors, 'white')};
+            display: block;
+            text-decoration: underline;
+            font-size: ds.$font-size-extra-large;
+            margin-top: ds.$size-8 !important; // Override homepage styles
+            float: none;
+
+            &:hover {
+                svg {
+                    fill: map.get(ds.$abstract-colors, 'sky-blue');
+                }
+            }
+        }
+    }
+}
+
+.splashTrapeziumBackground {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    transform: skew(-45deg) translateX(35%);
+    background-color: rgba(map.get(ds.$abstract-colors, 'dark-cerulean-blue'), 0.75);
+    backdrop-filter: blur(5px);
+}
+
 .debugPanel {
     position: fixed;
     top: 0;
@@ -53,7 +151,8 @@
     border-left: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     background-color: rgba(255, 255, 255, 0.85);
-    padding: $size-2;
+    padding: ds.$size-2;
+    z-index: $z-index-debug-panel;
 
     :global(.state) {
         &::before {
@@ -70,7 +169,7 @@
     }
 
     :global(.draw-checkbox) {
-        margin-top: $size-1;
+        margin-top: ds.$size-1;
         cursor: pointer;
     }
 }
@@ -82,7 +181,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 100;
+    z-index: $z-index-debug-canvas;
 }
 
 .mouseMask {
@@ -93,7 +192,7 @@
     left: 0;
     margin: 41px 1rem 1rem;
     overflow: hidden;
-    z-index: 10000;
+    z-index: $z-index-mouse-mask;
     pointer-events: none;
 
     // Start off hidden
@@ -103,7 +202,6 @@
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 1000;
     }
 
     :global(.highlight) {
@@ -128,7 +226,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: $z-index-mouse-capture-mask;
 
     &:global(.hidden) {
         display: none;

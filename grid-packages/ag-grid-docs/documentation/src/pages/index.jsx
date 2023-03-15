@@ -83,8 +83,6 @@ const Default = () => {
 
                 <div className={styles.homepageExample}>
                     <section className="page-margin">
-                        <h2>Live Streaming Updates</h2>
-
                         <div className={styles.automatedRowGrouping}>
                             {!IS_SSR && (
                                 <React.Suspense fallback={<></>}>

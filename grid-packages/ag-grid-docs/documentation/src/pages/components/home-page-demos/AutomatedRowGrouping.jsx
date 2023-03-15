@@ -1,9 +1,12 @@
 // Remount component when Fast Refresh is triggered
 // @refresh reset
 
-import React, { useEffect } from 'react';
+import classnames from 'classnames';
+import { withPrefix } from 'gatsby';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { initAutomatedRowGrouping } from '../../../components/automated-examples/row-grouping';
+import { Icon } from '../../../components/Icon';
 import LogoMark from '../../../components/LogoMark';
 import { hostPrefix, isProductionBuild, localPrefix } from '../../../utils/consts';
 import styles from './AutomatedRowGrouping.module.scss';
@@ -44,6 +47,23 @@ const mouseStyles = `
 `;
 
 function AutomatedRowGrouping() {
+    const automatedScript = useRef(null);
+    const [hideSplash, setHideSplash] = useState(false);
+    const onTryItOutClick = useCallback(() => {
+        if (!automatedScript.current) {
+            return;
+        }
+
+        setHideSplash(true);
+        automatedScript.current.stop();
+    }, []);
+    const onSplashClick = useCallback(() => {
+        if (hideSplash) {
+            setHideSplash(false);
+            automatedScript.current.start();
+        }
+    }, [hideSplash]);
+
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
         const isDebug = searchParams.get('debug') === 'true';
@@ -62,7 +82,7 @@ function AutomatedRowGrouping() {
             runOnce,
         };
 
-        initAutomatedRowGrouping(params);
+        automatedScript.current = initAutomatedRowGrouping(params);
     }, []);
 
     return (
@@ -75,6 +95,32 @@ function AutomatedRowGrouping() {
             </Helmet>
             <div style={{ height: '100%', width: '100%' }} className="automated-row-grouping-grid ag-theme-alpine-dark">
                 <LogoMark isSpinning />
+            </div>
+            <div
+                className={classnames({
+                    [styles.splash]: true,
+                    [styles.hide]: hideSplash,
+                })}
+                onClick={onSplashClick}
+            >
+                <div className={styles.contents}>
+                    <h2>
+                        Feature Packed,
+                        <br />
+                        Incredible Performance
+                    </h2>
+                    <p>
+                        All the features your users expect and more. Out of the box performance that can handle any data
+                        you can throw at it.
+                    </p>
+                    <button onClick={onTryItOutClick}>
+                        Try For Yourself <Icon name="cursor" />
+                    </button>
+                    <a href={withPrefix('/documentation/')}>
+                        Get Started with AG Grid <Icon name="chevronRight" />
+                    </a>
+                </div>
+                <div className={styles.splashTrapeziumBackground}></div>
             </div>
         </>
     );

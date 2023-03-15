@@ -49,6 +49,7 @@ export function createRowGroupingScriptRunner({
         script: rowGroupingScript,
         gridOptions,
         loop,
+        mouseCapture,
         onStateChange: (state) => {
             if (state === 'stopping') {
                 hideMouse();

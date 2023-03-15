@@ -110,8 +110,12 @@ body {
 }
 
 .automatedRowGrouping {
+    position: relative;
+    overflow: hidden;
     display: flex;
     height: 700px;
+    margin-top: ds.$size-8 !important; // !important for .ag-styles specificity
+    border-radius: $border-radius;
 }
 
 .frameworksInner {
