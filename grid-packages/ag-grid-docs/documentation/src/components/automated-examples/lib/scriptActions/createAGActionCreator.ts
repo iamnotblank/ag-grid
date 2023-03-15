@@ -1,10 +1,9 @@
 import { ApplyColumnStateParams, GridOptions } from 'ag-grid-community';
-import { getCell } from '../agQuery';
-import { AG_CELL_RANGE_SINGLE_CELL_CLASSNAME, AG_DND_GHOST_SELECTOR } from '../constants';
+import { AG_DND_GHOST_SELECTOR } from '../constants';
 import { MouseCapture } from '../createMouseCapture';
 import { EasingFunction } from '../tween';
-import { clearAllSingleCellSelections } from './clearAllSingleCellSelections';
 import { dragColumnToRowGroupPanel } from './dragColumnToRowGroupPanel';
+import { clearAllSingleCellSelections, clearSingleCell, selectSingleCell } from './singleCell';
 
 interface ResetAction {
     actionType: 'reset';
@@ -144,20 +143,10 @@ export function createAGActionCreator({
             gridOptions?.api?.setFocusedCell(action.actionParams.rowIndex, firstCol);
         } else if (actionType === 'selectSingleCell') {
             const action = agAction as SelectSingleCellAction;
-            const cell = getCell({
-                containerEl,
-                colIndex: action.actionParams.colIndex,
-                rowIndex: action.actionParams.rowIndex,
-            });
-            cell?.classList.add(AG_CELL_RANGE_SINGLE_CELL_CLASSNAME);
+            selectSingleCell({ containerEl, ...action.actionParams });
         } else if (actionType === 'clearSelectSingleCell') {
             const action = agAction as ClearSelectSingleCellAction;
-            const cell = getCell({
-                containerEl,
-                colIndex: action.actionParams.colIndex,
-                rowIndex: action.actionParams.rowIndex,
-            });
-            cell?.classList.remove(AG_CELL_RANGE_SINGLE_CELL_CLASSNAME);
+            clearSingleCell({ containerEl, ...action.actionParams });
         } else if (actionType === 'clearAllSingleCellSelections') {
             clearAllSingleCellSelections();
         } else if (actionType === 'openToolPanel') {

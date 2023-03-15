@@ -1,8 +1,8 @@
 import { GridOptions } from 'ag-grid-community';
 import { MouseCapture } from '../lib/createMouseCapture';
 import { Point } from '../lib/geometry';
-import { clearAllSingleCellSelections } from '../lib/scriptActions/clearAllSingleCellSelections';
 import { removeFocus } from '../lib/scriptActions/removeFocus';
+import { clearAllSingleCellSelections } from '../lib/scriptActions/singleCell';
 import { ScriptDebugger } from '../lib/scriptDebugger';
 import { createScriptRunner } from '../lib/scriptRunner';
 import { EasingFunction } from '../lib/tween';
