@@ -57,3 +57,33 @@ export function getBottomMidPos(element: HTMLElement): Point {
         y: screenHeight,
     };
 }
+
+export function isElementChildOfClass({
+    element,
+    classname,
+    maxNest,
+}: {
+    element: HTMLElement | null;
+    classname: string;
+    maxNest?: HTMLElement | number;
+}): boolean {
+    let counter = 0;
+
+    while (element) {
+        if (element.classList.contains(classname)) {
+            return true;
+        }
+
+        element = element.parentElement;
+
+        if (typeof maxNest == 'number') {
+            if (++counter > maxNest) {
+                break;
+            }
+        } else if (element === maxNest) {
+            break;
+        }
+    }
+
+    return false;
+}

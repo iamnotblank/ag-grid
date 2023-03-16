@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { withPrefix } from 'gatsby';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { isElementChildOfClass } from '../../../components/automated-examples/lib/dom';
 import { initAutomatedRowGrouping } from '../../../components/automated-examples/row-grouping';
 import { Icon } from '../../../components/Icon';
 import LogoMark from '../../../components/LogoMark';
@@ -47,6 +48,8 @@ const mouseStyles = `
 `;
 
 function AutomatedRowGrouping() {
+    const gridClassname = 'automated-row-grouping-grid';
+    const splashClassname = styles.splash;
     const automatedScript = useRef(null);
     const [hideSplash, setHideSplash] = useState(false);
     const onTryItOutClick = useCallback(() => {
@@ -70,10 +73,27 @@ function AutomatedRowGrouping() {
         const isCI = searchParams.get('isCI') === 'true';
         const runOnce = searchParams.get('runOnce') === 'true';
 
+        const gridIsHoveredOver = (element) => {
+            const isInGrid = isElementChildOfClass({
+                element,
+                classname: gridClassname,
+            });
+            const isOnSplash = isElementChildOfClass({
+                element,
+                classname: splashClassname,
+            });
+
+            return isInGrid || isOnSplash;
+        };
         let params = {
-            selector: '.automated-row-grouping-grid',
+            selector: `.${gridClassname}`,
             mouseMaskSelector: styles.mouseMask,
             mouseCaptureMaskSelector: styles.mouseCaptureMask,
+            gridIsHoveredOver,
+            onMovedOffGrid() {
+                setHideSplash(false);
+                automatedScript.current.start();
+            },
             debug: isDebug,
             debugCanvasClassname: styles.debugCanvas,
             debugPanelClassname: styles.debugPanel,
@@ -98,7 +118,7 @@ function AutomatedRowGrouping() {
             </div>
             <div
                 className={classnames({
-                    [styles.splash]: true,
+                    [splashClassname]: true,
                     [styles.hide]: hideSplash,
                 })}
                 onClick={onSplashClick}

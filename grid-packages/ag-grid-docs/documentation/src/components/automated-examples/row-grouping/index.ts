@@ -7,6 +7,7 @@
 
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { createMouseCapture } from '../lib/createMouseCapture';
+import { createMovedOffElementTimer, MovedOffElementTimer } from '../lib/createMovedOffElementTimer';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
 import { initScriptDebugger } from '../lib/scriptDebugger';
@@ -21,6 +22,7 @@ const VISIBLE_GRID_THRESHOLD_BEFORE_PLAYING_SCRIPT = 0.2;
 let dataWorker;
 let scriptRunner: ScriptRunner;
 let restartScriptTimeout;
+let movedOffElementTimer: MovedOffElementTimer;
 
 const MOUSE_SVG_TEMPLATE = `
     <svg class="mouse" width="74" height="84" viewBox="0 0 74 84">
@@ -35,6 +37,8 @@ interface InitAutomatedRowGroupingParams {
     selector: string;
     mouseMaskSelector: string;
     mouseCaptureMaskSelector: string;
+    gridIsHoveredOver: (element: HTMLElement) => boolean;
+    onMovedOffGrid: () => void;
     suppressUpdates?: boolean;
     useStaticData?: boolean;
     runOnce: boolean;
@@ -164,6 +168,8 @@ export function initAutomatedRowGrouping({
     selector,
     mouseMaskSelector,
     mouseCaptureMaskSelector,
+    gridIsHoveredOver,
+    onMovedOffGrid,
     suppressUpdates,
     useStaticData,
     debug,
@@ -224,6 +230,15 @@ export function initAutomatedRowGrouping({
                 loop: !runOnce,
                 scriptDebugger,
                 defaultEasing: createjs.Ease.quadInOut,
+            });
+
+            movedOffElementTimer = createMovedOffElementTimer({
+                timerIsEnabled() {
+                    return scriptRunner.currentState() === 'stopped' || scriptRunner.currentState() === 'stopping';
+                },
+                isMovedOn: gridIsHoveredOver,
+                onTimerFinished: onMovedOffGrid,
+                waitTime: WAIT_TILL_MOUSE_ANIMATION_STARTS,
             });
 
             const pauseScriptRunner = () => {
@@ -305,6 +320,7 @@ if (import.meta.webpackHot) {
     // @ts-ignore
     import.meta.webpackHot.dispose(() => {
         clearTimeout(restartScriptTimeout);
+        movedOffElementTimer?.cancelTimer();
         if (scriptRunner) {
             scriptRunner.stop();
         }
