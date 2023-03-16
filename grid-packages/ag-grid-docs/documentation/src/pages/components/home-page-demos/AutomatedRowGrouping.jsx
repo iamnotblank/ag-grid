@@ -102,6 +102,7 @@ function AutomatedRowGrouping() {
                     [styles.hide]: hideSplash,
                 })}
                 onClick={onSplashClick}
+                aria-hidden="true"
             >
                 <div className={classnames(styles.contents, 'font-size-extra-large')}>
                     <h2 className="font-size-gigantic">
