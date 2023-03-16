@@ -1,3 +1,4 @@
+import { Group } from '@tweenjs/tween.js';
 import { ApplyColumnStateParams, GridOptions } from 'ag-grid-community';
 import { AG_DND_GHOST_SELECTOR } from '../constants';
 import { MouseCapture } from '../createMouseCapture';
@@ -21,6 +22,7 @@ interface DragColumnToRowGroupPanelAction {
         duration: number;
         easing?: EasingFunction;
         mouseCapture: MouseCapture;
+        tweenGroup: Group;
     };
 }
 

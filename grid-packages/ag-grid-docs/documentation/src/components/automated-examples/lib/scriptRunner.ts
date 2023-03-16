@@ -1,4 +1,4 @@
-import TWEEN from '@tweenjs/tween.js';
+import { Group } from '@tweenjs/tween.js';
 import { ColumnState, GridOptions } from 'ag-grid-community';
 import { MouseCapture } from './createMouseCapture';
 import { createRowExpandedState, RowExpandedState } from './createRowExpandedState';
@@ -87,6 +87,7 @@ export interface CreateScriptActionParams {
     containerEl?: HTMLElement;
     action: ScriptAction;
     gridOptions: GridOptions;
+    tweenGroup: Group;
     scriptDebugger?: ScriptDebugger;
     defaultEasing?: EasingFunction;
 }
@@ -96,6 +97,7 @@ export interface CreateScriptRunnerParams {
     containerEl?: HTMLElement;
     script: ScriptAction[];
     gridOptions: GridOptions;
+    tweenGroup: Group;
     loop?: boolean;
     loopOnError?: boolean;
     mouseCapture: MouseCapture;
@@ -117,6 +119,7 @@ function createScriptAction({
     containerEl,
     target,
     action,
+    tweenGroup,
     gridOptions,
     scriptDebugger,
     defaultEasing,
@@ -157,6 +160,7 @@ function createScriptAction({
             speed: scriptAction.speed,
             duration: scriptAction.duration,
             scriptDebugger,
+            tweenGroup,
             easing: scriptAction.easing || defaultEasing,
         });
     } else if (type === 'agAction') {
@@ -181,6 +185,7 @@ export function createScriptRunner({
     loop,
     loopOnError,
     mouseCapture,
+    tweenGroup,
     onStateChange,
     onPaused,
     onUnpaused,
@@ -206,7 +211,7 @@ export function createScriptRunner({
             return;
         }
         requestAnimationFrame(tweenUpdate);
-        TWEEN.update();
+        tweenGroup.update();
     }
 
     const playAgain = () => {
@@ -237,6 +242,7 @@ export function createScriptRunner({
                     target,
                     action: scriptAction,
                     gridOptions,
+                    tweenGroup,
                     scriptDebugger,
                     defaultEasing,
                 });
@@ -321,7 +327,7 @@ export function createScriptRunner({
 
     const cleanUp = () => {
         resetPausedState();
-        TWEEN.removeAll();
+        tweenGroup.removeAll();
         mouseCapture.hide();
         clearAllSingleCellSelections();
     };

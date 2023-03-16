@@ -1,4 +1,4 @@
-import { Tween } from '@tweenjs/tween.js';
+import { Group, Tween } from '@tweenjs/tween.js';
 import { AG_ROW_HOVER_CLASSNAME, AG_ROW_SELECTOR } from '../constants';
 import { getOffset } from '../dom';
 import { Point } from '../geometry';
@@ -9,6 +9,7 @@ import { EasingFunction, getTweenDuration } from '../tween';
 
 interface CreateMoveToTargetTweenParams {
     target: HTMLElement;
+    tweenGroup: Group;
     fromPos?: Point;
     toPos: Point;
     tweenOnChange?: (params: { coords: Point; elapsed: number }) => void;
@@ -47,6 +48,7 @@ function getTargetPos(target: HTMLElement): Point | undefined {
 
 export const createMoveToTargetTween = ({
     target,
+    tweenGroup,
     fromPos: startingFromPos,
     toPos,
     tweenOnChange,
@@ -78,7 +80,7 @@ export const createMoveToTargetTween = ({
             duration,
         });
 
-        const tween = new Tween(coords)
+        const tween = new Tween(coords, tweenGroup)
             .to(toPos, tweenDuration)
             .onUpdate((object: Point, elapsed) => {
                 moveTarget({ target, coords: object, offset, scriptDebugger });

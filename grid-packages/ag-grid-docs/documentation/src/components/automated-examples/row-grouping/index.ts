@@ -5,7 +5,7 @@
 // NOTE: Only typescript types should be imported from the AG Grid packages
 // to prevent AG Grid from loading the code twice
 
-import { Easing } from '@tweenjs/tween.js';
+import { Easing, Group } from '@tweenjs/tween.js';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { createMouseCapture } from '../lib/createMouseCapture';
 import { createMovedOffElementTimer, MovedOffElementTimer } from '../lib/createMovedOffElementTimer';
@@ -211,6 +211,7 @@ export function initAutomatedRowGrouping({
             const mouseCapture = createMouseCapture({
                 mouseCaptureMaskSelector,
             });
+            const tweenGroup = new Group();
 
             if (scriptRunner) {
                 scriptRunner.stop();
@@ -227,6 +228,7 @@ export function initAutomatedRowGrouping({
                     mouseMask.style.setProperty('opacity', '0');
                 },
                 mouseCapture,
+                tweenGroup,
                 gridOptions,
                 loop: !runOnce,
                 scriptDebugger,
