@@ -76,9 +76,12 @@ $z-index-splash-contents: 10;
     &.hide {
         transform: translateX($splash-hidden-amount);
 
-        &:hover {
+        .exampleClickTarget {
+            pointer-events: none;
+        }
+
+        .splashTrapeziumBackground {
             cursor: pointer;
-            transform: translateX(80%);
         }
     }
 }
@@ -94,6 +97,16 @@ $z-index-splash-contents: 10;
     h2 {
         --font-weight: var(--font-weight-bold);
     }
+}
+
+.exampleClickTarget {
+    position: absolute;
+    top: 0;
+    right: 125%;
+    width: 200%;
+    height: 100%;
+    transform: skew(-20deg) translateX(5%);
+    cursor: pointer;
 }
 
 .splashTrapeziumBackground {

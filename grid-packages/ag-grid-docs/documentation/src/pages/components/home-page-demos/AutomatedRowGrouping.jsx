@@ -142,6 +142,7 @@ function AutomatedRowGrouping() {
                         Get Started with AG Grid <Icon name="chevronRight" />
                     </a>
                 </div>
+                <div className={styles.exampleClickTarget} onClick={onTryItOutClick}></div>
                 <div className={styles.splashTrapeziumBackground}></div>
             </div>
         </>
