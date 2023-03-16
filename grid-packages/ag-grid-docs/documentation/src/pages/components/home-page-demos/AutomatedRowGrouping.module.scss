@@ -118,11 +118,15 @@ $z-index-splash-contents: 10;
     &:hover,
     &:focus,
     &:focus-visible {
+        box-shadow: none !important; // !important for .ag-styles specificity;
+    }
+
+    &:hover,
+    &:focus-visible {
         --button-text-color: var(--ag-grid-dark-blue);
 
         outline-color: var(--sky-blue) !important; // !important for .ag-styles specificity;
         outline-offset: 4px;
-        box-shadow: none !important; // !important for .ag-styles specificity;
     }
 
     :global(.icon) {
@@ -137,8 +141,6 @@ $z-index-splash-contents: 10;
     display: inline-block;
     margin-top: ds.$size-8 !important; // !important for .ag-styles specificity;
     padding-right: ds.$size-3;
-    // border-bottom: 2px solid var(--white);
-    // transition: transform 0.25s ease-in-out !important; // !important for .ag-styles
 
     &::before,
     &::after {
