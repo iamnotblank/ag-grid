@@ -25,11 +25,19 @@ export async function dragColumnToRowGroupPanel({
     mouseCapture,
 }: DragColumnToRowGroupPanelParams) {
     const fromPos = getHeaderCellPos({ containerEl, headerCellText: headerCellName });
+    const cleanUp = () => {
+        mouseCapture.hide();
+    };
+
+    if (!fromPos) {
+        console.error('Header not found:', headerCellName);
+        return;
+    }
     const rowGroupPanelOffset = {
         x: 20,
         y: -50,
     };
-    const toPos = addPoints(fromPos, rowGroupPanelOffset);
+    const toPos = addPoints(fromPos, rowGroupPanelOffset)!;
 
     mouseCapture.show();
 
@@ -38,7 +46,10 @@ export async function dragColumnToRowGroupPanel({
         clientX: fromPos.x,
         clientY: fromPos.y,
     });
-
+    if (!headerElem) {
+        cleanUp();
+        return;
+    }
     headerElem.dispatchEvent(mouseDownEvent);
 
     const offset = getOffset(mouse);
@@ -61,18 +72,18 @@ export async function dragColumnToRowGroupPanel({
     });
 
     const draggedHeaderItem = document.querySelector(AG_DND_GHOST_SELECTOR);
-    if (!draggedHeaderItem) {
-        console.error('No dragged header item');
-        return;
+    if (draggedHeaderItem) {
+        const mouseUpEvent: MouseEvent = new MouseEvent('mouseup', {
+            clientX: toPos.x,
+            clientY: toPos.y,
+            bubbles: true,
+        });
+
+        // NOTE: Need to send the mouse up event on the dragged header item
+        draggedHeaderItem.dispatchEvent(mouseUpEvent);
+    } else {
+        console.error('No dragged header item:', headerCellName);
     }
-    const mouseUpEvent: MouseEvent = new MouseEvent('mouseup', {
-        clientX: toPos.x,
-        clientY: toPos.y,
-        bubbles: true,
-    });
 
-    // NOTE: Need to send the mouse up event on the dragged header item
-    draggedHeaderItem.dispatchEvent(mouseUpEvent);
-
-    mouseCapture.hide();
+    cleanUp();
 }
