@@ -127,7 +127,7 @@ const Default = () => {
 
                 <div className={styles.homepageExample}>
                     <section className="page-margin">
-                        <h2>Integrated Charting</h2>
+                        <h2 className={styles.demoHeader}>Integrated Charting</h2>
 
                         <div className={styles.demo}>
                             {!IS_SSR && (

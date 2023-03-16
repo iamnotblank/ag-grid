@@ -8,8 +8,6 @@ $z-index-debug-panel: $z-index-splash + 10;
 $z-index-mouse-capture-mask: $z-index-splash + 10;
 $z-index-splash-contents: 10;
 
-$splash-hidden-amount: 82%;
-
 :global(.automated-row-grouping-grid.ag-theme-alpine-dark) {
     position: relative;
 
@@ -45,8 +43,6 @@ $splash-hidden-amount: 82%;
         border: none;
         border-top: var(--ag-borders-side-button) var(--ag-border-color);
         border-bottom: var(--ag-borders-side-button) var(--ag-border-color);
-        $border-top-color: transparent;
-        $border-bottom-color: transparent;
 
         &:focus {
             box-shadow: none;
@@ -55,79 +51,61 @@ $splash-hidden-amount: 82%;
 }
 
 .splash {
+    $splash-hidden-amount: 82%;
+
+    --text-color: var(--white);
+
+    --button-color: var(--white);
+    --button-hover-color: var(--white);
+    --button-text-color: var(--dark-cerulean-blue);
+
+    --link-color: var(--white);
+    --link-hover-color: var(--white);
+
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     top: 0;
     right: 0;
     width: 100%;
     height: 100%;
     z-index: $z-index-splash;
+    transition: transform ds.$default-transition-timing;
 
     &:hover {
         transform: translateX(ds.$size-3);
-        transition: ds.$default-transition-timing;
     }
 
     &.hide {
         transform: translateX($splash-hidden-amount);
-        transition: ds.$default-transition-timing;
 
         &:hover {
             cursor: pointer;
             transform: translateX(calc(#{$splash-hidden-amount} - #{ds.$size-3}));
-            transition: ds.$default-transition-timing;
         }
     }
+}
 
-    .contents {
-        position: absolute;
-        width: 565px;
-        margin-right: ds.$size-6;
-        margin-top: ds.$size-9;
-        top: 0;
-        right: 0;
-        color: map.get(ds.$abstract-colors, 'white');
-        z-index: $z-index-splash-contents;
+.contents {
+    width: 22em;
+    margin-right: ds.$size-8 !important; // !important for .ag-styles specificity;
+    line-height: var(--line-height-tight);
+    color: var(--text-color);
+    z-index: $z-index-splash-contents;
 
-        h2 {
-            text-align: left;
-            font-size: ds.$font-size-gigantic;
-            font-weight: ds.$font-weight-bold;
-        }
+    h2 {
+        --font-weight: var(--font-weight-bold);
+    }
 
-        p {
-            font-size: ds.$font-size-extra-large;
-            line-height: ds.$line-height-tight;
-        }
+    button {
+        margin-top: ds.$size-4;
+    }
 
-        button {
-            --button-color: #{map.get(ds.$abstract-colors, 'white')};
-            --button-hover-color: #{map.get(ds.$abstract-colors, 'sky-blue')};
-            --button-text-color: #{map.get(ds.$abstract-colors, 'dark-cerulean-blue')};
-
-            margin-top: ds.$size-4;
-            font-size: ds.$font-size-extra-large;
-
-            &:hover {
-                --button-text-color: #{map.get(ds.$abstract-colors, 'dark-cerulean-blue')};
-            }
-        }
-
-        a {
-            --link-color: #{map.get(ds.$abstract-colors, 'white')};
-            --link-hover-color: #{map.get(ds.$abstract-colors, 'sky-blue')};
-            --text-color: #{map.get(ds.$abstract-colors, 'white')};
-            display: block;
-            text-decoration: underline;
-            font-size: ds.$font-size-extra-large;
-            margin-top: ds.$size-8 !important; // Override homepage styles
-            float: none;
-
-            &:hover {
-                svg {
-                    fill: map.get(ds.$abstract-colors, 'sky-blue');
-                }
-            }
-        }
+    a {
+        display: block;
+        text-decoration: underline;
+        margin-top: ds.$size-8 !important; // !important for .ag-styles specificity;
     }
 }
 

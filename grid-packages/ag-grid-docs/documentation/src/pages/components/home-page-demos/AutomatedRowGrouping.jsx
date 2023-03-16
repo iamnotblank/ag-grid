@@ -103,8 +103,8 @@ function AutomatedRowGrouping() {
                 })}
                 onClick={onSplashClick}
             >
-                <div className={styles.contents}>
-                    <h2>
+                <div className={classnames(styles.contents, 'font-size-extra-large')}>
+                    <h2 className="font-size-gigantic">
                         Feature Packed,
                         <br />
                         Incredible Performance
