@@ -5,6 +5,7 @@
 // NOTE: Only typescript types should be imported from the AG Grid packages
 // to prevent AG Grid from loading the code twice
 
+import { Easing } from '@tweenjs/tween.js';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { createMouseCapture } from '../lib/createMouseCapture';
 import { createMovedOffElementTimer, MovedOffElementTimer } from '../lib/createMovedOffElementTimer';
@@ -229,7 +230,7 @@ export function initAutomatedRowGrouping({
                 gridOptions,
                 loop: !runOnce,
                 scriptDebugger,
-                defaultEasing: createjs.Ease.quadInOut,
+                defaultEasing: Easing.Quadratic.InOut,
             });
 
             movedOffElementTimer = createMovedOffElementTimer({

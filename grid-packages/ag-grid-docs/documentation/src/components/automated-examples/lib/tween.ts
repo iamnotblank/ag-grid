@@ -1,7 +1,7 @@
 import { DEFAULT_MOUSE_SPEED } from './constants';
 import { Point } from './geometry';
 
-export type EasingFunction = () => number;
+export type EasingFunction = (amount: number) => number;
 
 export function getDurationFromSpeed({
     fromPos,

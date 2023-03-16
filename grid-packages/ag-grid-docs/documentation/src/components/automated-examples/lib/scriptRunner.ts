@@ -1,3 +1,4 @@
+import TWEEN from '@tweenjs/tween.js';
 import { ColumnState, GridOptions } from 'ag-grid-community';
 import { MouseCapture } from './createMouseCapture';
 import { createRowExpandedState, RowExpandedState } from './createRowExpandedState';
@@ -200,6 +201,14 @@ export function createScriptRunner({
         };
     };
 
+    function tweenUpdate() {
+        if (runScriptState !== 'playing') {
+            return;
+        }
+        requestAnimationFrame(tweenUpdate);
+        TWEEN.update();
+    }
+
     const playAgain = () => {
         let pausedScriptIndex;
         if (pausedState) {
@@ -250,6 +259,7 @@ export function createScriptRunner({
 
     const startActionSequence = (startIndex: number = 0) => {
         updateState('playing');
+        tweenUpdate();
         const sequence = new Promise((resolve, reject) => {
             actionSequence
                 .slice(startIndex)
@@ -311,7 +321,7 @@ export function createScriptRunner({
 
     const cleanUp = () => {
         resetPausedState();
-        createjs.Tween.removeAllTweens();
+        TWEEN.removeAll();
         mouseCapture.hide();
         clearAllSingleCellSelections();
     };

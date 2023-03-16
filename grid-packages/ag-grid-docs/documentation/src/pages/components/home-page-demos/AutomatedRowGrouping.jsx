@@ -108,9 +108,7 @@ function AutomatedRowGrouping() {
     return (
         <>
             <Helmet>
-                <script src="https://code.createjs.com/1.0.0/tweenjs.min.js"></script>
                 {helmet.map((entry) => entry)}
-
                 <style>{mouseStyles}</style>
             </Helmet>
             <div style={{ height: '100%', width: '100%' }} className="automated-row-grouping-grid ag-theme-alpine-dark">

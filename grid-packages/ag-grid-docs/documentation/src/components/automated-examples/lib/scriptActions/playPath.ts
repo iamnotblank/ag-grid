@@ -1,10 +1,14 @@
-import { MouseDataItem } from '../../types';
+import { Tween } from '@tweenjs/tween.js';
 import { AG_ROW_HOVER_CLASSNAME, AG_ROW_SELECTOR } from '../constants';
 import { getOffset } from '../dom';
 import { Point } from '../geometry';
 import { PathItem } from '../pathRecorder';
 import { clearAllRowHighlights } from '../scriptActions/clearAllRowHighlights';
 import { moveTarget } from '../scriptActions/moveTarget';
+
+export interface MouseDataItem {
+    pos: Point;
+}
 
 interface TweenItem {
     fromPos: Point;
@@ -68,16 +72,12 @@ export async function playPath({ target, path }): Promise<void> {
         const onComplete = () => {
             resolve();
         };
-        const tween = new createjs.Tween(
-            {
-                x: firstTween.fromPos.x,
-                y: firstTween.fromPos.y,
-            },
-            {
-                onChange,
-                onComplete,
-            }
-        );
+        const tween = new Tween({
+            x: firstTween.fromPos.x,
+            y: firstTween.fromPos.y,
+        });
+        tween.onUpdate(onChange).onComplete(onComplete);
+
         tweenArray.forEach(({ toPos, duration }) => {
             tween.to(toPos, duration);
         });

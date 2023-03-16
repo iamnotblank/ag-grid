@@ -1,10 +1,11 @@
+import { Tween } from '@tweenjs/tween.js';
 import { Point } from '../geometry';
 import { EasingFunction, getTweenDuration } from '../tween';
 
 interface CreateTweenParams {
     fromPos: Point;
     toPos: Point;
-    onChange: (params: { params: any; coords: Point }) => void;
+    onChange: (params: { elapsed: number; coords: Point }) => void;
     speed?: number;
     duration?: number;
     /**
@@ -19,15 +20,6 @@ export const createTween = ({ fromPos, toPos, onChange, speed, duration, easing 
     const coords = { ...fromPos };
 
     return new Promise((resolve) => {
-        const tweenParams = {
-            onChange: (params) => {
-                onChange && onChange({ params, coords });
-            },
-            onComplete: () => {
-                resolve();
-            },
-        };
-
         const tweenDuration = getTweenDuration({
             fromPos,
             toPos,
@@ -35,6 +27,17 @@ export const createTween = ({ fromPos, toPos, onChange, speed, duration, easing 
             duration,
         });
 
-        new createjs.Tween(coords, tweenParams).to(toPos, tweenDuration, easing);
+        const tween = new Tween(coords)
+            .to(toPos, tweenDuration)
+            .onUpdate((object, elapsed) => {
+                onChange && onChange({ elapsed, coords: object });
+            })
+            .onComplete(resolve);
+
+        if (easing) {
+            tween.easing(easing);
+        }
+
+        tween.start();
     });
 };

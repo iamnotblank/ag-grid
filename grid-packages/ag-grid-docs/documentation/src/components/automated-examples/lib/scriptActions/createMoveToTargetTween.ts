@@ -1,3 +1,4 @@
+import { Tween } from '@tweenjs/tween.js';
 import { AG_ROW_HOVER_CLASSNAME, AG_ROW_SELECTOR } from '../constants';
 import { getOffset } from '../dom';
 import { Point } from '../geometry';
@@ -10,8 +11,7 @@ interface CreateMoveToTargetTweenParams {
     target: HTMLElement;
     fromPos?: Point;
     toPos: Point;
-    params?: any;
-    tweenOnChange?: (params: { onChangeArgs: any; coords: Point }) => void;
+    tweenOnChange?: (params: { coords: Point; elapsed: number }) => void;
     speed?: number;
     duration?: number;
     /**
@@ -49,7 +49,6 @@ export const createMoveToTargetTween = ({
     target,
     fromPos: startingFromPos,
     toPos,
-    params,
     tweenOnChange,
     speed,
     duration,
@@ -66,18 +65,25 @@ export const createMoveToTargetTween = ({
             toPos,
             speed,
             duration,
-            params,
         });
         return Promise.reject(`No 'fromPos'`);
     }
 
     const offset = getOffset(target);
     return new Promise((resolve) => {
-        const tweenParams = {
-            onChange: (onChangeArgs) => {
-                moveTarget({ target, coords, offset, scriptDebugger });
+        const tweenDuration = getTweenDuration({
+            fromPos,
+            toPos,
+            speed,
+            duration,
+        });
 
-                const hoverOverEl = document.elementFromPoint(coords.x, coords.y);
+        const tween = new Tween(coords)
+            .to(toPos, tweenDuration)
+            .onUpdate((object: Point, elapsed) => {
+                moveTarget({ target, coords: object, offset, scriptDebugger });
+
+                const hoverOverEl = document.elementFromPoint(object.x, object.y);
                 if (hoverOverEl) {
                     clearAllRowHighlights();
 
@@ -86,21 +92,15 @@ export const createMoveToTargetTween = ({
                         row.classList.add(AG_ROW_HOVER_CLASSNAME);
                     }
                 }
-                tweenOnChange && tweenOnChange({ onChangeArgs, coords });
-            },
-            onComplete: () => {
+                tweenOnChange && tweenOnChange({ coords: object, elapsed });
+            })
+            .onComplete(() => {
                 resolve();
-            },
-            ...params,
-        };
+            });
+        if (easing) {
+            tween.easing(easing);
+        }
 
-        const tweenDuration = getTweenDuration({
-            fromPos,
-            toPos,
-            speed,
-            duration,
-        });
-
-        new createjs.Tween(coords, tweenParams).to(toPos, tweenDuration, easing);
+        tween.start();
     });
 };
