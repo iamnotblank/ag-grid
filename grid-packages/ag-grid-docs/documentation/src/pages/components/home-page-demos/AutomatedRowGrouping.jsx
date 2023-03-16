@@ -130,14 +130,17 @@ function AutomatedRowGrouping() {
                         <br />
                         Incredible Performance
                     </h2>
+
                     <p>
                         All the features your users expect and more. Out of the box performance that can handle any data
                         you can throw at it.
                     </p>
-                    <button onClick={onTryItOutClick}>
+
+                    <button className={styles.tryItOutButton} onClick={onTryItOutClick}>
                         Try For Yourself <Icon name="cursor" />
                     </button>
-                    <a href={withPrefix('/documentation/')}>
+
+                    <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
                         Get Started with AG Grid <Icon name="chevronRight" />
                     </a>
                 </div>
