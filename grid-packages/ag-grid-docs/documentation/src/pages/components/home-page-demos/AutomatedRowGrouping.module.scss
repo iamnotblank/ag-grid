@@ -263,8 +263,8 @@ $z-index-splash-contents: 10;
 
     :global(.mouse) {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 6px;
+        left: 4px;
     }
 
     :global(.highlight) {
