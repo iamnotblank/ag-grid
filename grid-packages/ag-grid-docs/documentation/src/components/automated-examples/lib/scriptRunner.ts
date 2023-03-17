@@ -111,6 +111,22 @@ export interface CreateScriptRunnerParams {
     defaultEasing?: EasingFunction;
 }
 
+interface CreateActionSequenceRunnerParams {
+    actionSequence: ReturnType<typeof createScriptActionSequence>;
+    onPreAction?: (params: { action; index: number }) => { shouldCancel: boolean } | undefined;
+    onError?: (params: { error: Error; action; index: number }) => void;
+}
+
+interface CreateScriptActionSequenceParams {
+    script: ScriptAction[];
+    containerEl?: HTMLElement;
+    mouse: Mouse;
+    gridOptions: GridOptions;
+    tweenGroup: Group;
+    scriptDebugger?: ScriptDebugger;
+    defaultEasing?: EasingFunction;
+}
+
 export type RunScriptState = 'inactive' | 'stopped' | 'stopping' | 'pausing' | 'paused' | 'playing';
 
 function createScriptAction({
@@ -175,6 +191,66 @@ function createScriptAction({
     }
 }
 
+function createScriptActionSequence({
+    script,
+    containerEl,
+    mouse,
+    gridOptions,
+    tweenGroup,
+    scriptDebugger,
+    defaultEasing,
+}: CreateScriptActionSequenceParams) {
+    return script.map((scriptAction) => {
+        return () => {
+            try {
+                const result = createScriptAction({
+                    containerEl,
+                    mouse,
+                    action: scriptAction,
+                    gridOptions,
+                    tweenGroup,
+                    scriptDebugger,
+                    defaultEasing,
+                });
+
+                return result;
+            } catch (error) {
+                console.error('Script action error', {
+                    scriptAction: JSON.stringify(scriptAction, function replacer(key, value) {
+                        if (typeof value === 'function') {
+                            return value.toString().replaceAll(/\s/gm, '').replace('function', '');
+                        }
+                        return value;
+                    }),
+                    error,
+                });
+                throw error;
+            }
+        };
+    });
+}
+
+function createActionSequenceRunner({ actionSequence, onPreAction, onError }: CreateActionSequenceRunnerParams) {
+    return new Promise((resolve, reject) => {
+        actionSequence
+            .reduce((p, action, index) => {
+                return p
+                    .then(async () => {
+                        const preActionResult = onPreAction && (await onPreAction({ action, index }));
+
+                        if (!preActionResult?.shouldCancel) {
+                            return action();
+                        }
+                    })
+                    .catch((error) => {
+                        onError && onError({ error, index, action });
+                    });
+            }, Promise.resolve())
+            .then(resolve)
+            .catch(reject);
+    });
+}
+
 export function createScriptRunner({
     containerEl,
     mouse,
@@ -231,73 +307,46 @@ export function createScriptRunner({
         pausedState = undefined;
     };
 
-    const actionSequence = script.map((scriptAction) => {
-        return () => {
-            try {
-                const result = createScriptAction({
-                    containerEl,
-                    mouse,
-                    action: scriptAction,
-                    gridOptions,
-                    tweenGroup,
-                    scriptDebugger,
-                    defaultEasing,
-                });
-
-                return result;
-            } catch (error) {
-                console.error('Script action error', {
-                    scriptAction: JSON.stringify(scriptAction, function replacer(key, value) {
-                        if (typeof value === 'function') {
-                            return value.toString().replaceAll(/\s/gm, '').replace('function', '');
-                        }
-                        return value;
-                    }),
-                    error,
-                });
-                throw error;
-            }
-        };
+    const actionSequence = createScriptActionSequence({
+        script,
+        containerEl,
+        mouse,
+        gridOptions,
+        tweenGroup,
+        scriptDebugger,
+        defaultEasing,
     });
 
     const startActionSequence = (startIndex: number = 0) => {
         updateState('playing');
         tweenUpdate();
-        const sequence = new Promise((resolve, reject) => {
-            actionSequence
-                .slice(startIndex)
-                .reduce((p, action, index) => {
-                    return p
-                        .then(async () => {
-                            if (runScriptState === 'stopping') {
-                                updateState('stopped');
-                                return;
-                            } else if (runScriptState === 'pausing') {
-                                setPausedState(index);
-                                updateState('paused');
-                                return;
-                            } else if (
-                                runScriptState === 'stopped' ||
-                                runScriptState === 'paused' ||
-                                runScriptState === 'inactive'
-                            ) {
-                                return;
-                            }
+        const sequence = createActionSequenceRunner({
+            actionSequence: actionSequence.slice(startIndex),
+            onPreAction({ index }) {
+                if (runScriptState === 'stopping') {
+                    updateState('stopped');
+                    return { shouldCancel: true };
+                } else if (runScriptState === 'pausing') {
+                    setPausedState(index);
+                    updateState('paused');
+                    return { shouldCancel: true };
+                } else if (
+                    runScriptState === 'stopped' ||
+                    runScriptState === 'paused' ||
+                    runScriptState === 'inactive'
+                ) {
+                    return { shouldCancel: true };
+                }
+            },
+            onError({ error, index }) {
+                console.error('Action error (stopping)', {
+                    index,
+                    error,
+                });
 
-                            return action();
-                        })
-                        .catch((error) => {
-                            console.error('Action error (stopping)', {
-                                index,
-                                error,
-                            });
-
-                            // Error in action, stop the script
-                            updateState('stopping');
-                        });
-                }, Promise.resolve())
-                .then(resolve)
-                .catch(reject);
+                // Error in action, stop the script
+                updateState('stopping');
+            },
         });
 
         sequence
