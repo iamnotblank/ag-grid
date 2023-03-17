@@ -54,6 +54,7 @@ function AutomatedRowGrouping() {
     const splashEl = useRef(null);
     const [hideSplash, setHideSplash] = useState(false);
     const [splashIsTransitioning, setSplashIsTransitioning] = useState(false);
+    const [clickTargetHover, setClickTargetHover] = useState(false);
 
     const onTryItOutClick = useCallback(() => {
         if (!automatedScript.current) {
@@ -143,6 +144,7 @@ function AutomatedRowGrouping() {
                     [splashClassname]: true,
                     [styles.hide]: hideSplash,
                     [styles.hiding]: splashIsTransitioning,
+                    [styles.exampleHover]: clickTargetHover,
                 })}
                 onClick={onSplashClick}
                 aria-hidden="true"
@@ -168,7 +170,16 @@ function AutomatedRowGrouping() {
                         Get Started with AG Grid <Icon name="chevronRight" />
                     </a>
                 </div>
-                <div className={styles.exampleClickTarget} onClick={onTryItOutClick}></div>
+                <div
+                    className={styles.exampleClickTarget}
+                    onClick={onTryItOutClick}
+                    onPointerEnter={() => {
+                        setClickTargetHover(true);
+                    }}
+                    onPointerOut={() => {
+                        setClickTargetHover(false);
+                    }}
+                ></div>
                 <div className={styles.splashTrapeziumBackground}></div>
             </div>
         </>

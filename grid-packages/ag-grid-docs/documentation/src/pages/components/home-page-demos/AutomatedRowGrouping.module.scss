@@ -72,6 +72,10 @@ $z-index-splash-contents: 10;
     z-index: $z-index-splash;
     transition: transform 0.33s ease-in-out;
 
+    &.exampleHover {
+        transform: translateX(10%);
+    }
+
     &.hide {
         transform: translateX($splash-hidden-amount);
 
