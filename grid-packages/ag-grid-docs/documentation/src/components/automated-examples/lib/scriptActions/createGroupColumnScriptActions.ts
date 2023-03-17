@@ -4,7 +4,7 @@ import { getHeaderCellPos } from '../agQuery';
 import { ScriptAction } from '../scriptRunner';
 import { EasingFunction } from '../tween';
 
-interface GroupColumn {
+interface CreateGroupColumnScriptActionsParams {
     containerEl?: HTMLElement;
     mouse: HTMLElement;
     headerCellName: string;
@@ -27,7 +27,7 @@ export function createGroupColumnScriptActions({
     easing,
     fallbackApplyColumnState,
     tweenGroup,
-}: GroupColumn): ScriptAction[] {
+}: CreateGroupColumnScriptActionsParams): ScriptAction[] {
     return [
         {
             type: 'moveTo',
