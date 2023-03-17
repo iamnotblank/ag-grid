@@ -71,7 +71,7 @@ $z-index-splash-contents: 10;
     width: 65%;
     height: 100%;
     z-index: $z-index-splash;
-    transition: transform ds.$default-transition-timing;
+    transition: transform 0.33s ease-in-out;
 
     &.hide {
         transform: translateX($splash-hidden-amount);
@@ -83,6 +83,10 @@ $z-index-splash-contents: 10;
         .splashTrapeziumBackground {
             cursor: pointer;
         }
+    }
+
+    &.hide:not(.hiding):hover {
+        transform: translateX(80%);
     }
 }
 
@@ -96,6 +100,10 @@ $z-index-splash-contents: 10;
 
     h2 {
         --font-weight: var(--font-weight-bold);
+    }
+
+    .hide & {
+        pointer-events: none;
     }
 }
 

@@ -51,21 +51,46 @@ function AutomatedRowGrouping() {
     const gridClassname = 'automated-row-grouping-grid';
     const splashClassname = styles.splash;
     const automatedScript = useRef(null);
+    const splashEl = useRef(null);
     const [hideSplash, setHideSplash] = useState(false);
+    const [splashIsTransitioning, setSplashIsTransitioning] = useState(false);
+
     const onTryItOutClick = useCallback(() => {
         if (!automatedScript.current) {
             return;
         }
 
         setHideSplash(true);
+        setSplashIsTransitioning(true);
         automatedScript.current.stop();
     }, []);
+
     const onSplashClick = useCallback(() => {
         if (hideSplash) {
             setHideSplash(false);
             automatedScript.current.start();
         }
     }, [hideSplash]);
+
+    useEffect(() => {
+        if (!splashEl.current) {
+            return;
+        }
+
+        const transitionHandler = (event) => {
+            if (event.target !== splashEl.current) {
+                return;
+            }
+
+            setSplashIsTransitioning(false);
+        };
+
+        splashEl.current.addEventListener('transitionend', transitionHandler);
+
+        return () => {
+            splashEl.current.removeEventListener('transitionend', transitionHandler);
+        };
+    }, []);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
@@ -118,9 +143,11 @@ function AutomatedRowGrouping() {
                 className={classnames({
                     [splashClassname]: true,
                     [styles.hide]: hideSplash,
+                    [styles.hiding]: splashIsTransitioning,
                 })}
                 onClick={onSplashClick}
                 aria-hidden="true"
+                ref={splashEl}
             >
                 <div className={classnames(styles.contents, 'font-size-extra-large')}>
                     <h2 className="font-size-gigantic">
