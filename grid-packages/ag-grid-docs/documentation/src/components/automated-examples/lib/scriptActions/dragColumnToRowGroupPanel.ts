@@ -64,9 +64,8 @@ export async function dragColumnToRowGroupPanel({
             const mouseMoveEvent: MouseEvent = new MouseEvent('mousemove', {
                 clientX: coords.x,
                 clientY: coords.y,
-                bubbles: true,
             });
-            headerElem.dispatchEvent(mouseMoveEvent);
+            document.dispatchEvent(mouseMoveEvent);
 
             // Move mouse as well
             moveTarget({ target: mouse, coords, offset });
@@ -80,11 +79,8 @@ export async function dragColumnToRowGroupPanel({
         const mouseUpEvent: MouseEvent = new MouseEvent('mouseup', {
             clientX: toPos.x,
             clientY: toPos.y,
-            bubbles: true,
         });
-
-        // NOTE: Need to send the mouse up event on the dragged header item
-        draggedHeaderItem.dispatchEvent(mouseUpEvent);
+        document.dispatchEvent(mouseUpEvent);
     } else {
         console.error('No dragged header item:', headerCellName);
     }
