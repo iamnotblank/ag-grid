@@ -1,7 +1,6 @@
 import { Group } from '@tweenjs/tween.js';
 import { ApplyColumnStateParams } from 'ag-grid-community';
 import { getHeaderCellPos } from '../agQuery';
-import { MouseCapture } from '../createMouseCapture';
 import { ScriptAction } from '../scriptRunner';
 import { EasingFunction } from '../tween';
 
@@ -12,7 +11,6 @@ interface GroupColumn {
     moveToDuration?: number;
     dragDuration?: number;
     easing?: EasingFunction;
-    mouseCapture: MouseCapture;
     tweenGroup: Group;
     /**
      * Fallback `gridApi.applyColumnState` command in case drag and drop fails
@@ -27,7 +25,6 @@ export function createGroupColumnScriptActions({
     moveToDuration,
     dragDuration = 500,
     easing,
-    mouseCapture,
     fallbackApplyColumnState,
     tweenGroup,
 }: GroupColumn): ScriptAction[] {
@@ -55,7 +52,6 @@ export function createGroupColumnScriptActions({
                 headerCellName,
                 duration: dragDuration,
                 easing,
-                mouseCapture,
                 tweenGroup,
             },
         },

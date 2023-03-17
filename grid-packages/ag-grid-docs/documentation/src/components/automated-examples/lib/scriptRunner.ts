@@ -1,6 +1,5 @@
 import { Group } from '@tweenjs/tween.js';
 import { ColumnState, GridOptions } from 'ag-grid-community';
-import { MouseCapture } from './createMouseCapture';
 import { createRowExpandedState, RowExpandedState } from './createRowExpandedState';
 import { Point } from './geometry';
 import { PathItem } from './pathRecorder';
@@ -100,7 +99,6 @@ export interface CreateScriptRunnerParams {
     tweenGroup: Group;
     loop?: boolean;
     loopOnError?: boolean;
-    mouseCapture: MouseCapture;
     onStateChange?: (state: RunScriptState) => void;
     onPaused?: () => void;
     onUnpaused?: () => void;
@@ -184,7 +182,6 @@ export function createScriptRunner({
     gridOptions,
     loop,
     loopOnError,
-    mouseCapture,
     tweenGroup,
     onStateChange,
     onPaused,
@@ -328,7 +325,6 @@ export function createScriptRunner({
     const cleanUp = () => {
         resetPausedState();
         tweenGroup.removeAll();
-        mouseCapture.hide();
         clearAllSingleCellSelections();
     };
 

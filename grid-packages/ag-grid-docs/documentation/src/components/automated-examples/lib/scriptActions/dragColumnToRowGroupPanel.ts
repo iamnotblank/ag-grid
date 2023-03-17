@@ -1,7 +1,6 @@
 import { Group } from '@tweenjs/tween.js';
 import { getHeaderCell, getHeaderCellPos } from '../agQuery';
 import { AG_DND_GHOST_SELECTOR } from '../constants';
-import { MouseCapture } from '../createMouseCapture';
 import { getOffset } from '../dom';
 import { addPoints } from '../geometry';
 import { EasingFunction } from '../tween';
@@ -14,7 +13,6 @@ interface DragColumnToRowGroupPanelParams {
     headerCellName: string;
     duration: number;
     easing?: EasingFunction;
-    mouseCapture: MouseCapture;
     tweenGroup: Group;
 }
 
@@ -24,13 +22,9 @@ export async function dragColumnToRowGroupPanel({
     headerCellName,
     duration,
     easing,
-    mouseCapture,
     tweenGroup,
 }: DragColumnToRowGroupPanelParams) {
     const fromPos = getHeaderCellPos({ containerEl, headerCellText: headerCellName });
-    const cleanUp = () => {
-        mouseCapture.hide();
-    };
 
     if (!fromPos) {
         console.error('Header not found:', headerCellName);
@@ -42,15 +36,12 @@ export async function dragColumnToRowGroupPanel({
     };
     const toPos = addPoints(fromPos, rowGroupPanelOffset)!;
 
-    mouseCapture.show();
-
     const headerElem = getHeaderCell({ containerEl, headerCellText: headerCellName });
     const mouseDownEvent: MouseEvent = new MouseEvent('mousedown', {
         clientX: fromPos.x,
         clientY: fromPos.y,
     });
     if (!headerElem) {
-        cleanUp();
         return;
     }
     headerElem.dispatchEvent(mouseDownEvent);
@@ -84,6 +75,4 @@ export async function dragColumnToRowGroupPanel({
     } else {
         console.error('No dragged header item:', headerCellName);
     }
-
-    cleanUp();
 }

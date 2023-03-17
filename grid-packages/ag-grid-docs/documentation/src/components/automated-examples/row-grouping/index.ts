@@ -7,7 +7,6 @@
 
 import { Easing, Group } from '@tweenjs/tween.js';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { createMouseCapture } from '../lib/createMouseCapture';
 import { createMovedOffElementTimer, MovedOffElementTimer } from '../lib/createMovedOffElementTimer';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
@@ -37,7 +36,6 @@ const MOUSE_SVG_TEMPLATE = `
 interface InitAutomatedRowGroupingParams {
     selector: string;
     mouseMaskSelector: string;
-    mouseCaptureMaskSelector: string;
     gridIsHoveredOver: (element: HTMLElement) => boolean;
     onMovedOffGrid: () => void;
     suppressUpdates?: boolean;
@@ -168,7 +166,6 @@ function initMouse({ containerEl, mouseMaskSelector }: InitMouseParams): InitMou
 export function initAutomatedRowGrouping({
     selector,
     mouseMaskSelector,
-    mouseCaptureMaskSelector,
     gridIsHoveredOver,
     onMovedOffGrid,
     suppressUpdates,
@@ -208,9 +205,6 @@ export function initAutomatedRowGrouping({
                 : undefined;
 
             const { mouseMask, mouse } = initMouse({ containerEl: gridDiv, mouseMaskSelector });
-            const mouseCapture = createMouseCapture({
-                mouseCaptureMaskSelector,
-            });
             const tweenGroup = new Group();
 
             if (scriptRunner) {
@@ -227,7 +221,6 @@ export function initAutomatedRowGrouping({
                 hideMouse: () => {
                     mouseMask.style.setProperty('opacity', '0');
                 },
-                mouseCapture,
                 tweenGroup,
                 gridOptions,
                 loop: !runOnce,

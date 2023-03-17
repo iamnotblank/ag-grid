@@ -5,7 +5,6 @@ $z-index-mouse-mask: 10000; // NOTE: Above .ag-dnd-ghost z-index of 9999
 $z-index-debug-canvas: $z-index-mouse-mask + 10;
 $z-index-splash: $z-index-debug-canvas + 10;
 $z-index-debug-panel: $z-index-splash + 10;
-$z-index-mouse-capture-mask: $z-index-splash + 10;
 $z-index-splash-contents: 10;
 
 :global(.automated-row-grouping-grid.ag-theme-alpine-dark) {
@@ -277,19 +276,5 @@ $z-index-splash-contents: 10;
     &:global(.animate .animate-click) {
         opacity: 0.3;
         transform: scale(12);
-    }
-}
-
-.mouseCaptureMask {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: $z-index-mouse-capture-mask;
-
-    &:global(.hidden) {
-        display: none;
     }
 }

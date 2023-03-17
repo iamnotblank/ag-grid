@@ -1,6 +1,5 @@
 import { Group } from '@tweenjs/tween.js';
 import { GridOptions } from 'ag-grid-community';
-import { MouseCapture } from '../lib/createMouseCapture';
 import { Point } from '../lib/geometry';
 import { removeFocus } from '../lib/scriptActions/removeFocus';
 import { clearAllSingleCellSelections } from '../lib/scriptActions/singleCell';
@@ -15,7 +14,6 @@ interface CreateRowGroupingScriptRunnerParams {
     offScreenPos: Point;
     showMouse: () => void;
     hideMouse: () => void;
-    mouseCapture: MouseCapture;
     tweenGroup: Group;
     gridOptions: GridOptions;
     loop?: boolean;
@@ -29,7 +27,6 @@ export function createRowGroupingScriptRunner({
     offScreenPos,
     showMouse,
     hideMouse,
-    mouseCapture,
     tweenGroup,
     gridOptions,
     loop,
@@ -42,7 +39,6 @@ export function createRowGroupingScriptRunner({
         offScreenPos,
         showMouse,
         hideMouse,
-        mouseCapture,
         tweenGroup,
         scriptDebugger,
     });
@@ -53,7 +49,6 @@ export function createRowGroupingScriptRunner({
         script: rowGroupingScript,
         gridOptions,
         loop,
-        mouseCapture,
         tweenGroup,
         onStateChange: (state) => {
             if (state === 'stopping') {

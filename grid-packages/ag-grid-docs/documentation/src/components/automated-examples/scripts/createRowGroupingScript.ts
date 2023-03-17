@@ -1,6 +1,5 @@
 import { Group } from '@tweenjs/tween.js';
 import { getCellPos, getGroupCellTogglePos } from '../lib/agQuery';
-import { MouseCapture } from '../lib/createMouseCapture';
 import { getOffset } from '../lib/dom';
 import { addPoints, Point } from '../lib/geometry';
 import { clearAllRowHighlights } from '../lib/scriptActions/clearAllRowHighlights';
@@ -15,7 +14,6 @@ interface CreateRowGroupingScriptParams {
     offScreenPos: Point;
     showMouse: () => void;
     hideMouse: () => void;
-    mouseCapture: MouseCapture;
     tweenGroup: Group;
     scriptDebugger?: ScriptDebugger;
 }
@@ -26,7 +24,6 @@ export const createRowGroupingScript = ({
     offScreenPos,
     showMouse,
     hideMouse,
-    mouseCapture,
     tweenGroup,
     scriptDebugger,
 }: CreateRowGroupingScriptParams): ScriptAction[] => {
@@ -58,7 +55,6 @@ export const createRowGroupingScript = ({
             containerEl,
             mouse,
             headerCellName: 'Product',
-            mouseCapture,
             tweenGroup,
             fallbackApplyColumnState: {
                 state: [{ colId: 'product', rowGroupIndex: 0 }],
@@ -94,7 +90,6 @@ export const createRowGroupingScript = ({
             mouse,
             headerCellName: 'Book',
             moveToDuration: 300,
-            mouseCapture,
             tweenGroup,
             fallbackApplyColumnState: {
                 state: [

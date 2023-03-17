@@ -113,7 +113,6 @@ function AutomatedRowGrouping() {
         let params = {
             selector: `.${gridClassname}`,
             mouseMaskSelector: styles.mouseMask,
-            mouseCaptureMaskSelector: styles.mouseCaptureMask,
             gridIsHoveredOver,
             onMovedOffGrid() {
                 setHideSplash(false);
