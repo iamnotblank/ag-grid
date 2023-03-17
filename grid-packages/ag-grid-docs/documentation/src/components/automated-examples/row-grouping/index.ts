@@ -25,7 +25,7 @@ let scriptRunner: ScriptRunner;
 let restartScriptTimeout;
 let movedOffElementTimer: MovedOffElementTimer;
 
-interface InitAutomatedRowGroupingParams {
+interface CreateAutomatedRowGroupingParams {
     selector: string;
     mouseMaskSelector: string;
     gridIsHoveredOver: (element: HTMLElement) => boolean;
@@ -128,7 +128,7 @@ function stopWorkerMessages() {
     dataWorker?.postMessage('stop');
 }
 
-export function initAutomatedRowGrouping({
+export function createAutomatedRowGrouping({
     selector,
     mouseMaskSelector,
     gridIsHoveredOver,
@@ -140,7 +140,7 @@ export function initAutomatedRowGrouping({
     debugPanelClassname,
     runOnce,
     pauseOnMouseMove,
-}: InitAutomatedRowGroupingParams) {
+}: CreateAutomatedRowGroupingParams) {
     const init = () => {
         const gridDiv = document.querySelector(selector) as HTMLElement;
         if (!gridDiv) {

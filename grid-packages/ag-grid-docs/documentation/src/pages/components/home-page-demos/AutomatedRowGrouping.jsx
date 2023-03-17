@@ -6,7 +6,7 @@ import { withPrefix } from 'gatsby';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { isElementChildOfClass } from '../../../components/automated-examples/lib/dom';
-import { initAutomatedRowGrouping } from '../../../components/automated-examples/row-grouping';
+import { createAutomatedRowGrouping } from '../../../components/automated-examples/row-grouping';
 import { Icon } from '../../../components/Icon';
 import LogoMark from '../../../components/LogoMark';
 import { hostPrefix, isProductionBuild, localPrefix } from '../../../utils/consts';
@@ -126,7 +126,7 @@ function AutomatedRowGrouping() {
             runOnce,
         };
 
-        automatedScript.current = initAutomatedRowGrouping(params);
+        automatedScript.current = createAutomatedRowGrouping(params);
     }, []);
 
     return (
