@@ -1,5 +1,6 @@
 import { Group } from '@tweenjs/tween.js';
 import { GridOptions } from 'ag-grid-community';
+import { Mouse } from '../lib/createMouse';
 import { Point } from '../lib/geometry';
 import { removeFocus } from '../lib/scriptActions/removeFocus';
 import { clearAllSingleCellSelections } from '../lib/scriptActions/singleCell';
@@ -9,11 +10,9 @@ import { EasingFunction } from '../lib/tween';
 import { createRowGroupingScript } from '../scripts/createRowGroupingScript';
 
 interface CreateRowGroupingScriptRunnerParams {
-    mouse: HTMLElement;
+    mouse: Mouse;
     containerEl?: HTMLElement;
     offScreenPos: Point;
-    showMouse: () => void;
-    hideMouse: () => void;
     tweenGroup: Group;
     gridOptions: GridOptions;
     loop?: boolean;
@@ -25,8 +24,6 @@ export function createRowGroupingScriptRunner({
     containerEl,
     mouse,
     offScreenPos,
-    showMouse,
-    hideMouse,
     tweenGroup,
     gridOptions,
     loop,
@@ -37,31 +34,29 @@ export function createRowGroupingScriptRunner({
         containerEl,
         mouse,
         offScreenPos,
-        showMouse,
-        hideMouse,
         tweenGroup,
         scriptDebugger,
     });
 
     return createScriptRunner({
         containerEl,
-        target: mouse,
+        target: mouse.getTarget(),
         script: rowGroupingScript,
         gridOptions,
         loop,
         tweenGroup,
         onStateChange: (state) => {
             if (state === 'stopping') {
-                hideMouse();
+                mouse.hide();
             }
         },
         onPaused: () => {
             clearAllSingleCellSelections();
-            hideMouse();
+            mouse.hide();
         },
         onUnpaused: () => {
             removeFocus();
-            showMouse();
+            mouse.show();
         },
         scriptDebugger,
         defaultEasing,

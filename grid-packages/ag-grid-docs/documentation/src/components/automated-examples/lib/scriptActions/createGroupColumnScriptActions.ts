@@ -1,12 +1,13 @@
 import { Group } from '@tweenjs/tween.js';
 import { ApplyColumnStateParams } from 'ag-grid-community';
 import { getHeaderCellPos } from '../agQuery';
+import { Mouse } from '../createMouse';
 import { ScriptAction } from '../scriptRunner';
 import { EasingFunction } from '../tween';
 
 interface CreateGroupColumnScriptActionsParams {
     containerEl?: HTMLElement;
-    mouse: HTMLElement;
+    mouse: Mouse;
     headerCellName: string;
     moveToDuration?: number;
     dragDuration?: number;

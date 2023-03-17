@@ -7,6 +7,7 @@
 
 import { Easing, Group } from '@tweenjs/tween.js';
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { createMouse } from '../lib/createMouse';
 import { createMovedOffElementTimer, MovedOffElementTimer } from '../lib/createMovedOffElementTimer';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
@@ -24,15 +25,6 @@ let scriptRunner: ScriptRunner;
 let restartScriptTimeout;
 let movedOffElementTimer: MovedOffElementTimer;
 
-const MOUSE_SVG_TEMPLATE = `
-    <svg class="mouse" width="74" height="84" viewBox="0 0 74 84">
-        <circle class="highlight"  cx="37" cy="37" r="36" style="fill:#fff"/>
-        <circle class="animate-click"  cx="37" cy="37" r="36" style="fill:#fff"/>
-        <path class="pointer-outer" d="m35.587 33.066-.045 43.249 9.027-8.744 6.744 16.052 9.222-3.869-6.404-15.247 12.806-.006-31.35-31.435Z" style="fill: #fff"/>
-        <path class="pointer-inner" d="M37.6 71.5V37.9l24.6 24.6H51.119l6.795 16.186-5.533 2.323-7.106-16.928L37.6 71.5Z" style="fill: #000"/>
-    </svg>
-`;
-
 interface InitAutomatedRowGroupingParams {
     selector: string;
     mouseMaskSelector: string;
@@ -45,16 +37,6 @@ interface InitAutomatedRowGroupingParams {
     debugCanvasClassname?: string;
     debugPanelClassname?: string;
     pauseOnMouseMove?: boolean;
-}
-
-interface InitMouseParams {
-    containerEl: HTMLElement;
-    mouseMaskSelector: string;
-}
-
-interface InitMouseResult {
-    mouseMask: HTMLElement;
-    mouse: HTMLElement;
 }
 
 function numberCellFormatter(params) {
@@ -146,23 +128,6 @@ function stopWorkerMessages() {
     dataWorker?.postMessage('stop');
 }
 
-function initMouse({ containerEl, mouseMaskSelector }: InitMouseParams): InitMouseResult {
-    const mouseMask = document.createElement('div');
-    const mouseMaskClass =
-        mouseMaskSelector[0] === '.' || mouseMaskSelector[0] === '#' ? mouseMaskSelector.slice(1) : mouseMaskSelector;
-    mouseMask.classList.add(mouseMaskClass);
-
-    mouseMask.innerHTML = MOUSE_SVG_TEMPLATE;
-    const mouse = mouseMask.querySelector('.mouse') as HTMLElement;
-
-    containerEl.appendChild(mouseMask);
-
-    return {
-        mouse,
-        mouseMask,
-    };
-}
-
 export function initAutomatedRowGrouping({
     selector,
     mouseMaskSelector,
@@ -204,7 +169,7 @@ export function initAutomatedRowGrouping({
                   })
                 : undefined;
 
-            const { mouseMask, mouse } = initMouse({ containerEl: gridDiv, mouseMaskSelector });
+            const mouse = createMouse({ containerEl: gridDiv, mouseMaskSelector });
             const tweenGroup = new Group();
 
             if (scriptRunner) {
@@ -215,12 +180,6 @@ export function initAutomatedRowGrouping({
                 containerEl: gridDiv,
                 mouse,
                 offScreenPos,
-                showMouse: () => {
-                    mouseMask.style.setProperty('opacity', '1');
-                },
-                hideMouse: () => {
-                    mouseMask.style.setProperty('opacity', '0');
-                },
                 tweenGroup,
                 gridOptions,
                 loop: !runOnce,

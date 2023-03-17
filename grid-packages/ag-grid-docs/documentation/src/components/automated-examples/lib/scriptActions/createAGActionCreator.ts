@@ -1,6 +1,7 @@
 import { Group } from '@tweenjs/tween.js';
 import { ApplyColumnStateParams, GridOptions } from 'ag-grid-community';
 import { AG_DND_GHOST_SELECTOR } from '../constants';
+import { Mouse } from '../createMouse';
 import { EasingFunction } from '../tween';
 import { dragColumnToRowGroupPanel } from './dragColumnToRowGroupPanel';
 import { clearAllSingleCellSelections, clearSingleCell, selectSingleCell } from './singleCell';
@@ -16,7 +17,7 @@ interface ResetColumnStateAction {
 interface DragColumnToRowGroupPanelAction {
     actionType: 'dragColumnToRowGroupPanel';
     actionParams: {
-        mouse: HTMLElement;
+        mouse: Mouse;
         headerCellName: string;
         duration: number;
         easing?: EasingFunction;

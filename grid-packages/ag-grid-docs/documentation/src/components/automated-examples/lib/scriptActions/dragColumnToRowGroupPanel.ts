@@ -1,7 +1,7 @@
 import { Group } from '@tweenjs/tween.js';
 import { getHeaderCell, getHeaderCellPos } from '../agQuery';
 import { AG_DND_GHOST_SELECTOR } from '../constants';
-import { getOffset } from '../dom';
+import { Mouse } from '../createMouse';
 import { addPoints } from '../geometry';
 import { EasingFunction } from '../tween';
 import { createTween } from './createTween';
@@ -9,7 +9,7 @@ import { moveTarget } from './moveTarget';
 
 interface DragColumnToRowGroupPanelParams {
     containerEl?: HTMLElement;
-    mouse: HTMLElement;
+    mouse: Mouse;
     headerCellName: string;
     duration: number;
     easing?: EasingFunction;
@@ -46,7 +46,7 @@ export async function dragColumnToRowGroupPanel({
     }
     headerElem.dispatchEvent(mouseDownEvent);
 
-    const offset = getOffset(mouse);
+    const offset = mouse.getOffset();
     await createTween({
         group: tweenGroup,
         fromPos,
@@ -59,7 +59,7 @@ export async function dragColumnToRowGroupPanel({
             document.dispatchEvent(mouseMoveEvent);
 
             // Move mouse as well
-            moveTarget({ target: mouse, coords, offset });
+            moveTarget({ target: mouse.getTarget(), coords, offset });
         },
         duration,
         easing,
