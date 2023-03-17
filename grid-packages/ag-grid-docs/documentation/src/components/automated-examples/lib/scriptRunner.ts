@@ -1,10 +1,10 @@
 import { Group } from '@tweenjs/tween.js';
 import { ColumnState, GridOptions } from 'ag-grid-community';
+import { Mouse } from './createMouse';
 import { createRowExpandedState, RowExpandedState } from './createRowExpandedState';
 import { ScriptDebugger } from './createScriptDebugger';
 import { Point } from './geometry';
 import { PathItem } from './pathRecorder';
-import { animateClick, animateMouseDown, animateMouseUp } from './scriptActions/animateMouse';
 import { AGCreatorAction, createAGActionCreator } from './scriptActions/createAGActionCreator';
 import { createMoveToTargetTween } from './scriptActions/createMoveToTargetTween';
 import { playPath } from './scriptActions/playPath';
@@ -82,7 +82,7 @@ interface PausedState {
     rowExpandedState: RowExpandedState;
 }
 export interface CreateScriptActionParams {
-    target: HTMLElement;
+    mouse: Mouse;
     containerEl?: HTMLElement;
     action: ScriptAction;
     gridOptions: GridOptions;
@@ -92,7 +92,7 @@ export interface CreateScriptActionParams {
 }
 
 export interface CreateScriptRunnerParams {
-    target: HTMLElement;
+    mouse: Mouse;
     containerEl?: HTMLElement;
     script: ScriptAction[];
     gridOptions: GridOptions;
@@ -115,7 +115,7 @@ export type RunScriptState = 'inactive' | 'stopped' | 'stopping' | 'pausing' | '
 
 function createScriptAction({
     containerEl,
-    target,
+    mouse,
     action,
     tweenGroup,
     gridOptions,
@@ -127,17 +127,17 @@ function createScriptAction({
 
     if (type === 'path') {
         const scriptAction = action as PathAction;
-        return playPath({ target, path: scriptAction.path });
+        return playPath({ target: mouse.getTarget(), path: scriptAction.path });
     } else if (type === 'custom') {
         const scriptAction = action as CustomAction;
         return scriptAction.action();
     } else if (type === 'click') {
         const scriptAction = action as ClickAction;
-        return animateClick(target, scriptAction.duration);
+        return mouse.click(scriptAction.duration);
     } else if (type === 'mouseDown') {
-        return animateMouseDown(target);
+        return mouse.mouseDown();
     } else if (type === 'mouseUp') {
-        return animateMouseUp(target);
+        return mouse.mouseUp();
     } else if (type === 'removeFocus') {
         return removeFocus();
     } else if (type === 'wait') {
@@ -153,7 +153,7 @@ function createScriptAction({
         }
 
         return createMoveToTargetTween({
-            target,
+            target: mouse.getTarget(),
             toPos,
             speed: scriptAction.speed,
             duration: scriptAction.duration,
@@ -177,7 +177,7 @@ function createScriptAction({
 
 export function createScriptRunner({
     containerEl,
-    target,
+    mouse,
     script,
     gridOptions,
     loop,
@@ -236,7 +236,7 @@ export function createScriptRunner({
             try {
                 const result = createScriptAction({
                     containerEl,
-                    target,
+                    mouse,
                     action: scriptAction,
                     gridOptions,
                     tweenGroup,

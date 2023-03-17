@@ -18,6 +18,9 @@ const MOUSE_SVG_TEMPLATE = `
     </svg>
 `;
 
+/**
+ * Create a mouse cursor that mimics a real mouse cursor
+ */
 export function createMouse({ containerEl, mouseMaskClassname }: CreateMouseElementsParams) {
     const mouseMask = document.createElement('div');
     mouseMask.classList.add(mouseMaskClassname);
@@ -36,9 +39,26 @@ export function createMouse({ containerEl, mouseMaskClassname }: CreateMouseElem
     const getMouseOffset = () => getOffset(mouse);
     const getTarget = () => mouse;
 
+    const click = (duration = 200) => {
+        mouse.classList.add('animate');
+
+        setTimeout(() => {
+            mouse.classList.remove('animate');
+        }, duration);
+    };
+    const mouseDown = () => {
+        mouse.classList.add('animate');
+    };
+    const mouseUp = () => {
+        mouse.classList.remove('animate');
+    };
+
     return {
         show,
         hide,
+        click,
+        mouseDown,
+        mouseUp,
         getTarget,
         getOffset: getMouseOffset,
     };

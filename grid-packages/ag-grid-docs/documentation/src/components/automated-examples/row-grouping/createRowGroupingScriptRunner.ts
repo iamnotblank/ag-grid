@@ -40,7 +40,7 @@ export function createRowGroupingScriptRunner({
 
     return createScriptRunner({
         containerEl,
-        target: mouse.getTarget(),
+        mouse,
         script: rowGroupingScript,
         gridOptions,
         loop,
