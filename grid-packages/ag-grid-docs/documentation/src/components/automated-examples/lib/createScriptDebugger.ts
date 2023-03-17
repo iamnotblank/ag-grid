@@ -1,13 +1,13 @@
 import { createDrawer } from './createDrawer';
 import { Point } from './geometry';
 
-interface InitScriptDebuggerParams {
+interface CreateScriptDebuggerParams {
     containerEl: HTMLElement;
     canvasClassname: string;
     panelClassname: string;
 }
 
-export type ScriptDebugger = ReturnType<typeof initScriptDebugger>;
+export type ScriptDebugger = ReturnType<typeof createScriptDebugger>;
 
 const STATE_CLASSNAME = 'state';
 const PAUSED_STATE_CLASSNAME = 'paused-state';
@@ -22,7 +22,7 @@ const DEFAULT_DRAW_COLOR = 'rgba(255,0,0,0.5)'; // red
 /**
  * Debug canvas for position debugging
  */
-function initDrawer({ containerEl, classname }: { containerEl: HTMLElement; classname: string }) {
+function createDebugDrawer({ containerEl, classname }: { containerEl: HTMLElement; classname: string }) {
     const debugCanvas = document.createElement('canvas');
     debugCanvas.classList.add(classname);
 
@@ -35,7 +35,13 @@ function initDrawer({ containerEl, classname }: { containerEl: HTMLElement; clas
     });
 }
 
-function initPanel({ classname, onDrawChange }: { classname: string; onDrawChange: (checked: boolean) => void }) {
+function createDebugPanel({
+    classname,
+    onDrawChange,
+}: {
+    classname: string;
+    onDrawChange: (checked: boolean) => void;
+}) {
     let debugPanelEl = document.querySelector(`.${classname}`);
     if (debugPanelEl) {
         debugPanelEl.remove();
@@ -71,15 +77,15 @@ function initPanel({ classname, onDrawChange }: { classname: string; onDrawChang
     };
 }
 
-export function initScriptDebugger({ containerEl, canvasClassname, panelClassname }: InitScriptDebuggerParams) {
+export function createScriptDebugger({ containerEl, canvasClassname, panelClassname }: CreateScriptDebuggerParams) {
     let shouldDraw = false;
-    const debugPanel = initPanel({
+    const debugPanel = createDebugPanel({
         classname: panelClassname,
         onDrawChange: (checked) => {
             shouldDraw = checked;
         },
     });
-    const debugDrawer = initDrawer({ containerEl, classname: canvasClassname });
+    const debugDrawer = createDebugDrawer({ containerEl, classname: canvasClassname });
 
     const updateState = ({ state, pauseIndex }) => {
         debugPanel.stateEl.innerHTML = state;

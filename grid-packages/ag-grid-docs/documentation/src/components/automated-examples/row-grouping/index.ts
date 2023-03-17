@@ -9,9 +9,9 @@ import { Easing, Group } from '@tweenjs/tween.js';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { createMouse } from '../lib/createMouse';
 import { createMovedOffElementTimer, MovedOffElementTimer } from '../lib/createMovedOffElementTimer';
+import { createScriptDebugger } from '../lib/createScriptDebugger';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
-import { initScriptDebugger } from '../lib/scriptDebugger';
 import { ScriptRunner } from '../lib/scriptRunner';
 import { createDataUpdateWorker } from './createDataUpdateWorker';
 import { createRowGroupingScriptRunner } from './createRowGroupingScriptRunner';
@@ -162,7 +162,7 @@ export function initAutomatedRowGrouping({
             startWorkerMessages();
 
             const scriptDebugger = debug
-                ? initScriptDebugger({
+                ? createScriptDebugger({
                       containerEl: gridDiv,
                       canvasClassname: debugCanvasClassname!,
                       panelClassname: debugPanelClassname!,

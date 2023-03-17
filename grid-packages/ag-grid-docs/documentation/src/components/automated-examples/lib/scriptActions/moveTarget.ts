@@ -1,5 +1,5 @@
+import { ScriptDebugger } from '../createScriptDebugger';
 import { Point } from '../geometry';
-import { ScriptDebugger } from '../scriptDebugger';
 
 interface MoveTargetParams {
     target: HTMLElement;

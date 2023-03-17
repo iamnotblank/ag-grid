@@ -1,6 +1,7 @@
 import { Group } from '@tweenjs/tween.js';
 import { ColumnState, GridOptions } from 'ag-grid-community';
 import { createRowExpandedState, RowExpandedState } from './createRowExpandedState';
+import { ScriptDebugger } from './createScriptDebugger';
 import { Point } from './geometry';
 import { PathItem } from './pathRecorder';
 import { animateClick, animateMouseDown, animateMouseUp } from './scriptActions/animateMouse';
@@ -10,7 +11,6 @@ import { playPath } from './scriptActions/playPath';
 import { removeFocus } from './scriptActions/removeFocus';
 import { clearAllSingleCellSelections } from './scriptActions/singleCell';
 import { waitFor } from './scriptActions/waitFor';
-import { ScriptDebugger } from './scriptDebugger';
 import { EasingFunction } from './tween';
 
 export interface PathAction {
