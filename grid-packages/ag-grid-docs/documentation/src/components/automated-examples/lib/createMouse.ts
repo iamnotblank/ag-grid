@@ -2,13 +2,15 @@ import { getOffset } from './dom';
 
 export interface CreateMouseElementsParams {
     containerEl: HTMLElement;
-    mouseMaskSelector: string;
+    mouseMaskClassname: string;
 }
 
 export type Mouse = ReturnType<typeof createMouse>;
 
+const MOUSE_CLASSNAME = 'mouse';
+
 const MOUSE_SVG_TEMPLATE = `
-    <svg class="mouse" width="74" height="84" viewBox="0 0 74 84">
+    <svg class="${MOUSE_CLASSNAME}" width="74" height="84" viewBox="0 0 74 84">
         <circle class="highlight"  cx="37" cy="37" r="36" style="fill:#fff"/>
         <circle class="animate-click"  cx="37" cy="37" r="36" style="fill:#fff"/>
         <path class="pointer-outer" d="m35.587 33.066-.045 43.249 9.027-8.744 6.744 16.052 9.222-3.869-6.404-15.247 12.806-.006-31.35-31.435Z" style="fill: #fff"/>
@@ -16,14 +18,12 @@ const MOUSE_SVG_TEMPLATE = `
     </svg>
 `;
 
-export function createMouse({ containerEl, mouseMaskSelector }: CreateMouseElementsParams) {
+export function createMouse({ containerEl, mouseMaskClassname }: CreateMouseElementsParams) {
     const mouseMask = document.createElement('div');
-    const mouseMaskClass =
-        mouseMaskSelector[0] === '.' || mouseMaskSelector[0] === '#' ? mouseMaskSelector.slice(1) : mouseMaskSelector;
-    mouseMask.classList.add(mouseMaskClass);
+    mouseMask.classList.add(mouseMaskClassname);
 
     mouseMask.innerHTML = MOUSE_SVG_TEMPLATE;
-    const mouse = mouseMask.querySelector('.mouse') as HTMLElement;
+    const mouse = mouseMask.querySelector(`.${MOUSE_CLASSNAME}`) as HTMLElement;
 
     containerEl.appendChild(mouseMask);
 

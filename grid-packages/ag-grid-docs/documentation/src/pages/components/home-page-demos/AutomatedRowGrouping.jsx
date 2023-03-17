@@ -111,8 +111,8 @@ function AutomatedRowGrouping() {
             return isInGrid || isOnSplash;
         };
         let params = {
-            selector: `.${gridClassname}`,
-            mouseMaskSelector: styles.mouseMask,
+            gridClassname,
+            mouseMaskClassname: styles.mouseMask,
             gridIsHoveredOver,
             onMovedOffGrid() {
                 setHideSplash(false);

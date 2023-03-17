@@ -26,8 +26,8 @@ let restartScriptTimeout;
 let movedOffElementTimer: MovedOffElementTimer;
 
 interface CreateAutomatedRowGroupingParams {
-    selector: string;
-    mouseMaskSelector: string;
+    gridClassname: string;
+    mouseMaskClassname: string;
     gridIsHoveredOver: (element: HTMLElement) => boolean;
     onMovedOffGrid: () => void;
     suppressUpdates?: boolean;
@@ -129,8 +129,8 @@ function stopWorkerMessages() {
 }
 
 export function createAutomatedRowGrouping({
-    selector,
-    mouseMaskSelector,
+    gridClassname,
+    mouseMaskClassname,
     gridIsHoveredOver,
     onMovedOffGrid,
     suppressUpdates,
@@ -141,8 +141,10 @@ export function createAutomatedRowGrouping({
     runOnce,
     pauseOnMouseMove,
 }: CreateAutomatedRowGroupingParams) {
+    const gridSelector = `.${gridClassname}`;
+
     const init = () => {
-        const gridDiv = document.querySelector(selector) as HTMLElement;
+        const gridDiv = document.querySelector(gridSelector) as HTMLElement;
         if (!gridDiv) {
             return;
         }
@@ -169,7 +171,7 @@ export function createAutomatedRowGrouping({
                   })
                 : undefined;
 
-            const mouse = createMouse({ containerEl: gridDiv, mouseMaskSelector });
+            const mouse = createMouse({ containerEl: gridDiv, mouseMaskClassname });
             const tweenGroup = new Group();
 
             if (scriptRunner) {
@@ -252,7 +254,7 @@ export function createAutomatedRowGrouping({
     };
 
     const loadGrid = function () {
-        if (document.querySelector(selector) && globalThis.agGrid) {
+        if (document.querySelector(gridSelector) && globalThis.agGrid) {
             init();
         } else {
             requestAnimationFrame(() => loadGrid());
