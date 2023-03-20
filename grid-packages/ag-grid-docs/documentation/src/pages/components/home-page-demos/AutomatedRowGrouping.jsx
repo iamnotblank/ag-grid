@@ -173,6 +173,7 @@ function AutomatedRowGrouping() {
                 <div
                     className={styles.exampleClickTarget}
                     onClick={onTryItOutClick}
+                    aria-hidden="true"
                     onPointerEnter={() => {
                         setClickTargetHover(true);
                     }}
