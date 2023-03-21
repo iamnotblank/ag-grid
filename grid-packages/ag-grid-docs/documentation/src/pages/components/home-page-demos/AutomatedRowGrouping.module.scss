@@ -88,10 +88,6 @@ $splash-transform: skew(-20deg) translateX(5%);
         transition: transform 0.33s ease-in-out;
     }
 
-    &.exampleHover {
-        transform: translateX(10%);
-    }
-
     &.hide {
         transform: translateX($splash-hidden-amount);
 
@@ -102,6 +98,10 @@ $splash-transform: skew(-20deg) translateX(5%);
         .splashTrapeziumBackground {
             cursor: pointer;
         }
+    }
+
+    &.exampleHover:not(.hide):not(.hiding) {
+        transform: translateX(10%);
     }
 
     &.hide:not(.hiding):hover {
