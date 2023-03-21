@@ -432,35 +432,7 @@ export class DragAndDropService extends BeanStub {
 
         return { event, x, y, vDirection, hDirection, dragSource, fromNudge, dragItem: dragItem as DragItem, api, columnApi, dropZoneTarget };
     }
-   
-    /**
-     * Check to see if a mouse move event includes the scroll position
-     */
-    private mouseMoveIncludesScroll(): boolean {
-        const eDocument = this.gridOptionsService.getDocument();
-        const mouseMoveEvent: MouseEvent = new MouseEvent('mousemove', {
-            clientX: 0,
-            clientY: 0,
-        });
-    
-        return mouseMoveEvent.pageX === eDocument.documentElement.scrollLeft && mouseMoveEvent.pageY === eDocument.documentElement.scrollTop;
-    }
-    
-    /**
-     * Determine if the browser mouse event includes the scroll position, if not, add it to the
-     * page position
-     */
-    private getMouseMovePagePosition(event: MouseEvent): { pageX: number, pageY: number } {
-        const eDocument = this.gridOptionsService.getDocument();
-        return this.mouseMoveIncludesScroll() ? {
-            pageX: event.pageX,
-            pageY: event.pageY
-        } : {
-            pageX: event.x + eDocument.documentElement.scrollLeft,
-            pageY: event.y + eDocument.documentElement.scrollTop
-        };
-    }
-    
+
     private positionGhost(event: MouseEvent): void {
         const ghost = this.eGhost;
 
@@ -475,9 +447,8 @@ export class DragAndDropService extends BeanStub {
         const browserWidth = getBodyWidth() - 2;
         const browserHeight = getBodyHeight() - 2;
 
-        const { pageX, pageY } = this.getMouseMovePagePosition(event);
-        let top = pageY - (ghostHeight / 2);
-        let left = pageX - 10;
+        let top = event.pageY - (ghostHeight / 2);
+        let left = event.pageX - 10;
 
         const eDocument = this.gridOptionsService.getDocument();
         const win = (eDocument.defaultView || window);
