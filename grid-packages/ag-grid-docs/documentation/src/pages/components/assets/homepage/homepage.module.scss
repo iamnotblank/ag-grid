@@ -110,11 +110,14 @@ body {
 }
 
 .automatedRowGrouping {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    height: 500px;
     margin-top: ds.$size-8 !important; // !important for .ag-styles specificity
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-medium) {
+        position: relative;
+        display: flex;
+        height: 500px;
+        overflow: hidden;
+    }
 
     @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
         height: 700px;
@@ -133,6 +136,10 @@ body {
         box-shadow: 0 0 0 var(--border-radius) var(--white);
         pointer-events: none;
         z-index: 100000;
+
+        @media screen and (max-width: ds.$breakpoint-automated-row-grouping-medium) {
+            display: none;
+        }
     }
 }
 

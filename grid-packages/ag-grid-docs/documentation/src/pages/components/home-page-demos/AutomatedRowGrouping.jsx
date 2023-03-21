@@ -159,7 +159,7 @@ function AutomatedRowGrouping() {
 
                     <p>
                         All the features your users expect and more. Out of the box performance that can handle any data
-                        you can throw at it.
+                        you can throw&nbsp;at&nbsp;it.
                     </p>
 
                     <button className={styles.tryItOutButton} onClick={onTryItOutClick}>
