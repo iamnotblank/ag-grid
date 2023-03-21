@@ -55,6 +55,7 @@ export async function dragColumnToRowGroupPanel({
             const mouseMoveEvent: MouseEvent = new MouseEvent('mousemove', {
                 clientX: coords.x,
                 clientY: coords.y,
+                view: document.defaultView || window,
             });
             document.dispatchEvent(mouseMoveEvent);
 
