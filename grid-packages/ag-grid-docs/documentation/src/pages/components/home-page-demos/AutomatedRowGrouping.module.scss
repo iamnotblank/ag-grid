@@ -264,6 +264,7 @@ $splash-transform: skew(-20deg) translateX(5%);
     :global(.icon) {
         position: absolute;
         bottom: 0;
+        right: -0.33em;
         transition: transform ds.$default-transition-timing;
     }
 }
