@@ -21,6 +21,7 @@ $splash-transform: skew(-20deg) translateX(5%);
         transform: scale(0.5);
         border-radius: 8px;
         overflow: hidden;
+        pointer-events: none;
     }
 
     svg[class*='logo-mark'] {
