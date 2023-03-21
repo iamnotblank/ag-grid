@@ -101,8 +101,16 @@ $z-index-splash-contents: 10;
     color: var(--text-color);
     z-index: $z-index-splash-contents;
 
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+        font-size: var(--font-size-extra-large) !important; // !important for .ag-styles specificity;
+    }
+
     h2 {
         --font-weight: var(--font-weight-bold);
+
+        @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+            font-size: var(--font-size-gigantic) !important; // !important for .ag-styles specificity;
+        }
     }
 
     .hide & {
@@ -134,10 +142,15 @@ $z-index-splash-contents: 10;
 .tryItOutButton {
     --icon-size: 1.5em;
 
-    margin-top: ds.$size-4 !important; // !important for .ag-styles specificity;
+    margin-top: ds.$size-2 !important; // !important for .ag-styles specificity;
     outline: transparent 3px solid !important; // !important for .ag-styles specificity;
     outline-offset: 0;
     transition: outline-color 0.15s ease-in-out, outline-offset 0.15s ease-in-out !important; // !important for .ag-styles specificity;
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+        margin-top: ds.$size-4 !important; // !important for .ag-styles specificity;
+        font-size: var(--font-size-extra-large) !important; // !important for .ag-styles specificity;
+    }
 
     &:hover,
     &:focus,
@@ -163,8 +176,12 @@ $z-index-splash-contents: 10;
 
     position: relative;
     display: inline-block;
-    margin-top: ds.$size-8 !important; // !important for .ag-styles specificity;
+    margin-top: ds.$size-6 !important; // !important for .ag-styles specificity;
     padding-right: ds.$size-3;
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+        margin-top: ds.$size-8 !important; // !important for .ag-styles specificity;
+    }
 
     &::before,
     &::after {

@@ -113,8 +113,12 @@ body {
     position: relative;
     overflow: hidden;
     display: flex;
-    height: 700px;
+    height: 500px;
     margin-top: ds.$size-8 !important; // !important for .ag-styles specificity
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+        height: 700px;
+    }
 
     // Use psuedo element to create fake border radius, as border radius can't
     // be used to prevent screen tearing issues with transitions on .splash

@@ -150,8 +150,8 @@ function AutomatedRowGrouping() {
                 aria-hidden="true"
                 ref={splashEl}
             >
-                <div className={classnames(styles.contents, 'font-size-extra-large')}>
-                    <h2 className="font-size-gigantic">
+                <div className={classnames(styles.contents, 'font-size-large')}>
+                    <h2 className="font-size-massive">
                         Feature Packed,
                         <br />
                         Incredible Performance
