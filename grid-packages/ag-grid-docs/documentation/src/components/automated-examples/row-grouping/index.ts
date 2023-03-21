@@ -30,6 +30,7 @@ interface CreateAutomatedRowGroupingParams {
     mouseMaskClassname: string;
     gridIsHoveredOver: (element: HTMLElement) => boolean;
     onMovedOffGrid: () => void;
+    onInactive?: () => void;
     suppressUpdates?: boolean;
     useStaticData?: boolean;
     runOnce: boolean;
@@ -133,6 +134,7 @@ export function createAutomatedRowGrouping({
     mouseMaskClassname,
     gridIsHoveredOver,
     onMovedOffGrid,
+    onInactive,
     suppressUpdates,
     useStaticData,
     debug,
@@ -182,6 +184,7 @@ export function createAutomatedRowGrouping({
                 containerEl: gridDiv,
                 mouse,
                 offScreenPos,
+                onInactive,
                 tweenGroup,
                 gridOptions,
                 loop: !runOnce,
@@ -191,7 +194,10 @@ export function createAutomatedRowGrouping({
 
             movedOffElementTimer = createMovedOffElementTimer({
                 timerIsEnabled() {
-                    return scriptRunner.currentState() === 'stopped' || scriptRunner.currentState() === 'stopping';
+                    return (
+                        (scriptRunner.currentState() === 'stopped' || scriptRunner.currentState() === 'stopping') &&
+                        scriptRunner.currentState() !== 'inactive'
+                    );
                 },
                 isMovedOn: gridIsHoveredOver,
                 onTimerFinished: onMovedOffGrid,

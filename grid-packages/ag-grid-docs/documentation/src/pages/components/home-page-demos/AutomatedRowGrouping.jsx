@@ -66,10 +66,14 @@ function AutomatedRowGrouping() {
         automatedScript.current.stop();
     }, []);
 
+    const restartScript = () => {
+        setHideSplash(false);
+        automatedScript.current.start();
+    };
+
     const onSplashClick = useCallback(() => {
         if (hideSplash) {
-            setHideSplash(false);
-            automatedScript.current.start();
+            restartScript();
         }
     }, [hideSplash]);
 
@@ -116,8 +120,10 @@ function AutomatedRowGrouping() {
             mouseMaskClassname: styles.mouseMask,
             gridIsHoveredOver,
             onMovedOffGrid() {
+                restartScript();
+            },
+            onInactive() {
                 setHideSplash(false);
-                automatedScript.current.start();
             },
             debug: isDebug,
             debugCanvasClassname: styles.debugCanvas,
