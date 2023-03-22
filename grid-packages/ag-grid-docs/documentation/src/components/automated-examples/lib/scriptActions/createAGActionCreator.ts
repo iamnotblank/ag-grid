@@ -115,6 +115,7 @@ export function createAGActionCreator({
             gridOptions?.columnApi?.resetColumnState();
             gridOptions?.columnApi?.resetColumnGroupState();
             gridOptions?.columnApi?.setColumnsPinned([], null);
+            gridOptions?.api?.setFilterModel(null);
             gridOptions?.api?.closeToolPanel();
             document.querySelector(AG_DND_GHOST_SELECTOR)?.remove();
             clearAllSingleCellSelections();
