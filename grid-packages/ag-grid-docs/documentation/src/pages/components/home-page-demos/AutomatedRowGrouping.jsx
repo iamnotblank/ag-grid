@@ -52,7 +52,7 @@ function AutomatedRowGrouping() {
     const splashClassname = styles.splash;
     const automatedScript = useRef(null);
     const splashEl = useRef(null);
-    const [hideSplash, setHideSplash] = useState(false);
+    const [showSplash, setShowSplash] = useState(true);
     const [splashIsTransitioning, setSplashIsTransitioning] = useState(false);
     const [clickTargetHover, setClickTargetHover] = useState(false);
 
@@ -61,21 +61,21 @@ function AutomatedRowGrouping() {
             return;
         }
 
-        setHideSplash(true);
+        setShowSplash(false);
         setSplashIsTransitioning(true);
         automatedScript.current.stop();
     }, []);
 
     const restartScript = () => {
-        setHideSplash(false);
+        setShowSplash(true);
         automatedScript.current.start();
     };
 
     const onSplashClick = useCallback(() => {
-        if (hideSplash) {
+        if (!showSplash) {
             restartScript();
         }
-    }, [hideSplash]);
+    }, [showSplash]);
 
     useEffect(() => {
         if (!splashEl.current) {
@@ -123,7 +123,7 @@ function AutomatedRowGrouping() {
                 restartScript();
             },
             onInactive() {
-                setHideSplash(false);
+                setShowSplash(true);
             },
             debug: isDebug,
             debugCanvasClassname: styles.debugCanvas,
@@ -148,7 +148,7 @@ function AutomatedRowGrouping() {
             <div
                 className={classnames({
                     [splashClassname]: true,
-                    [styles.hide]: hideSplash,
+                    [styles.hide]: !showSplash,
                     [styles.hiding]: splashIsTransitioning,
                     [styles.exampleHover]: clickTargetHover,
                 })}
