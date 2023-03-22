@@ -33,7 +33,6 @@ export interface WaitAction {
 
 export interface ClickAction {
     type: 'click';
-    duration?: number;
 }
 
 export interface MouseDownAction {
@@ -148,8 +147,7 @@ function createScriptAction({
         const scriptAction = action as CustomAction;
         return scriptAction.action();
     } else if (type === 'click') {
-        const scriptAction = action as ClickAction;
-        return mouse.click(scriptAction.duration);
+        return mouse.click();
     } else if (type === 'mouseDown') {
         return mouse.mouseDown();
     } else if (type === 'mouseUp') {

@@ -39,12 +39,15 @@ export function createMouse({ containerEl, mouseMaskClassname }: CreateMouseElem
     const getMouseOffset = () => getOffset(mouse);
     const getTarget = () => mouse;
 
-    const click = (duration = 200) => {
+    const click = () => {
         mouse.classList.add('animate');
 
-        setTimeout(() => {
+        const onTransitionEnd = () => {
             mouse.classList.remove('animate');
-        }, duration);
+            mouse.removeEventListener('transitionend', onTransitionEnd);
+        };
+
+        mouse.addEventListener('transitionend', onTransitionEnd);
     };
     const mouseDown = () => {
         mouse.classList.add('animate');

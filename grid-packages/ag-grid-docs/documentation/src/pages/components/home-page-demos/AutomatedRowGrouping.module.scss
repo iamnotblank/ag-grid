@@ -340,10 +340,11 @@ $splash-transform: skew(-20deg) translateX(5%);
         transform-origin: 50% calc(50% - 1px);
         opacity: 0;
         transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+        transform: scale(0.1);
     }
 
-    &:global(.animate .animate-click) {
+    :global(.animate .animate-click) {
         opacity: 0.3;
-        transform: scale(12);
+        transform: scale(1);
     }
 }
