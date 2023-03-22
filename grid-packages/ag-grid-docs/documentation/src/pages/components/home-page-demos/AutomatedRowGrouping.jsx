@@ -42,7 +42,7 @@ if (!isProductionBuild()) {
 const mouseStyles = `
     .automated-row-grouping-grid .ag-root-wrapper,
     .automated-row-grouping-grid .ag-root-wrapper * {
-        cursor: url(${hostPrefix}/images/cursor/automated-example-cursor.svg) 14 14, pointer !important;
+        cursor: url(${hostPrefix}/images/cursor/automated-example-cursor.svg) 36 36, pointer !important;
     }
 `;
 
