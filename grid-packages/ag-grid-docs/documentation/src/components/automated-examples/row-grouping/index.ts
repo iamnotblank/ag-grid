@@ -47,12 +47,10 @@ const columnDefs: ColDef[] = [
     {
         field: 'product',
         chartDataType: 'category',
-        enableRowGroup: true,
     },
     {
         field: 'book',
         chartDataType: 'category',
-        enableRowGroup: true,
     },
     { field: 'current', type: 'measure' },
     { field: 'previous', type: 'measure' },
@@ -74,11 +72,11 @@ const gridOptions: GridOptions = {
     columnDefs,
     defaultColDef: {
         sortable: true,
+        enableRowGroup: true,
         flex: 1,
         minWidth: 150,
         filter: true,
         resizable: true,
-        menuTabs: [],
     },
     autoGroupColumnDef: {
         minWidth: 200,
@@ -148,7 +146,6 @@ export function createAutomatedRowGrouping({
         }
 
         const offScreenPos: Point = getBottomMidPos(gridDiv);
-        gridOptions.popupParent = document.body;
         if (useStaticData) {
             gridOptions.rowData = fixtureData;
         }

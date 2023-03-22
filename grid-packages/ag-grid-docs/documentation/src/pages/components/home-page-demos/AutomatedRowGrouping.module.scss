@@ -61,6 +61,16 @@ $splash-transform: skew(-20deg) translateX(5%);
             box-shadow: none;
         }
     }
+
+    // Set mini filter overrides for for .ag-styles specificity
+    :global(.ag-mini-filter) {
+        margin: var(--ag-widget-container-vertical-padding) var(--ag-widget-container-horizontal-padding);
+    }
+
+    // Set filter overrides for for .ag-styles specificity
+    :global(.ag-set-filter-item) {
+        margin: 0px var(--ag-widget-container-horizontal-padding);
+    }
 }
 
 .splash {
