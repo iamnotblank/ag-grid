@@ -6,25 +6,25 @@ export function createDataUpdateWorker() {
     const MILLISECONDS_BETWEEN_MESSAGES = 100;
 
     // update these to change the size of the data initially loaded into the grid for updating
-    const BOOK_COUNT = 5;
-    const TRADE_COUNT = 2;
+    const MAX_BOOK_COUNT = 5;
+    const MAX_TRADE_COUNT = 5;
 
     // add / remove products to change the data set
     const PRODUCTS = [
-        'Cobalt',
-        'Rubber',
+        'Tea',
+        'Cheese',
         'Wool',
-        'Amber',
+        'Orange Juice',
         'Corn',
-        'Nickel',
-        'Copper',
-        'Oats',
-        'Coffee',
+        'Potatoes',
+        'Sunflower Oil',
+        'Cotton',
+        'Feeder Cattle',
         'Wheat',
-        'Lead',
-        'Zinc',
-        'Tin',
-        'Coca',
+        'Soybeans',
+        'Neodymium',
+        'Sugar',
+        'Gold',
     ];
 
     // add / remove portfolios to change the data set
@@ -45,13 +45,15 @@ export function createDataUpdateWorker() {
     function createRowData() {
         globalRowData = [];
         let thisBatch = nextBatchId++;
-        for (let k = 0; k < BOOK_COUNT; k++) {
+        const bookCount = Math.random() * MAX_BOOK_COUNT;
+        for (let k = 0; k < bookCount; k++) {
             for (let j = 0; j < PORTFOLIOS.length; j++) {
                 let portfolio = PORTFOLIOS[j];
                 for (let i = 0; i < PRODUCTS.length; i++) {
                     const product = PRODUCTS[i];
                     const book = 'GL-' + ++nextBookId;
-                    for (let l = 0; l < TRADE_COUNT; l++) {
+                    const tradeCount = Math.random() * MAX_TRADE_COUNT;
+                    for (let l = 0; l < tradeCount; l++) {
                         const trade = createTradeRecord(product, portfolio, book, thisBatch);
                         globalRowData.push(trade);
                     }
