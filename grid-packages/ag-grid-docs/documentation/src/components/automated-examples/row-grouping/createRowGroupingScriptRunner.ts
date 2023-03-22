@@ -51,6 +51,7 @@ export function createRowGroupingScriptRunner({
             if (state === 'stopping') {
                 mouse.hide();
             } else if (state === 'inactive') {
+                mouse.hide();
                 onInactive && onInactive();
             }
         },

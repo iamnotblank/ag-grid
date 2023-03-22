@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { withPrefix } from 'gatsby';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { isElementChildOfClass } from '../../../components/automated-examples/lib/dom';
 import { createAutomatedRowGrouping } from '../../../components/automated-examples/row-grouping';
 import { Icon } from '../../../components/Icon';
 import LogoMark from '../../../components/LogoMark';
@@ -53,6 +52,8 @@ function AutomatedRowGrouping() {
     const automatedScript = useRef(null);
     const splashEl = useRef(null);
     const [showSplash, setShowSplash] = useState(true);
+    // NOTE: Needs to be a ref instead of useState, as it is passed into a plain JavaScript context
+    const scriptEnabled = useRef(true);
     const [splashIsTransitioning, setSplashIsTransitioning] = useState(false);
     const [clickTargetHover, setClickTargetHover] = useState(false);
 
@@ -62,12 +63,14 @@ function AutomatedRowGrouping() {
         }
 
         setShowSplash(false);
+        scriptEnabled.current = false;
         setSplashIsTransitioning(true);
         automatedScript.current.stop();
     }, []);
 
     const restartScript = () => {
         setShowSplash(true);
+        scriptEnabled.current = true;
         automatedScript.current.start();
     };
 
@@ -76,6 +79,10 @@ function AutomatedRowGrouping() {
             restartScript();
         }
     }, [showSplash]);
+
+    const scriptIsEnabled = () => {
+        return scriptEnabled.current;
+    };
 
     useEffect(() => {
         if (!splashEl.current) {
@@ -103,28 +110,10 @@ function AutomatedRowGrouping() {
         const isCI = searchParams.get('isCI') === 'true';
         const runOnce = searchParams.get('runOnce') === 'true';
 
-        const gridIsHoveredOver = (element) => {
-            const isInGrid = isElementChildOfClass({
-                element,
-                classname: gridClassname,
-            });
-            const isOnSplash = isElementChildOfClass({
-                element,
-                classname: splashClassname,
-            });
-
-            return isInGrid || isOnSplash;
-        };
         let params = {
             gridClassname,
             mouseMaskClassname: styles.mouseMask,
-            gridIsHoveredOver,
-            onMovedOffGrid() {
-                restartScript();
-            },
-            onInactive() {
-                setShowSplash(true);
-            },
+            scriptIsEnabled,
             debug: isDebug,
             debugCanvasClassname: styles.debugCanvas,
             debugPanelClassname: styles.debugPanel,

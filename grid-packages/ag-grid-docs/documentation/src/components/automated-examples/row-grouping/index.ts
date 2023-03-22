@@ -8,7 +8,6 @@
 import { Easing, Group } from '@tweenjs/tween.js';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { createMouse } from '../lib/createMouse';
-import { createMovedOffElementTimer, MovedOffElementTimer } from '../lib/createMovedOffElementTimer';
 import { createScriptDebugger } from '../lib/createScriptDebugger';
 import { getBottomMidPos } from '../lib/dom';
 import { Point } from '../lib/geometry';
@@ -23,13 +22,11 @@ const VISIBLE_GRID_THRESHOLD_BEFORE_PLAYING_SCRIPT = 0.2;
 let dataWorker;
 let scriptRunner: ScriptRunner;
 let restartScriptTimeout;
-let movedOffElementTimer: MovedOffElementTimer;
 
 interface CreateAutomatedRowGroupingParams {
     gridClassname: string;
     mouseMaskClassname: string;
-    gridIsHoveredOver: (element: HTMLElement) => boolean;
-    onMovedOffGrid: () => void;
+    scriptIsEnabled?: () => boolean;
     onInactive?: () => void;
     suppressUpdates?: boolean;
     useStaticData?: boolean;
@@ -132,8 +129,7 @@ function stopWorkerMessages() {
 export function createAutomatedRowGrouping({
     gridClassname,
     mouseMaskClassname,
-    gridIsHoveredOver,
-    onMovedOffGrid,
+    scriptIsEnabled = () => true,
     onInactive,
     suppressUpdates,
     useStaticData,
@@ -192,18 +188,6 @@ export function createAutomatedRowGrouping({
                 defaultEasing: Easing.Quadratic.InOut,
             });
 
-            movedOffElementTimer = createMovedOffElementTimer({
-                timerIsEnabled() {
-                    return (
-                        (scriptRunner.currentState() === 'stopped' || scriptRunner.currentState() === 'stopping') &&
-                        scriptRunner.currentState() !== 'inactive'
-                    );
-                },
-                isMovedOn: gridIsHoveredOver,
-                onTimerFinished: onMovedOffGrid,
-                waitTime: WAIT_TILL_MOUSE_ANIMATION_STARTS,
-            });
-
             const pauseScriptRunner = () => {
                 if (scriptRunner.currentState() === 'playing') {
                     scriptRunner.pause();
@@ -233,7 +217,7 @@ export function createAutomatedRowGrouping({
             const gridObserver = new window.IntersectionObserver(
                 ([entry]) => {
                     if (entry.isIntersecting) {
-                        if (scriptRunner.currentState() !== 'playing') {
+                        if (scriptRunner.currentState() !== 'playing' && scriptIsEnabled()) {
                             scriptRunner.play();
                         }
                         return;
@@ -283,7 +267,6 @@ if (import.meta.webpackHot) {
     // @ts-ignore
     import.meta.webpackHot.dispose(() => {
         clearTimeout(restartScriptTimeout);
-        movedOffElementTimer?.cancelTimer();
         if (scriptRunner) {
             scriptRunner.stop();
         }
