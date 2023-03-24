@@ -9,8 +9,8 @@ import styles from './Icon.module.scss';
 // Full list of Carbon icons => https://carbondesignsystem.com/guidelines/icons/library
 
 export const ICON_MAP = {
-    info: CarbonIcon.Information,
-    warning: CarbonIcon.WarningAlt,
+    info: CarbonIcon.InformationFilled,
+    warning: CarbonIcon.WarningAltFilled,
     email: CarbonIcon.Email,
     creditCard: CarbonIcon.Purchase,
     lightBulb: CarbonIcon.Idea,
@@ -27,6 +27,7 @@ export const ICON_MAP = {
     arrowLeft: CarbonIcon.ArrowLeft,
     chevronRight: BoldChevronRight,
     link: CarbonIcon.Link,
+    idea: CarbonIcon.DataEnrichment,
 };
 
 export type IconName = keyof typeof ICON_MAP;
