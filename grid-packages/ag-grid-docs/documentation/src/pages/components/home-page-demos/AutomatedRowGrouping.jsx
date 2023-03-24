@@ -158,12 +158,17 @@ function AutomatedRowGrouping() {
                     </p>
 
                     <button className={styles.tryItOutButton} onClick={onTryItOutClick}>
-                        Explore this example <Icon name="cursor" />
+                        Explore this example <Icon name="sidePanelOpen" />
                     </button>
 
                     <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
                         Get Started with AG Grid <Icon name="chevronRight" />
                     </a>
+
+                    <div className={styles.openPanelIndicator}>
+                        <Icon name="sidePanelClose" />
+                        <span>See details</span>
+                    </div>
                 </div>
                 <div
                     className={styles.exampleClickTarget}
