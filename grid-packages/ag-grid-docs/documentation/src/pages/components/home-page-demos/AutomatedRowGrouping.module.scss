@@ -184,7 +184,7 @@ $splash-transform: skew(-10deg) translateX(5%);
     }
 }
 
-.tryItOutButton {
+.exploreExampleButton {
     --icon-size: 1.5em;
 
     margin-top: ds.$size-2 !important; // !important for .ag-styles specificity;
@@ -217,7 +217,7 @@ $splash-transform: skew(-10deg) translateX(5%);
     }
 
     :global(.icon) {
-        margin: -1.15em 0 -1em 0 !important; // !important for .ag-styles specificity;
+        margin: -1em 0 !important; // !important for .ag-styles specificity;
     }
 }
 

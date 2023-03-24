@@ -157,7 +157,7 @@ function AutomatedRowGrouping() {
                         you can throw&nbsp;at&nbsp;it.
                     </p>
 
-                    <button className={styles.tryItOutButton} onClick={onTryItOutClick}>
+                    <button className={styles.exploreExampleButton} onClick={onTryItOutClick}>
                         Explore this example <Icon name="sidePanelOpen" />
                     </button>
 
