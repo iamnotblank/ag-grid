@@ -11,20 +11,20 @@ export function createDataUpdateWorker() {
 
     // add / remove products to change the data set
     const PRODUCTS = [
-        'Tea',
-        'Cheese',
-        'Wool',
-        'Orange Juice',
         'Corn',
-        'Potatoes',
-        'Sunflower Oil',
+        'Sugar and Sweeteners',
+        'Gold and Silver',
+        'Wool',
+        'Cheese and Dairy',
+        'Neodymium Magnets',
         'Cotton',
         'Feeder Cattle',
+        'Sunflower Oil',
         'Wheat',
-        'Soybeans',
-        'Neodymium',
-        'Sugar',
-        'Gold',
+        'Potatoes',
+        'Orange Juice',
+        'Tea',
+        'Microprocessors',
     ];
 
     // add / remove portfolios to change the data set

@@ -47,6 +47,7 @@ const columnDefs: ColDef[] = [
     {
         field: 'product',
         chartDataType: 'category',
+        minWidth: 280,
     },
     {
         field: 'book',
@@ -79,7 +80,7 @@ const gridOptions: GridOptions = {
         resizable: true,
     },
     autoGroupColumnDef: {
-        minWidth: 200,
+        minWidth: 280,
     },
     columnTypes: {
         measure: {

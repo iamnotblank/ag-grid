@@ -42,7 +42,7 @@ if (!isProductionBuild()) {
 const mouseStyles = `
     .automated-row-grouping-grid .ag-root-wrapper,
     .automated-row-grouping-grid .ag-root-wrapper * {
-        cursor: url(${hostPrefix}/images/cursor/automated-example-cursor.svg) 36 36, pointer !important;
+        cursor: url(${hostPrefix}/images/cursor/automated-example-cursor.svg) 24 24, pointer !important;
     }
 `;
 
@@ -158,7 +158,7 @@ function AutomatedRowGrouping() {
                     </p>
 
                     <button className={styles.tryItOutButton} onClick={onTryItOutClick}>
-                        Try For Yourself <Icon name="cursor" />
+                        Explore this example <Icon name="cursor" />
                     </button>
 
                     <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
