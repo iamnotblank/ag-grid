@@ -55,7 +55,6 @@ function AutomatedRowGrouping() {
     // NOTE: Needs to be a ref instead of useState, as it is passed into a plain JavaScript context
     const scriptEnabled = useRef(true);
     const [splashIsTransitioning, setSplashIsTransitioning] = useState(false);
-    const [clickTargetHover, setClickTargetHover] = useState(false);
 
     const onTryItOutClick = useCallback(() => {
         if (!automatedScript.current) {
@@ -139,48 +138,39 @@ function AutomatedRowGrouping() {
                     [splashClassname]: true,
                     [styles.hide]: !showSplash,
                     [styles.hiding]: splashIsTransitioning,
-                    [styles.exampleHover]: clickTargetHover,
                 })}
                 onClick={onSplashClick}
                 aria-hidden="true"
                 ref={splashEl}
             >
                 <div className={classnames(styles.contents, 'font-size-large')}>
-                    <h2 className="font-size-massive">
-                        Feature Packed,
-                        <br />
-                        Incredible Performance
-                    </h2>
+                    <div className={styles.contentsInner}>
+                        <h2 className="font-size-massive">
+                            Feature Packed,
+                            <br />
+                            Incredible Performance
+                        </h2>
 
-                    <p>
-                        All the features your users expect and more. Out of the box performance that can handle any data
-                        you can throw&nbsp;at&nbsp;it.
-                    </p>
+                        <p>
+                            All the features your users expect and more. Out of the box performance that can handle any
+                            data you can throw&nbsp;at&nbsp;it.
+                        </p>
 
-                    <button className={styles.exploreExampleButton} onClick={onTryItOutClick}>
-                        Explore this example <Icon name="sidePanelOpen" />
-                    </button>
+                        <button className={styles.exploreExampleButton} onClick={onTryItOutClick}>
+                            Explore this example <Icon name="sidePanelOpen" />
+                        </button>
 
-                    <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
-                        Get Started with AG Grid <Icon name="chevronRight" />
-                    </a>
+                        <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
+                            Get Started with AG Grid <Icon name="chevronRight" />
+                        </a>
+                    </div>
 
                     <div className={styles.openPanelIndicator}>
                         <Icon name="sidePanelClose" />
                         <span>See details</span>
                     </div>
                 </div>
-                <div
-                    className={styles.exampleClickTarget}
-                    onClick={onTryItOutClick}
-                    aria-hidden="true"
-                    onPointerEnter={() => {
-                        setClickTargetHover(true);
-                    }}
-                    onPointerOut={() => {
-                        setClickTargetHover(false);
-                    }}
-                ></div>
+                <div className={styles.exampleClickTarget} aria-hidden="true"></div>
                 <div className={styles.splashTrapeziumBackground}></div>
             </div>
         </>

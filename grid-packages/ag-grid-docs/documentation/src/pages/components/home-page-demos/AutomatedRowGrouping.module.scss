@@ -105,6 +105,10 @@ $splash-transform: skew(-10deg) translateX(5%);
             opacity: 0;
         }
 
+        .contentsInner {
+            opacity: 0.5;
+        }
+
         .splashTrapeziumBackground {
             cursor: pointer;
         }
@@ -155,6 +159,10 @@ $splash-transform: skew(-10deg) translateX(5%);
     }
 }
 
+.contentsInner {
+    transition: opacity 0.33s ease-in-out;
+}
+
 .exampleClickTarget {
     position: absolute;
     top: 0;
@@ -164,7 +172,6 @@ $splash-transform: skew(-10deg) translateX(5%);
     background-color: var(--dark-cerulean-blue);
     opacity: 0.25;
     transform: $splash-transform;
-    cursor: pointer;
     transition: opacity 0.33s ease-in-out;
 
     @media screen and (max-width: ds.$breakpoint-automated-row-grouping-medium) {
