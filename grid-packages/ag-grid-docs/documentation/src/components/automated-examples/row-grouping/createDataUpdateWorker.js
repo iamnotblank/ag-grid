@@ -45,14 +45,14 @@ export function createDataUpdateWorker() {
     function createRowData() {
         globalRowData = [];
         let thisBatch = nextBatchId++;
-        const bookCount = Math.random() * MAX_BOOK_COUNT;
+        const bookCount = Math.random() * MAX_BOOK_COUNT + 1; // At least 1 booking
         for (let k = 0; k < bookCount; k++) {
             for (let j = 0; j < PORTFOLIOS.length; j++) {
                 let portfolio = PORTFOLIOS[j];
                 for (let i = 0; i < PRODUCTS.length; i++) {
                     const product = PRODUCTS[i];
                     const book = 'GL-' + ++nextBookId;
-                    const tradeCount = Math.random() * MAX_TRADE_COUNT;
+                    const tradeCount = Math.random() * MAX_TRADE_COUNT + 1; // At least 1 trade
                     for (let l = 0; l < tradeCount; l++) {
                         const trade = createTradeRecord(product, portfolio, book, thisBatch);
                         globalRowData.push(trade);
