@@ -94,7 +94,6 @@ $splash-transform: skew(-10deg) translateX(5%);
         left: 45%;
         width: 55%;
         height: 100%;
-        z-index: $z-index-splash;
         transition: transform 0.33s ease-in-out;
     }
 
@@ -123,7 +122,7 @@ $splash-transform: skew(-10deg) translateX(5%);
 .contents {
     line-height: var(--line-height-tight) !important; // !important for .ag-styles specificity;
     color: var(--text-color);
-    z-index: $z-index-splash-contents;
+    z-index: $z-index-splash + $z-index-splash-contents;
 
     @media screen and (min-width: ds.$breakpoint-automated-row-grouping-medium) {
         max-width: 22em;
@@ -175,6 +174,7 @@ $splash-transform: skew(-10deg) translateX(5%);
     left: -25%;
     width: 200%;
     height: 100%;
+    z-index: $z-index-splash;
     transform: $splash-transform;
     background-color: rgba(map.get(ds.$abstract-colors, 'dark-cerulean-blue'), 0.75);
     backdrop-filter: blur(3px);
