@@ -20,6 +20,13 @@ export function getOffset(element: HTMLElement | SVGElement): Point {
     return offset;
 }
 
+export function getScrollOffset(): Point {
+    return {
+        x: document.documentElement.scrollLeft,
+        y: document.documentElement.scrollTop,
+    };
+}
+
 export function getBoundingClientRectMidpoint(element: HTMLElement): Point {
     const { x, y, width, height } = element.getBoundingClientRect();
     return {
