@@ -112,6 +112,10 @@ $splash-transform: skew(-10deg) translateX(5%);
 
     &.hide:not(.hiding):hover {
         transform: translateX(80%);
+
+        .openPanelIndicator {
+            --text-color: var(--link-hover-color);
+        }
     }
 
     &.hide:not(.hiding) .openPanelIndicator {
@@ -284,8 +288,14 @@ $splash-transform: skew(-10deg) translateX(5%);
     opacity: 0;
     transition: opacity 0.33s ease-in-out;
 
+    svg {
+        transition: fill ds.$default-transition-timing;
+    }
+
     span {
         margin-top: ds.$size-half;
+        color: var(--text-color);
+        transition: color ds.$default-transition-timing;
     }
 }
 
