@@ -24,14 +24,14 @@ export const createRowGroupingScript = ({
     tweenGroup,
     scriptDebugger,
 }: CreateRowGroupingScriptParams): ScriptAction[] => {
-    const WOOL_ROW_INDEX = 2;
-    const WOOL_KEY = 'Wool';
+    const TARGET_GROUP_ROW_INDEX = 2;
+    const TARGET_GROUP_CELL_KEY = 'Gold and Silver';
 
-    const WOOL_ITEM_ROW_INDEX = 4;
-    const WOOL_ITEM_KEY = 'GL-62489';
+    const TARGET_GROUP_ITEM_ROW_INDEX = 4;
+    const TARGET_GROUP_ITEM_KEY = 'GL-62489';
 
-    const WOOL_ITEM_CELL_COL_INDEX = 2;
-    const WOOL_ITEM_CELL_ROW_INDEX = WOOL_ITEM_ROW_INDEX + 1;
+    const TARGET_GROUP_ITEM_CELL_COL_INDEX = 2;
+    const TARGET_GROUP_ITEM_CELL_ROW_INDEX = TARGET_GROUP_ITEM_ROW_INDEX + 1;
 
     return [
         {
@@ -60,7 +60,7 @@ export const createRowGroupingScript = ({
         { type: 'wait', duration: 500 },
         {
             type: 'moveTo',
-            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: WOOL_ROW_INDEX }),
+            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: TARGET_GROUP_ROW_INDEX }),
         },
         { type: 'wait', duration: 500 },
         { type: 'click' },
@@ -69,14 +69,14 @@ export const createRowGroupingScript = ({
             actionType: 'selectSingleCell',
             actionParams: {
                 colIndex: 0,
-                rowIndex: WOOL_ROW_INDEX,
+                rowIndex: TARGET_GROUP_ROW_INDEX,
             },
         },
         {
             type: 'agAction',
             actionType: 'toggleGroupCell',
             actionParams: {
-                key: WOOL_KEY,
+                key: TARGET_GROUP_CELL_KEY,
                 expand: true,
             },
         },
@@ -97,10 +97,10 @@ export const createRowGroupingScript = ({
         }),
         { type: 'wait', duration: 500 },
 
-        // Open wool
+        // Open target group
         {
             type: 'moveTo',
-            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: WOOL_ROW_INDEX }),
+            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: TARGET_GROUP_ROW_INDEX }),
         },
         { type: 'wait', duration: 500 },
         { type: 'click' },
@@ -109,23 +109,23 @@ export const createRowGroupingScript = ({
             actionType: 'selectSingleCell',
             actionParams: {
                 colIndex: 0,
-                rowIndex: WOOL_ROW_INDEX,
+                rowIndex: TARGET_GROUP_ROW_INDEX,
             },
         },
         {
             type: 'agAction',
             actionType: 'toggleGroupCell',
             actionParams: {
-                key: WOOL_KEY,
+                key: TARGET_GROUP_CELL_KEY,
                 expand: true,
             },
         },
         { type: 'wait', duration: 500 },
 
-        // Open wool item
+        // Open target group item
         {
             type: 'moveTo',
-            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: WOOL_ITEM_ROW_INDEX }),
+            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: TARGET_GROUP_ITEM_ROW_INDEX }),
         },
         { type: 'wait', duration: 500 },
         {
@@ -138,14 +138,14 @@ export const createRowGroupingScript = ({
             actionType: 'selectSingleCell',
             actionParams: {
                 colIndex: 0,
-                rowIndex: WOOL_ITEM_ROW_INDEX,
+                rowIndex: TARGET_GROUP_ITEM_ROW_INDEX,
             },
         },
         {
             type: 'agAction',
             actionType: 'toggleGroupCell',
             actionParams: {
-                key: WOOL_ITEM_KEY,
+                key: TARGET_GROUP_ITEM_KEY,
                 expand: true,
             },
         },
@@ -156,7 +156,11 @@ export const createRowGroupingScript = ({
             type: 'moveTo',
             toPos: () => {
                 return addPoints(
-                    getCellPos({ containerEl, colIndex: WOOL_ITEM_CELL_COL_INDEX, rowIndex: WOOL_ITEM_CELL_ROW_INDEX }),
+                    getCellPos({
+                        containerEl,
+                        colIndex: TARGET_GROUP_ITEM_CELL_COL_INDEX,
+                        rowIndex: TARGET_GROUP_ITEM_CELL_ROW_INDEX,
+                    }),
                     {
                         x: -40,
                         y: 10,
@@ -169,7 +173,11 @@ export const createRowGroupingScript = ({
             type: 'moveTo',
             toPos: () =>
                 addPoints(
-                    getCellPos({ containerEl, colIndex: WOOL_ITEM_CELL_COL_INDEX, rowIndex: WOOL_ITEM_CELL_ROW_INDEX }),
+                    getCellPos({
+                        containerEl,
+                        colIndex: TARGET_GROUP_ITEM_CELL_COL_INDEX,
+                        rowIndex: TARGET_GROUP_ITEM_CELL_ROW_INDEX,
+                    }),
                     {
                         x: 0,
                         y: 10,
@@ -182,7 +190,11 @@ export const createRowGroupingScript = ({
             type: 'moveTo',
             toPos: () =>
                 addPoints(
-                    getCellPos({ containerEl, colIndex: WOOL_ITEM_CELL_COL_INDEX, rowIndex: WOOL_ITEM_CELL_ROW_INDEX }),
+                    getCellPos({
+                        containerEl,
+                        colIndex: TARGET_GROUP_ITEM_CELL_COL_INDEX,
+                        rowIndex: TARGET_GROUP_ITEM_CELL_ROW_INDEX,
+                    }),
                     {
                         x: -40,
                         y: 10,
@@ -192,10 +204,10 @@ export const createRowGroupingScript = ({
         },
         { type: 'wait', duration: 300 },
 
-        // Close wool item
+        // Close target group item
         {
             type: 'moveTo',
-            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: WOOL_ITEM_ROW_INDEX }),
+            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: TARGET_GROUP_ITEM_ROW_INDEX }),
         },
         { type: 'wait', duration: 500 },
         {
@@ -208,24 +220,24 @@ export const createRowGroupingScript = ({
             actionType: 'selectSingleCell',
             actionParams: {
                 colIndex: 0,
-                rowIndex: WOOL_ITEM_ROW_INDEX,
+                rowIndex: TARGET_GROUP_ITEM_ROW_INDEX,
             },
         },
         {
             type: 'agAction',
             actionType: 'toggleGroupCell',
             actionParams: {
-                key: WOOL_ITEM_KEY,
+                key: TARGET_GROUP_ITEM_KEY,
                 expand: false,
                 skipParents: true,
             },
         },
         { type: 'wait', duration: 500 },
 
-        // Close wool
+        // Close target group
         {
             type: 'moveTo',
-            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: WOOL_ROW_INDEX }),
+            toPos: () => getGroupCellTogglePos({ containerEl, colIndex: 0, rowIndex: TARGET_GROUP_ROW_INDEX }),
         },
         { type: 'wait', duration: 500 },
         {
@@ -238,14 +250,14 @@ export const createRowGroupingScript = ({
             actionType: 'selectSingleCell',
             actionParams: {
                 colIndex: 0,
-                rowIndex: WOOL_ROW_INDEX,
+                rowIndex: TARGET_GROUP_ROW_INDEX,
             },
         },
         {
             type: 'agAction',
             actionType: 'toggleGroupCell',
             actionParams: {
-                key: WOOL_KEY,
+                key: TARGET_GROUP_CELL_KEY,
                 expand: false,
             },
         },
