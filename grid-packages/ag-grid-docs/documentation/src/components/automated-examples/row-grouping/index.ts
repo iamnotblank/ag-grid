@@ -178,7 +178,14 @@ export function createAutomatedRowGrouping({
                 containerEl: gridDiv,
                 mouse,
                 offScreenPos,
-                onInactive,
+                onPlaying() {
+                    startWorkerMessages();
+                },
+                onInactive() {
+                    onInactive && onInactive();
+
+                    stopWorkerMessages();
+                },
                 tweenGroup,
                 gridOptions,
                 loop: !runOnce,

@@ -13,6 +13,7 @@ interface CreateRowGroupingScriptRunnerParams {
     mouse: Mouse;
     containerEl?: HTMLElement;
     offScreenPos: Point;
+    onPlaying?: () => void;
     onInactive?: () => void;
     tweenGroup: Group;
     gridOptions: GridOptions;
@@ -25,6 +26,7 @@ export function createRowGroupingScriptRunner({
     containerEl,
     mouse,
     offScreenPos,
+    onPlaying,
     onInactive,
     tweenGroup,
     gridOptions,
@@ -48,7 +50,9 @@ export function createRowGroupingScriptRunner({
         loop,
         tweenGroup,
         onStateChange: (state) => {
-            if (state === 'stopping') {
+            if (state === 'playing') {
+                onPlaying && onPlaying();
+            } else if (state === 'stopping') {
                 mouse.hide();
             } else if (state === 'inactive') {
                 mouse.hide();
