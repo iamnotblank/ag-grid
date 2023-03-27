@@ -8,8 +8,8 @@ export interface CreateMouseElementsParams {
 export type Mouse = ReturnType<typeof createMouse>;
 
 const MOUSE_CLASSNAME = 'mouse';
-const MOUSE_WIDTH = 74;
-const MOUSE_HEIGHT = 84;
+const MOUSE_WIDTH = 74 * 1.25;
+const MOUSE_HEIGHT = 84 * 1.25;
 
 const MOUSE_SVG_TEMPLATE = `
     <svg class="${MOUSE_CLASSNAME}" width="${MOUSE_WIDTH}" height="${MOUSE_HEIGHT}" viewBox="0 0 74 84">
