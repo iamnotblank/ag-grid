@@ -130,7 +130,14 @@ function AutomatedRowGrouping() {
                 {helmet.map((entry) => entry)}
                 <style>{mouseStyles}</style>
             </Helmet>
-            <div style={{ height: '100%', width: '100%' }} className="automated-row-grouping-grid ag-theme-alpine-dark">
+            <div
+                style={{ height: '100%', width: '100%' }}
+                className={classnames(
+                    'automated-row-grouping-grid',
+                    'ag-theme-alpine-dark',
+                    showSplash ? styles.hasSplash : ''
+                )}
+            >
                 <LogoMark isSpinning />
             </div>
             <div

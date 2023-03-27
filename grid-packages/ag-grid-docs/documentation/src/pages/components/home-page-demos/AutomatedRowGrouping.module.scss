@@ -9,6 +9,10 @@ $z-index-splash-contents: 10;
 
 $splash-transform: skew(-10deg) translateX(5%);
 
+$speed-line-animation-speed: 2s;
+$animation-primary-color: map.get(ds.$abstract-colors, 'water-blue');
+$animation-light-color: map.get(ds.$abstract-colors, 'white');
+
 :global(.automated-row-grouping-grid.ag-theme-alpine-dark) {
     position: relative;
 
@@ -70,6 +74,46 @@ $splash-transform: skew(-10deg) translateX(5%);
     // Set filter overrides for for .ag-styles specificity
     :global(.ag-set-filter-item) {
         margin: 0px var(--ag-widget-container-horizontal-padding);
+    }
+
+    &.hasSplash {
+        :global([role='row']) {
+            &::after {
+                position: absolute;
+                bottom: 0;
+                left: -20%;
+                transform: translatey(-50);
+                content: '';
+                width: 20%;
+                height: 1px;
+                background: linear-gradient(
+                    to right,
+                    rgba($animation-light-color, 0) 0%,
+                    $animation-primary-color 80%,
+                    $animation-primary-color 100%
+                );
+                animation: move $speed-line-animation-speed infinite;
+                animation-fill-mode: forwards;
+                animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+            }
+
+            // Vary speed lines with animation delay
+            @for $i from 0 through 5 {
+                &:nth-child(#{$i}n)::after {
+                    animation-delay: #{$i * 0.1}s;
+                }
+            }
+        }
+    }
+}
+
+@keyframes move {
+    0% {
+        left: -20%;
+    }
+
+    100% {
+        left: 100%;
     }
 }
 
