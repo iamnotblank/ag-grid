@@ -144,8 +144,6 @@ export class Legend {
 
     readonly id = createId(this);
 
-    onLayoutChange?: () => void;
-
     private readonly group: Group = new Group({ name: 'legend', layer: true, zIndex: Layers.LEGEND_ZINDEX });
 
     private itemSelection: Selection<MarkerLabel, any> = Selection.select(this.group, MarkerLabel);
@@ -198,7 +196,7 @@ export class Legend {
     @Validate(POSITION)
     position: AgChartLegendPosition = 'right';
 
-    getOrientation(): AgChartOrientation {
+    private getOrientation(): AgChartOrientation {
         if (this.orientation !== undefined) {
             return this.orientation;
         }
@@ -415,7 +413,7 @@ export class Legend {
         this.update();
     }
 
-    truncate(
+    private truncate(
         text: string,
         maxCharLength: number,
         maxItemWidth: number,
@@ -467,7 +465,7 @@ export class Legend {
         return text;
     }
 
-    updatePagination(
+    private updatePagination(
         bboxes: BBox[],
         width: number,
         height: number
@@ -519,7 +517,7 @@ export class Legend {
         };
     }
 
-    calculatePagination(bboxes: BBox[], width: number, height: number) {
+    private calculatePagination(bboxes: BBox[], width: number, height: number) {
         const { paddingX: itemPaddingX, paddingY: itemPaddingY } = this.item;
 
         const orientation = this.getOrientation();
@@ -578,7 +576,7 @@ export class Legend {
         return { maxPageWidth, maxPageHeight, pages, paginationBBox, paginationVertical };
     }
 
-    updatePositions(pageNumber: number = 0) {
+    private updatePositions(pageNumber: number = 0) {
         const {
             item: { paddingY },
             itemSelection,
@@ -638,7 +636,7 @@ export class Legend {
         });
     }
 
-    updatePageNumber(pageNumber: number) {
+    private updatePageNumber(pageNumber: number) {
         const { pages } = this;
 
         // Track an item on the page in re-pagination cases (e.g. resize).
@@ -678,7 +676,7 @@ export class Legend {
         });
     }
 
-    getDatumForPoint(x: number, y: number): LegendDatum | undefined {
+    private getDatumForPoint(x: number, y: number): LegendDatum | undefined {
         const visibleChildBBoxes: BBox[] = [];
         const closestLeftTop = { dist: Infinity, datum: undefined as any };
         for (const child of this.group.children) {
@@ -718,7 +716,7 @@ export class Legend {
         return this.group.computeBBox();
     }
 
-    computePagedBBox(): BBox {
+    private computePagedBBox(): BBox {
         const actualBBox = this.group.computeBBox();
         if (this.pages.length <= 1) {
             return actualBBox;
