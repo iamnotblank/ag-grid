@@ -14,6 +14,7 @@ $z-index-splash-contents: 10;
     background-color: #00162d;
     position: relative;
     z-index: $z-index-grid;
+    border-radius: var(--border-radius);
 
     @media screen and (max-width: ds.$breakpoint-automated-row-grouping-medium) {
         width: 200% !important;
@@ -170,7 +171,7 @@ $z-index-splash-contents: 10;
 }
 
 .exploreExampleButton {
-    margin-top: ds.$size-2 !important; // !important for .ag-styles specificity;
+    margin-top: 0 !important; // !important for .ag-styles specificity;
     padding: 0.375em 0.5em 0.5em 0.5em !important; // !important for .ag-styles specificity;
     outline: transparent 3px solid !important; // !important for .ag-styles specificity;
     outline-offset: 0;
@@ -181,7 +182,7 @@ $z-index-splash-contents: 10;
     }
 
     @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
-        margin-top: ds.$size-4 !important; // !important for .ag-styles specificity;
+        margin: 1rem !important; // !important for .ag-styles specificity;
         font-size: var(--font-size-extra-large) !important; // !important for .ag-styles specificity;
     }
 
@@ -213,16 +214,16 @@ $z-index-splash-contents: 10;
 
     position: relative;
     display: inline-block;
-    margin-top: ds.$size-4 !important; // !important for .ag-styles specificity;
+    margin-top: 0 !important; // !important for .ag-styles specificity;
     padding-right: ds.$size-3;
     transition: color ds.$default-transition-timing;
 
     @media screen and (min-width: ds.$breakpoint-automated-row-grouping-medium) {
-        margin-top: ds.$size-6 !important; // !important for .ag-styles specificity;
+        margin-top: 0 !important; // !important for .ag-styles specificity;
     }
 
     @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
-        margin-top: ds.$size-8 !important; // !important for .ag-styles specificity;
+        margin-top: 0 !important; // !important for .ag-styles specificity;
     }
 
     &::after {

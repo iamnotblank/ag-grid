@@ -158,6 +158,29 @@ gatsby-fast-refresh {
     }
 }
 
+.automatedIntegratedCharts {
+    margin-top: 0 !important;
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+        height: 940px;
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: ds.$size-3 !important;
+
+        h2,
+        p {
+            max-width: 52em;
+            margin: 0 auto 14px !important;
+        }
+
+        h2 {
+            font-weight: 600 !important;
+        }
+    }
+}
+
 .frameworksInner {
     display: flex;
     flex-direction: column;
@@ -204,21 +227,30 @@ gatsby-fast-refresh {
     }
 }
 
+.automatedIntegratedChartsOuter {
+    padding-top: ds.$size-7;
+    padding-bottom: ds.$size-8;
+    background-color: var(--bright-blue-gray);
+    box-shadow: -999px 0 0 0 var(--bright-blue-gray), 999px 0 0 0 var(--bright-blue-gray);
+}
+
 .demoHeader {
     text-align: center;
     margin-bottom: ds.$size-2 !important; // !important for .ag-styles specificity
 }
 
 .homepageDescription {
-    margin-top: ds.$size-6 !important; // !important for .ag-styles specificity
-    margin-bottom: ds.$size-6 !important; // !important for .ag-styles specificity
+    background-color: var(--ghost-blue);
+    margin-top: ds.$size-8 !important; // !important for .ag-styles specificity
+    padding-top: ds.$size-8 !important; // !important for .ag-styles specificity
+    padding-bottom: ds.$size-8 !important; // !important for .ag-styles specificity
 
     li:not(:last-child) {
         margin-bottom: ds.$size-3 !important; // !important for .ag-styles specificity
     }
 
     @media screen and (min-width: 880px) {
-        margin-bottom: ds.$size-8 !important; // !important for .ag-styles specificity
+        padding-bottom: ds.$size-8 !important; // !important for .ag-styles specificity
 
         ul {
             display: grid;

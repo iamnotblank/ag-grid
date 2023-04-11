@@ -92,12 +92,15 @@ function AutomatedIntegratedCharts({ scriptDebuggerManager, useStaticData, runOn
                 {helmet.map((entry) => entry)}
                 <style>{mouseStyles}</style>
             </Helmet>
-            <header>
-                <h2 className="font-size-massive">Integrated Charts</h2>
+            <header className="font-size-responsive">
+                <h2 className="font-size-gigantic">Fully Integrated Charting</h2>
                 <p>
-                    Visualise and analyse your data seemlessly.
-                    <br />
-                    Create charts directly inside the grid with an intuitive UI and comprehensive API.
+                    With a complete suite of integrated charting tools your users can visualise their data, their way.
+                </p>
+                <p>
+                    Intuitive cell selection and simple right-click context menus let users export & chart exactly the
+                    data they need. With dazzling themes, dozens of chart types, and a multitude of settings AG Grid
+                    charts make data beautiful.{' '}
                 </p>
             </header>
             <div
@@ -108,12 +111,14 @@ function AutomatedIntegratedCharts({ scriptDebuggerManager, useStaticData, runOn
                 {!gridIsReady && !useStaticData && <LogoMark isSpinning />}
             </div>
 
-            <button className={styles.exploreExampleButton}>
-                Explore this example <Icon name="centerToFit" />
-            </button>
-            <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
-                Get Started with AG Grid <Icon name="chevronRight" />
-            </a>
+            <div style={{ 'text-align': 'center' }}>
+                <button className={styles.exploreExampleButton}>
+                    Explore this example <Icon name="centerToFit" />
+                </button>
+                <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
+                    Get Started with AG Grid <Icon name="chevronRight" />
+                </a>
+            </div>
         </>
     );
 }

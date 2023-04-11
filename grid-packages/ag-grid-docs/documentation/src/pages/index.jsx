@@ -145,7 +145,9 @@ const Default = () => {
                     </div>
                 </div>
 
-                <section className={classNames('page-margin', styles.homepageExample)}>
+                <section
+                    className={classNames('page-margin', styles.homepageExample, styles.automatedIntegratedChartsOuter)}
+                >
                     <div className={styles.automatedIntegratedCharts}>
                         {!IS_SSR && (
                             <React.Suspense fallback={<></>}>
