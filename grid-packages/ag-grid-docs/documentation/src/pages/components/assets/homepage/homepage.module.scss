@@ -129,9 +129,9 @@ gatsby-fast-refresh {
     @media screen and (min-width: ds.$breakpoint-automated-row-grouping-medium) {
         position: relative;
         display: flex;
+        flex-direction: column;
         height: 500px;
         overflow: hidden;
-        background-color: #00162d;
     }
 
     @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {

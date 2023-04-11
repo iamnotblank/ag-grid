@@ -1,12 +1,10 @@
 // Remount component when Fast Refresh is triggered
 // @refresh reset
 
-import classnames from 'classnames';
 import { withPrefix } from 'gatsby';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { createAutomatedIntegratedCharts } from '../../../components/automated-examples/examples/integrated-charts';
-import { Splash } from '../../../components/automated-examples/Splash';
 import { Icon } from '../../../components/Icon';
 import LogoMark from '../../../components/LogoMark';
 import { hostPrefix, isProductionBuild, localPrefix } from '../../../utils/consts';
@@ -56,20 +54,6 @@ function AutomatedIntegratedCharts({ scriptDebuggerManager, useStaticData, runOn
     const scriptEnabled = useRef(true);
     const [gridIsReady, setGridIsReady] = useState(false);
 
-    const onSplashHide = useCallback(() => {
-        if (!automatedScript.current) {
-            return true;
-        }
-
-        scriptEnabled.current = false;
-        automatedScript.current.stop();
-    }, [scriptEnabled.current, automatedScript.current]);
-
-    const onSplashShow = useCallback(() => {
-        scriptEnabled.current = true;
-        automatedScript.current.start();
-    }, [scriptEnabled.current, automatedScript.current]);
-
     useIntersectionObserver({
         elementRef: gridRef,
         onChange: ({ isIntersecting }) => {
@@ -108,6 +92,14 @@ function AutomatedIntegratedCharts({ scriptDebuggerManager, useStaticData, runOn
                 {helmet.map((entry) => entry)}
                 <style>{mouseStyles}</style>
             </Helmet>
+            <header>
+                <h2 className="font-size-massive">Integrated Charts</h2>
+                <p>
+                    Visualise and analyse your data seemlessly.
+                    <br />
+                    Create charts directly inside the grid with an intuitive UI and comprehensive API.
+                </p>
+            </header>
             <div
                 ref={gridRef}
                 style={{ height: '100%', width: '100%' }}
@@ -115,40 +107,13 @@ function AutomatedIntegratedCharts({ scriptDebuggerManager, useStaticData, runOn
             >
                 {!gridIsReady && !useStaticData && <LogoMark isSpinning />}
             </div>
-            <Splash
-                size="small"
-                onSplashHide={onSplashHide}
-                onSplashShow={onSplashShow}
-                renderContent={({ hideSplash, setClickTargetHover }) => {
-                    return (
-                        <div className={classnames(styles.contents, 'font-size-large')}>
-                            <div className={styles.contentsInner}>
-                                <h2 className="font-size-massive">Integrated Charts</h2>
-                                <p>
-                                    Visualise and analyse your data seemlessly.
-                                    <br />
-                                    Create charts directly inside the grid with an intuitive UI and comprehensive API.
-                                </p>
-                                <button
-                                    className={styles.exploreExampleButton}
-                                    onClick={hideSplash}
-                                    onPointerEnter={() => {
-                                        setClickTargetHover(true);
-                                    }}
-                                    onPointerOut={() => {
-                                        setClickTargetHover(false);
-                                    }}
-                                >
-                                    Explore this example <Icon name="centerToFit" />
-                                </button>
-                                <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
-                                    Get Started with AG Grid <Icon name="chevronRight" />
-                                </a>
-                            </div>
-                        </div>
-                    );
-                }}
-            />
+
+            <button className={styles.exploreExampleButton}>
+                Explore this example <Icon name="centerToFit" />
+            </button>
+            <a className={styles.getStartedLink} href={withPrefix('/documentation/')}>
+                Get Started with AG Grid <Icon name="chevronRight" />
+            </a>
         </>
     );
 }
