@@ -158,6 +158,11 @@ gatsby-fast-refresh {
     }
 }
 
+.automatedRowGrouping {
+    margin-top: ds.$size-2 !important; // !important for .ag-styles specificity
+    margin-bottom: ds.$size-1 !important;
+}
+
 .automatedIntegratedCharts {
     margin-top: 0 !important;
 
@@ -178,6 +183,94 @@ gatsby-fast-refresh {
         h2 {
             font-weight: 600 !important;
         }
+    }
+}
+
+.exploreExampleButton {
+    margin-top: 0 !important; // !important for .ag-styles specificity;
+    padding: 0.375em 0.5em 0.5em 0.5em !important; // !important for .ag-styles specificity;
+    outline: transparent 3px solid !important; // !important for .ag-styles specificity;
+    outline-offset: 0;
+    transition: outline-color 0.15s ease-in-out, outline-offset 0.15s ease-in-out !important; // !important for .ag-styles specificity;
+
+    @media screen and (max-width: ds.$breakpoint-automated-row-grouping-medium) {
+        display: none !important; // !important for .ag-styles specificity;
+    }
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+        margin: 1rem !important; // !important for .ag-styles specificity;
+        font-size: var(--font-size-extra-large) !important; // !important for .ag-styles specificity;
+    }
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+        box-shadow: none !important; // !important for .ag-styles specificity;
+    }
+
+    :global(.exampleHover) &,
+    &:hover,
+    &:focus-visible {
+        --button-text-color: var(--ag-grid-dark-blue);
+
+        outline-color: var(--sky-blue) !important; // !important for .ag-styles specificity;
+        outline-offset: 4px;
+    }
+
+    :global(.icon) {
+        --icon-size: 1.5em !important; // !important for .ag-styles specificity;
+
+        margin: -1em 0 -1em 0.25em !important; // !important for .ag-styles specificity;
+    }
+}
+
+.getStartedLink {
+    --icon-size: 1.25em;
+    --text-color: var(--link-color);
+
+    position: relative;
+    display: inline-block;
+    margin-top: 0 !important; // !important for .ag-styles specificity;
+    padding-right: ds.$size-3;
+    transition: color ds.$default-transition-timing;
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-medium) {
+        margin-top: 0 !important; // !important for .ag-styles specificity;
+    }
+
+    @media screen and (min-width: ds.$breakpoint-automated-row-grouping-large) {
+        margin-top: 0 !important; // !important for .ag-styles specificity;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: -3px;
+        left: 0;
+        height: 2px;
+        background-color: var(--text-color);
+        transition: background-color ds.$default-transition-timing;
+
+        @media screen and (max-width: ds.$breakpoint-automated-row-grouping-medium) {
+            display: none;
+        }
+    }
+
+    &:hover,
+    &:focus-visible {
+        --text-color: var(--link-hover-color);
+
+        :global(.icon) {
+            transform: translateX(4px);
+        }
+    }
+
+    :global(.icon) {
+        position: absolute;
+        bottom: 0;
+        right: -0.33em;
+        transition: transform ds.$default-transition-timing, fill ds.$default-transition-timing;
     }
 }
 

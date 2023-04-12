@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { createScriptDebuggerManager } from '../components/automated-examples/lib/scriptDebugger';
 import Footer from '../components/footer/Footer';
 import FrameworkSelector from '../components/FrameworkSelector';
+import { Icon } from '../components/Icon';
 import { Quotes } from '../components/quotes/Quotes';
 import { quotesData } from '../components/quotes/quotesData';
 import F500Icon from '../images/inline-svgs/Fortune-500-logo.svg';
@@ -102,6 +103,18 @@ const Default = () => {
                 </div>
 
                 <section className="page-margin">
+                    <h2
+                        className="font-size-gigantic"
+                        style={{ textAlign: 'center', marginTop: '96px', fontWeight: 600 }}
+                    >
+                        Feature Packed, Incredible Performance
+                    </h2>
+
+                    <p className="font-size-large" style={{ textAlign: 'center' }}>
+                        All the features your users expect and more. Out of the box performance that can handle any data
+                        you can throw&nbsp;at&nbsp;it.
+                    </p>
+
                     <div className={styles.automatedRowGrouping}>
                         {!IS_SSR && (
                             <React.Suspense fallback={<></>}>
@@ -113,9 +126,18 @@ const Default = () => {
                             </React.Suspense>
                         )}
                     </div>
+
+                    <div style={{ 'text-align': 'center', marginBottom: '96px' }}>
+                        <button className={styles.exploreExampleButton}>
+                            Explore this example <Icon name="centerToFit" />
+                        </button>
+                        <a className={styles.getStartedLink}>
+                            Get Started with AG Grid <Icon name="chevronRight" />
+                        </a>
+                    </div>
                 </section>
 
-                <div className={styles.homepageDescription}>
+                <div className={styles.homepageDescription} style={{ display: 'none' }}>
                     <div className="page-margin">
                         <h2 className="font-size-gigantic">The Industry Leading Data Grid</h2>
 

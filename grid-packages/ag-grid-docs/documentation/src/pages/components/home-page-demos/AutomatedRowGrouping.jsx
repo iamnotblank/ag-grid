@@ -1,13 +1,9 @@
 // Remount component when Fast Refresh is triggered
 // @refresh reset
 
-import classnames from 'classnames';
-import { withPrefix } from 'gatsby';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { createAutomatedRowGrouping } from '../../../components/automated-examples/examples/row-grouping';
-import { Splash } from '../../../components/automated-examples/Splash';
-import { Icon } from '../../../components/Icon';
 import LogoMark from '../../../components/LogoMark';
 import { hostPrefix, isProductionBuild, localPrefix } from '../../../utils/consts';
 import { useIntersectionObserver } from '../../../utils/use-intersection-observer';
@@ -108,6 +104,7 @@ function AutomatedRowGrouping({ scriptDebuggerManager, useStaticData, runOnce })
                 {helmet.map((entry) => entry)}
                 <style>{mouseStyles}</style>
             </Helmet>
+
             <div
                 ref={gridRef}
                 style={{ height: '100%', width: '100%' }}
@@ -115,7 +112,8 @@ function AutomatedRowGrouping({ scriptDebuggerManager, useStaticData, runOnce })
             >
                 {!gridIsReady && !useStaticData && <LogoMark isSpinning />}
             </div>
-            <Splash
+
+            {/* <Splash
                 onSplashHide={onSplashHide}
                 onSplashShow={onSplashShow}
                 renderContent={({ hideSplash, setClickTargetHover }) => {
@@ -150,7 +148,7 @@ function AutomatedRowGrouping({ scriptDebuggerManager, useStaticData, runOnce })
                         </div>
                     );
                 }}
-            />
+            /> */}
         </>
     );
 }
