@@ -5,6 +5,8 @@ import Footer from '../components/footer/Footer';
 import FrameworkSelector from '../components/FrameworkSelector';
 import { Quotes } from '../components/quotes/Quotes';
 import { quotesData } from '../components/quotes/quotesData';
+import F500Icon from '../images/inline-svgs/Fortune-500-logo.svg';
+import NPMIcon from '../images/inline-svgs/npm.svg';
 import { agGridVersion } from '../utils/consts';
 // @ts-ignore
 import styles from './components/assets/homepage/homepage.module.scss';
@@ -115,7 +117,21 @@ const Default = () => {
 
                 <div className={styles.homepageDescription}>
                     <div className="page-margin">
-                        <ul className="list-style-none">
+                        <h2 className="font-size-gigantic">The Industry Leading Data Grid</h2>
+
+                        <div>
+                            <div>
+                                <NPMIcon />
+                                <p className="font-size-large">Over two million monthly downloads via NPM</p>
+                            </div>
+
+                            <div>
+                                <F500Icon />
+                                <p className="font-size-large">Over 80% of the Fortune 500 using AG Grid Enterprise</p>
+                            </div>
+                        </div>
+
+                        {/* <ul className="list-style-none">
                             <li>
                                 <h3>Feature Packed</h3>
                                 <p>
@@ -141,7 +157,7 @@ const Default = () => {
                                     above and beyond the competition.
                                 </p>
                             </li>
-                        </ul>
+                        </ul> */}
                     </div>
                 </div>
 

@@ -241,28 +241,39 @@ gatsby-fast-refresh {
 
 .homepageDescription {
     background-color: var(--ghost-blue);
-    margin-top: ds.$size-8 !important; // !important for .ag-styles specificity
+    margin-top: ds.$size-4 !important; // !important for .ag-styles specificity
     padding-top: ds.$size-8 !important; // !important for .ag-styles specificity
     padding-bottom: ds.$size-8 !important; // !important for .ag-styles specificity
+    text-align: center;
 
-    li:not(:last-child) {
-        margin-bottom: ds.$size-3 !important; // !important for .ag-styles specificity
+    h2 {
+        margin-bottom: 2rem !important;
+        font-weight: 600 !important;
     }
 
-    @media screen and (min-width: 880px) {
-        padding-bottom: ds.$size-8 !important; // !important for .ag-styles specificity
-
-        ul {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: ds.$size-3;
-        }
+    > div,
+    > div > div {
+        display: flex;
     }
 
-    @media screen and (min-width: 1200px) {
-        ul {
-            gap: ds.$size-5;
-        }
+    > div {
+        flex-direction: column;
+    }
+
+    > div > div {
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    p {
+        color: var(--dark-cerulean-blue);
+        max-width: 14em;
+        line-height: 1.25 !important;
+    }
+
+    svg {
+        max-height: 80px;
+        fill: var(--dark-cerulean-blue);
     }
 }
 
